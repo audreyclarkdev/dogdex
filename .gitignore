@@ -140,3 +140,8 @@ vite.config.ts.timestamp-*
 
 .DS_Store
 .vscode
+
+# any ai helper files
+.claude
+.openai
+.copilot
