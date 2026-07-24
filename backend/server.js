@@ -1,9 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
+const mongoose = require("mongoose");
+
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("Connection error:", err));
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const DogModel = require("./models/DogModel");
+// const DogModel = require("./models/DogModel");
 
 // middleware
 app.use(express.json());
