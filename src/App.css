@@ -1,0 +1,176 @@
+.App {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  text-align: center;
+  font-family: system-ui, sans-serif;
+}
+
+.App h1 {
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: #666;
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+.dog-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.dog-list li {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: left;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.dog-list li.favorite {
+  border-color: gold;
+  box-shadow: 0 0 0 2px gold;
+}
+
+.dog-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.dog-info h2 {
+  margin: 0.25rem 0;
+  font-size: 1.25rem;
+}
+
+.dog-info .breed {
+  color: #555;
+  font-weight: 600;
+  margin: 0.25rem 0;
+}
+
+.dog-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.dog-actions button {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f7f7f7;
+  cursor: pointer;
+}
+
+.dog-actions button:hover {
+  background: #eee;
+}
+
+/* --- navbar --- */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1.5rem;
+}
+
+.navbar .brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: #222;
+}
+
+.nav-links a {
+  margin-left: 1.25rem;
+  text-decoration: none;
+  color: #444;
+}
+
+.nav-links a:hover {
+  color: #000;
+}
+
+/* --- pages --- */
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+  text-align: center;
+}
+
+.filters {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.filters button {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f7f7f7;
+  cursor: pointer;
+}
+
+.filters button.active {
+  background: #222;
+  color: #fff;
+  border-color: #222;
+}
+
+/* --- cards / links --- */
+.dog-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.detail-img {
+  max-width: 320px;
+}
+
+.breed-of-day {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1.5rem;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+/* --- home navigation buttons --- */
+.home-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  max-width: 420px;
+  margin: 1.5rem auto 2.5rem;
+}
+
+.home-btn {
+  display: block;
+  padding: 0.9rem 1rem;
+  border: 1px solid #222;
+  border-radius: 8px;
+  background: #222;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.home-btn:hover {
+  background: #000;
+}
