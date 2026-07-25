@@ -1,22 +1,22 @@
+// Dependencies
+require("dotenv").config(); // this should always load first before any other dependencies
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
 const mongoose = require("mongoose");
 
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("Connection error:", err));
+// Establish our db connection
+require('./connections/mongoConn.js')
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// const DogModel = require("./models/DogModel");
+const DogModel = require("./models/DogModel");
 
 // middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(express.json()); // parse incoming json request bodies
+app.use(express.urlencoded({ extended: false })); // parse URL-encoded form data
+app.use(cors()); // Enable Cross-Origin Resource Sharing for frontend requests
+
 
 // root route
 app.get("/", (req, res) => {
@@ -70,8 +70,8 @@ app.post("/dogs", (req, res) => {
 // PUT - update a dog
 app.put("/dogs/:id", (req, res) => {
   DogModel.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
+    new: true, // Return the updated document instead of the original
+    runValidators: true, // Enforce schema validation on update
   })
     .then((updatedDog) => {
       if (!updatedDog) {
