@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DogDex Landing Page</title>
+    <meta
+      name="description"
+      content="DogDex is a mobile-first project for discovering, tracking, and learning about dog breeds in the real world."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <nav class="topbar">
+          <div class="brand-lockup">
+            <span class="brand-mark">DD</span>
+            <span class="brand-name">DogDex</span>
+          </div>
+          <div class="topbar-links">
+            <a href="#features">Features</a>
+            <a href="#gallery">Dog Gallery</a>
+            <a href="#journey">How It Works</a>
+          </div>
+        </nav>
+
+        <section class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Capstone concept for March 2026 students</p>
+            <h1>The dog-spotting app that turns every walk into a collectible adventure.</h1>
+            <p class="hero-text">
+              DogDex is a mobile-first web application for dog lovers who want to
+              discover, track, and learn about breeds they encounter in real life.
+              Part field guide, part journal, part collection game.
+            </p>
+            <div class="cta-row">
+              <a class="cta-primary" href="#gallery">Explore the gallery</a>
+              <a class="cta-secondary" href="#features">See the feature set</a>
+            </div>
+          </div>
+
+          <aside class="hero-card">
+            <p class="card-label">Project snapshot</p>
+            <ul class="snapshot-list">
+              <li>Browse a full encyclopedia of recognized dog breeds</li>
+              <li>Mark breeds as spotted in the wild</li>
+              <li>Log photos, locations, dates, and notes</li>
+              <li>Return daily for a fresh Breed of the Day</li>
+            </ul>
+          </aside>
+        </section>
+      </header>
+
+      <main>
+        <section class="story-band">
+          <p>
+            Inspired by bird-watching and the classic Pokédex loop, DogDex turns dog
+            encounters into moments of discovery. The goal is simple: notice more,
+            learn more, and build a personal collection of real-world sightings.
+          </p>
+        </section>
+
+        <section class="feature-section" id="features">
+          <div class="section-heading">
+            <p class="eyebrow">Core experience</p>
+            <h2>Built for curious dog people, neighborhood explorers, and collectors.</h2>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card accent-sand">
+              <span class="feature-number">01</span>
+              <h3>Searchable breed encyclopedia</h3>
+              <p>
+                Browse a complete list of recognized breeds with names, photos,
+                origin country, and standout traits.
+              </p>
+            </article>
+
+            <article class="feature-card accent-coral">
+              <span class="feature-number">02</span>
+              <h3>Spot and collect</h3>
+              <p>
+                Check off breeds you have encountered and build a visible record of
+                your growing dog knowledge.
+              </p>
+            </article>
+
+            <article class="feature-card accent-sky">
+              <span class="feature-number">03</span>
+              <h3>Detailed breed profiles</h3>
+              <p>
+                Open a breed page to learn lifespan, weight range, energy level,
+                temperament, and origin details.
+              </p>
+            </article>
+
+            <article class="feature-card accent-leaf">
+              <span class="feature-number">04</span>
+              <h3>Personal sighting log</h3>
+              <p>
+                Attach a photo, location, date, and notes so each sighting becomes a
+                memory instead of a vague "I think I saw one."
+              </p>
+            </article>
+
+            <article class="feature-card accent-plum">
+              <span class="feature-number">05</span>
+              <h3>Breed of the Day</h3>
+              <p>
+                Surface one breed every morning to give the app a reason to be opened
+                daily and make learning feel lightweight.
+              </p>
+            </article>
+
+            <article class="feature-card accent-gold">
+              <span class="feature-number">06</span>
+              <h3>Progress filters</h3>
+              <p>
+                Toggle between all breeds, spotted breeds, and the ones you are still
+                hoping to find.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="gallery-section" id="gallery">
+          <div class="section-heading split-heading">
+            <div>
+              <p class="eyebrow">Interesting dogs</p>
+              <h2>A gallery made for the kind of dogs that stop people mid-sentence.</h2>
+            </div>
+            <p class="section-note">
+              This gallery is rendered from a small data set so the page can be reused
+              or expanded without changing the markup structure.
+            </p>
+          </div>
+
+          <div class="gallery-grid" id="galleryGrid" aria-live="polite"></div>
+        </section>
+
+        <section class="journey-section" id="journey">
+          <div class="section-heading">
+            <p class="eyebrow">Daily loop</p>
+            <h2>How DogDex turns an ordinary walk into repeatable product behavior.</h2>
+          </div>
+
+          <div class="journey-grid">
+            <article class="journey-step">
+              <span>1</span>
+              <h3>Spot a dog</h3>
+              <p>Notice a breed on the sidewalk, at the park, or during a trip.</p>
+            </article>
+            <article class="journey-step">
+              <span>2</span>
+              <h3>Confirm the breed</h3>
+              <p>Use the app to compare photos, traits, and breed details.</p>
+            </article>
+            <article class="journey-step">
+              <span>3</span>
+              <h3>Log the sighting</h3>
+              <p>Save the moment with notes, a date, a location, and a photo.</p>
+            </article>
+            <article class="journey-step">
+              <span>4</span>
+              <h3>Come back tomorrow</h3>
+              <p>Check the daily featured breed and continue growing the collection.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
