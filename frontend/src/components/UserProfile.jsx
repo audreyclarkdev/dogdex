@@ -1,12 +1,11 @@
-import React from 'react';
-
+import React from "react";
 
 const UserProfile = () => {
   return (
-    <div>
-      
+    <div className="page">
+      <h3>User Profile Page Coming Soon</h3>
     </div>
-  )
-}
+  );
+};
 
-export default UserProfile
+export default UserProfile;
