@@ -12,6 +12,9 @@
   --blue-dark: #244a85;
   --grey-text: #444;
   --white: #fff;
+  /* Soft blue wash for the page background, kept light enough that
+     white cards/navbar and dark text still stand out on top of it */
+  --page-bg: #bbd5fa;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -33,6 +36,8 @@
 
 body {
   margin: 0;
+  /* Navbar sets its own white background, so this shows through everywhere else */
+  background: var(--page-bg);
 }
 
 #root {
