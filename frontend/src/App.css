@@ -1,16 +1,11 @@
+/* No padding here - Navbar is a direct child of .App and needs to sit
+   flush against the top of the viewport. Page-level spacing lives on
+   .page instead (see below). */
 .App {
   margin: 0 auto;
-  padding: 2rem 1rem;
   text-align: center;
   font-family: var(--sans, system-ui, sans-serif);
   box-sizing: border-box;
-}
-
-/* Tighten page padding on phones so content isn't squeezed by wasted margin */
-@media (max-width: 640px) {
-  .App {
-    padding: 1.25rem 0.75rem;
-  }
 }
 
 .App h1 {
@@ -199,9 +194,16 @@
 .page {
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 1rem 2rem;
+  padding: 2rem 1rem;
   text-align: center;
   box-sizing: border-box;
+}
+
+/* Tighten page padding on phones so content isn't squeezed by wasted margin */
+@media (max-width: 640px) {
+  .page {
+    padding: 1.25rem 0.75rem;
+  }
 }
 
 .filters {
