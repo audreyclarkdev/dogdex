@@ -102,6 +102,9 @@
   border-bottom: 1px solid #eee;
   margin-bottom: 1.5rem;
   box-sizing: border-box;
+  /* Only the bottom corners round, since the top edge sits flush against
+     the top of the viewport */
+  border-radius: 0 0 16px 16px;
 }
 
 .navbar-inner {
@@ -178,6 +181,7 @@
     border-bottom: 1px solid #eee;
     padding: 0.5rem 1.5rem 1rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+    border-radius: 0 0 16px 16px;
   }
 
   .nav-links.open {
