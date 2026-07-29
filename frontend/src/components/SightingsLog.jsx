@@ -1,40 +1,41 @@
-import { useState, useEffect } from 'react'
-import DogCard from './DogCard'
+import { useState, useEffect } from "react";
+import DogCard from "./DogCard";
 
 // API Url - points at the Express backend running in /server (port 3000)
-const apiUrl = 'http://localhost:3000/dogs'
+const apiUrl = "http://localhost:3000/dogs";
 
-// SightingsLog page - shows the dogs the user has "spotted"
+// Sightings Log page - shows the dogs the user has "spotted"
 // NOTE: this currently reuses the /dogs data and treats isFavorite as "spotted".
 // When you add a dedicated sightings model/endpoint (photo, location, date, notes),
 // point the fetch below at that route instead.
 function SightingsLog() {
-  const [dogs, setDogs] = useState([])
+  const [dogs, setDogs] = useState([]);
 
-  useEffect(
-    function () {
-      fetch(apiUrl)
-        .then(res => res.json())
-        .then(data => setDogs(data))
-        .catch(err => console.log(err))
-    },
-    []
-  )
+  useEffect(function () {
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((data) => setDogs(data))
+      .catch((err) => console.log(err));
+  }, []);
 
-  const spotted = dogs.filter(dog => dog.isFavorite === true)
+  const spotted = dogs.filter((dog) => dog.isFavorite === true);
 
   return (
     <div className="page">
-      <h1>My Sightings</h1>
+      <h1>Dog Log for Sightings</h1>
       <p className="subtitle">Dogs you've spotted in the wild.</p>
 
-      {spotted.length === 0
-        ? <p>You haven't spotted any dogs yet. Mark some on a breed page!</p>
-        : <ul className="dog-list">
-            {spotted.map((dog, index) => <DogCard key={index} dog={dog} />)}
-          </ul>}
+      {spotted.length === 0 ? (
+        <p>You haven't spotted any dogs yet. Mark some on a breed page!</p>
+      ) : (
+        <ul className="dog-list">
+          {spotted.map((dog, index) => (
+            <DogCard key={index} dog={dog} />
+          ))}
+        </ul>
+      )}
     </div>
-  )
+  );
 }
 
-export default SightingsLog
+export default SightingsLog;
