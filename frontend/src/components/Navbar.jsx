@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import pawLogo from "../assets/placeholder-logo-dog-paw-64.png";
 
 // On smaller screens the links collapse behind a hamburger button;
@@ -59,17 +59,24 @@ function Navbar() {
         </button>
 
         {/* "open" class is what the mobile media query uses to reveal this
-            as a dropdown; on desktop it's always visible via flex layout */}
+            as a dropdown; on desktop it's always visible via flex layout.
+            NavLink (instead of Link) knows which route is active so we can
+            style the current page's link differently - see .nav-links
+            a.active in App.css. `end` on Home keeps it from matching every
+            route, since "/" is technically a prefix of all of them. */}
         <div className={`nav-links ${menuOpen ? "open" : ""}`}>
-          <Link to="/" onClick={closeMenu}>
+          <NavLink to="/" end onClick={closeMenu}>
             Home
-          </Link>
-          <Link to="/breeds" onClick={closeMenu}>
+          </NavLink>
+          <NavLink to="/breeds" onClick={closeMenu}>
             Breeds
-          </Link>
-          <Link to="/sightings" onClick={closeMenu}>
+          </NavLink>
+          <NavLink to="/sightings" onClick={closeMenu}>
             Sightings
-          </Link>
+          </NavLink>
+          <NavLink to="/userprofile" onClick={closeMenu}>
+            Profile
+          </NavLink>
         </div>
       </div>
     </nav>

@@ -139,10 +139,22 @@
   text-decoration: none;
   color: var(--grey-text);
   font-weight: 500;
+  display: inline-block;
+  transition: color 0.15s ease, transform 0.15s ease, text-shadow 0.15s ease;
 }
 
-.nav-links a:hover {
+/* Lift the link and give it a soft shadow on hover/focus */
+.nav-links a:hover,
+.nav-links a:focus-visible {
   color: var(--purple);
+  transform: translateY(-2px);
+  text-shadow: 0 4px 8px rgba(107, 63, 160, 0.35);
+}
+
+/* Current page's link is colored the same as the page background, so it
+   visually "sinks into" the page instead of looking clickable */
+.nav-links a.active {
+  color: var(--page-bg);
 }
 
 /* Hamburger button is hidden by default and only shown once the
