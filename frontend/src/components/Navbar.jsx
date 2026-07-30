@@ -1,17 +1,86 @@
-import { Link } from 'react-router-dom'
+import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import pawLogo from "../assets/placeholder-logo-dog-paw-64.png";
 
-// top navigation bar - links to each page/route
+// On smaller screens the links collapse behind a hamburger button;
+// menuOpen tracks whether that dropdown is currently showing.
 function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Shared by every link so tapping a link on mobile closes the dropdown
+  // instead of leaving it open over the page you just navigated to.
+  const closeMenu = () => setMenuOpen(false);
+
   return (
     <nav className="navbar">
-      <Link to="/" className="brand">DogDex</Link>
-      <div className="nav-links">
-        <Link to="/">Home</Link>
-        <Link to="/breeds">Breeds</Link>
-        <Link to="/sightings">Sightings</Link>
+      {/* navbar-inner centers/caps the content width while .navbar itself
+          stays full-bleed, so the white background spans the whole screen */}
+      <div className="navbar-inner">
+        {/* Logo doubles as the "go home" link */}
+        <Link to="/" className="brand" onClick={closeMenu}>
+          <img
+            src={pawLogo}
+            alt="DogDex logo"
+            className="brand-icon"
+            width="28"
+            height="28"
+          />
+          <span className="brand-text">DogDex</span>
+        </Link>
+
+        {/* Hamburger/close toggle - only visible below the mobile breakpoint (see App.css) */}
+        <button
+          className="nav-toggle"
+          type="button"
+          aria-label="Toggle menu"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}>
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+            {menuOpen ? (
+              // "X" icon when the menu is open
+              <path
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                d="M5 5l14 14M19 5L5 19"
+              />
+            ) : (
+              // Three-line "hamburger" icon when the menu is closed
+              <path
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            )}
+          </svg>
+        </button>
+
+        {/* "open" class is what the mobile media query uses to reveal this
+            as a dropdown; on desktop it's always visible via flex layout.
+            NavLink (instead of Link) knows which route is active so we can
+            style the current page's link differently - see .nav-links
+            a.active in App.css. `end` on Home keeps it from matching every
+            route, since "/" is technically a prefix of all of them. */}
+        <div className={`nav-links ${menuOpen ? "open" : ""}`}>
+          <NavLink to="/" end onClick={closeMenu}>
+            Home
+          </NavLink>
+          <NavLink to="/breeds" onClick={closeMenu}>
+            Breeds
+          </NavLink>
+          <NavLink to="/sightings" onClick={closeMenu}>
+            Sightings
+          </NavLink>
+          <NavLink to="/userprofile" onClick={closeMenu}>
+            Profile
+          </NavLink>
+        </div>
       </div>
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

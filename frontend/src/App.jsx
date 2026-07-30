@@ -1,10 +1,11 @@
-import { Routes, Route } from 'react-router-dom'
-import Navbar from './components/Navbar'
-import Home from './components/Home'
-import BreedList from './components/BreedList'
-import BreedDetail from './components/BreedDetail'
-import SightingsLog from './components/SightingsLog'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import BreedList from "./components/BreedList";
+import BreedDetail from "./components/BreedDetail";
+import SightingsLog from "./components/SightingsLog";
+import UserProfile from "./components/UserProfile";
+import "./App.css";
 
 function App() {
   return (
@@ -17,9 +18,10 @@ function App() {
         <Route path="/breeds" element={<BreedList />} />
         <Route path="/breeds/:id" element={<BreedDetail />} />
         <Route path="/sightings" element={<SightingsLog />} />
+        <Route path="/userprofile" element={<UserProfile />} />
       </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
