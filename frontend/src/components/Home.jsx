@@ -36,7 +36,7 @@ function Home() {
         <Link to="/sightings" className="home-btn">
           Spot Dog
         </Link>
-        <Link to="/sightings" className="home-btn">
+        <Link to="/spotted" className="home-btn">
           My Collection
         </Link>
         <Link

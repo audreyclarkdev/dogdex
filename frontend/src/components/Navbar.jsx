@@ -71,8 +71,8 @@ function Navbar() {
           <NavLink to="/breeds" onClick={closeMenu}>
             Breeds
           </NavLink>
-          <NavLink to="/sightings" onClick={closeMenu}>
-            Sightings
+          <NavLink to="/spotted" onClick={closeMenu}>
+            My Collection
           </NavLink>
           <NavLink to="/userprofile" onClick={closeMenu}>
             Profile
