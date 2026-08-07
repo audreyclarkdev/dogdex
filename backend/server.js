@@ -2,7 +2,6 @@
 require("dotenv").config(); // this should always load first before any other dependencies
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
 
 // Establish our db connection
 require("./connections/mongoConn.js");
@@ -10,7 +9,7 @@ require("./connections/mongoConn.js");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const DogModel = require("./models/Spot.js");
+const Spot = require("./models/Spot.js");
 
 // middleware
 app.use(express.json()); // parse incoming json request bodies
@@ -23,10 +22,10 @@ app.get("/", (req, res) => {
 });
 
 // GET - all dogs
-app.get("/dogs", (req, res) => {
-  DogModel.find()
-    .then((dogs) => {
-      res.json(dogs);
+app.get("/api/spots", (req, res) => {
+  Spot.find()
+    .then((spots) => {
+      res.json(spots);
     })
     .catch((err) => {
       res
@@ -36,10 +35,10 @@ app.get("/dogs", (req, res) => {
 });
 
 // GET - single dog by id
-app.get("/dogs/:id", (req, res) => {
-  DogModel.findById(req.params.id)
-    .then((dog) => {
-      if (!dog) {
+app.get("/api/spots/:id", (req, res) => {
+  Spot.findById(req.params.id)
+    .then((spot) => {
+      if (!spot) {
         return res
           .status(404)
           .json({ message: `Dog with id:${req.params.id} was not found!` });
@@ -54,8 +53,8 @@ app.get("/dogs/:id", (req, res) => {
 });
 
 // POST - create a new dog
-app.post("/dogs", (req, res) => {
-  DogModel.create(req.body)
+app.post("/api/spots", (req, res) => {
+  Spot.create(req.body)
     .then((newDog) => {
       res.status(201).json(newDog);
     })
@@ -67,8 +66,8 @@ app.post("/dogs", (req, res) => {
 });
 
 // PUT - update a dog
-app.put("/dogs/:id", (req, res) => {
-  DogModel.findByIdAndUpdate(req.params.id, req.body, {
+app.put("/api/spots/:id", (req, res) => {
+  Spot.findByIdAndUpdate(req.params.id, req.body, {
     new: true, // Return the updated document instead of the original
     runValidators: true, // Enforce schema validation on update
   })
@@ -88,10 +87,10 @@ app.put("/dogs/:id", (req, res) => {
 });
 
 // DELETE - remove a dog
-app.delete("/dogs/:id", (req, res) => {
-  DogModel.findByIdAndDelete(req.params.id)
-    .then((deletedDog) => {
-      if (!deletedDog) {
+app.delete("/api/spots/:id", (req, res) => {
+  Spot.findByIdAndDelete(req.params.id)
+    .then((deletedSpot) => {
+      if (!deletedSpot) {
         return res
           .status(404)
           .json({ message: `Dog with id:${req.params.id} was not found!` });
