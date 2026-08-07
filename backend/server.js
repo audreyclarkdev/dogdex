@@ -5,18 +5,17 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 // Establish our db connection
-require('./connections/mongoConn.js')
+require("./connections/mongoConn.js");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const DogModel = require("./models/DogModel");
+const DogModel = require("./models/Spot.js");
 
 // middleware
 app.use(express.json()); // parse incoming json request bodies
 app.use(express.urlencoded({ extended: false })); // parse URL-encoded form data
 app.use(cors()); // Enable Cross-Origin Resource Sharing for frontend requests
-
 
 // root route
 app.get("/", (req, res) => {
