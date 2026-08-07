@@ -28,9 +28,10 @@ app.get("/api/spots", (req, res) => {
       res.json(spots);
     })
     .catch((err) => {
-      res
-        .status(500)
-        .json({ message: "Failed to fetch dogs", error: err.message });
+      res.status(500).json({
+        message: "Failed to fetch all spotted dogs",
+        error: err.message,
+      });
     });
 });
 
@@ -39,29 +40,29 @@ app.get("/api/spots/:id", (req, res) => {
   Spot.findById(req.params.id)
     .then((spot) => {
       if (!spot) {
-        return res
-          .status(404)
-          .json({ message: `Dog with id:${req.params.id} was not found!` });
+        return res.status(404).json({
+          message: `Spotted dog with id:${req.params.id} was not found!`,
+        });
       }
-      res.json(dog);
+      res.json(spot);
     })
     .catch((err) => {
       res
         .status(500)
-        .json({ message: "Failed to fetch dog", error: err.message });
+        .json({ message: "Failed to fetch spotted dog", error: err.message });
     });
 });
 
 // POST - create a new dog
 app.post("/api/spots", (req, res) => {
   Spot.create(req.body)
-    .then((newDog) => {
-      res.status(201).json(newDog);
+    .then((newSpot) => {
+      res.status(201).json(newSpot);
     })
     .catch((err) => {
       res
         .status(400)
-        .json({ message: "Failed to create dog", error: err.message });
+        .json({ message: "Failed to create spotted dog", error: err.message });
     });
 });
 
@@ -71,18 +72,20 @@ app.put("/api/spots/:id", (req, res) => {
     new: true, // Return the updated document instead of the original
     runValidators: true, // Enforce schema validation on update
   })
-    .then((updatedDog) => {
-      if (!updatedDog) {
+    .then((updatedSpot) => {
+      if (!updatedSpot) {
         return res
           .status(404)
-          .json({ message: `Dog with id:${req.params.id} was not found!` });
+          .json({
+            message: `Spotted dog with id:${req.params.id} was not found!`,
+          });
       }
-      res.json(updatedDog);
+      res.json(updatedSpot);
     })
     .catch((err) => {
       res
         .status(400)
-        .json({ message: "Failed to update dog", error: err.message });
+        .json({ message: "Failed to update spotted dog", error: err.message });
     });
 });
 
@@ -93,14 +96,16 @@ app.delete("/api/spots/:id", (req, res) => {
       if (!deletedSpot) {
         return res
           .status(404)
-          .json({ message: `Dog with id:${req.params.id} was not found!` });
+          .json({
+            message: `Spotted dog with id:${req.params.id} was not found!`,
+          });
       }
-      res.json({ message: "Dog deleted", dog: deletedDog });
+      res.json({ message: "Spotted dog deleted", spot: deletedSpot });
     })
     .catch((err) => {
       res
         .status(500)
-        .json({ message: "Failed to delete dog", error: err.message });
+        .json({ message: "Failed to delete spotted dog", error: err.message });
     });
 });
 
