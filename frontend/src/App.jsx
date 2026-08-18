@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import BreedList from "./components/BreedList";
 import BreedDetail from "./components/BreedDetail";
-import SightingsLog from "./components/SightingsLog";
+import SightingsLog from "./components/SpottedLog";
 import UserProfile from "./components/UserProfile";
 import "./App.css";
 
@@ -17,7 +17,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/breeds" element={<BreedList />} />
         <Route path="/breeds/:id" element={<BreedDetail />} />
-        <Route path="/sightings" element={<SightingsLog />} />
+        <Route path="/spotted" element={<SpottedLog />} />
         <Route path="/userprofile" element={<UserProfile />} />
       </Routes>
     </div>

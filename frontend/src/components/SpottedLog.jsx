@@ -8,7 +8,7 @@ const apiUrl = "http://localhost:3000/dogs";
 // NOTE: this currently reuses the /dogs data and treats isFavorite as "spotted".
 // When you add a dedicated sightings model/endpoint (photo, location, date, notes),
 // point the fetch below at that route instead.
-function SightingsLog() {
+function SpottedLog() {
   const [dogs, setDogs] = useState([]);
 
   useEffect(function () {
@@ -22,7 +22,7 @@ function SightingsLog() {
 
   return (
     <div className="page">
-      <h1>Dog Log for Sightings</h1>
+      <h1>Dog Log</h1>
       <p className="subtitle">Dogs you've spotted in the wild.</p>
 
       {spotted.length === 0 ? (
@@ -38,4 +38,4 @@ function SightingsLog() {
   );
 }
 
-export default SightingsLog;
+export default SpottedLog;
