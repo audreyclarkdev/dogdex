@@ -17,8 +17,11 @@ app.use(cors()); // Enable Cross-Origin Resource Sharing for frontend requests
 
 // Routes
 const spotRoutes = require("./routes/spotRoutes");
+const breedRoutes = require("./routes/breedRoutes");
+
 // Mount the spotRoutes at /api/spots
 app.use("/api/spots", spotRoutes);
+app.use("/api/breeds", breedRoutes);
 
 // root route
 app.get("/", (req, res) => {
