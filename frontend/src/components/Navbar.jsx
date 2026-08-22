@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import pawLogo from "../assets/placeholder-logo-dog-paw-64.png";
+import dogDexLogo from "../assets/DogDexLogoMD.png";
 
 // On smaller screens the links collapse behind a hamburger button;
 // menuOpen tracks whether that dropdown is currently showing.
@@ -16,16 +16,10 @@ function Navbar() {
       {/* navbar-inner centers/caps the content width while .navbar itself
           stays full-bleed, so the white background spans the whole screen */}
       <div className="navbar-inner">
-        {/* Logo doubles as the "go home" link */}
+        {/* Logo doubles as the "go home" link. Wordmark + paw flourish,
+            from the DogDex logo direction (Fraunces "Dog" + italic "Dex"). */}
         <Link to="/" className="brand" onClick={closeMenu}>
-          <img
-            src={pawLogo}
-            alt="DogDex logo"
-            className="brand-icon"
-            width="28"
-            height="28"
-          />
-          <span className="brand-text">DogDex</span>
+          <img src={dogDexLogo} alt="DogDex logo" className="brand-logo" />
         </Link>
 
         {/* Hamburger/close toggle - only visible below the mobile breakpoint (see App.css) */}

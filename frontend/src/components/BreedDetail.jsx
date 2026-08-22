@@ -49,7 +49,7 @@ function BreedDetail() {
         {dog.description ? <p><strong>About:</strong> {dog.description}</p> : null}
       </div>
 
-      <button onClick={handleFavorite}>
+      <button className="spot-toggle" onClick={handleFavorite}>
         {dog.isFavorite ? '★ Spotted' : '☆ Mark as Spotted'}
       </button>
     </div>

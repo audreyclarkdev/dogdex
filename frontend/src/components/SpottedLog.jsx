@@ -4,9 +4,9 @@ import DogCard from "./DogCard";
 // API Url - points at the Express backend running in /server (port 3000)
 const apiUrl = "http://localhost:3000/dogs";
 
-// Sightings Log page - shows the dogs the user has "spotted"
+// Spotted Log page - shows the dogs the user has "spotted"
 // NOTE: this currently reuses the /dogs data and treats isFavorite as "spotted".
-// When you add a dedicated sightings model/endpoint (photo, location, date, notes),
+// When you add a dedicated Spotted model/endpoint (photo, location, date, notes),
 // point the fetch below at that route instead.
 function SpottedLog() {
   const [dogs, setDogs] = useState([]);
