@@ -1,24 +1,27 @@
 :root {
   --text: #241b2e;
-  --text-h: #16213e;
-  --bg: #e2e5ee;
+  --text-h: #111b36;
+  --bg: #aebbe2;
   --border: #e7e1ec;
 
-  /* App theme: navy grounds the brand, plum drives primary actions,
+  /* App theme: brand-blue grounds the brand, plum drives primary actions,
      teal is the secondary/supporting color, coral is a single warm
      accent reserved for favorites/highlights. See frontend/DESIGN.md */
   --navy: #16213e;
   --navy-tint: #e2e5ee;
+  /* Brighter than --brand-blue specifically for the "Dog" half of the brand
+     wordmark, which read as near-black at brand-blue's low lightness */
+  --brand-blue: #1B2F63;
   --plum: #7a3b65;
   --plum-dark: #5c2c4c;
   --plum-tint: #f3e3ee;
   --teal: #1c8481;
   --teal-dark: #146664;
   --teal-tint: #def3f1;
-  --coral: #ff7a5c;
-  --coral-dark: #e85f41;
-  --coral-tint: #ffe6dd;
-  --grey-text: #6e6579;
+  --coral: #fa917a;
+  --coral-dark: #ec5837;
+  --coral-tint: #fdcab7;
+  --grey-text: #6b6077;
   --white: #fff;
   /* Warm cream wash for the page background, kept light enough that
      white cards/navbar and dark text still stand out on top of it */

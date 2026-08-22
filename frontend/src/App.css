@@ -29,11 +29,21 @@
 .eyebrow {
   font-family: var(--sans);
   font-weight: 800;
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
+  font-size: 0.9rem;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--teal-dark);
+  color: var(--coral-dark);
   margin: 0 0 0.75rem;
+}
+
+.tagline {
+  font-family: var(--heading);
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  margin: 1rem auto -1.5rem;
+  max-width: 480px;
 }
 
 .hero h1 {
@@ -41,11 +51,11 @@
 }
 
 .hero-text {
-  color: var(--grey-text);
+  color: var(--brand-blue);
   font-size: 1.05rem;
   line-height: 1.6;
   max-width: 560px;
-  margin: 0 auto;
+  margin: 0.5rem auto 0.5rem;
 }
 
 /* --- how it works --- */
@@ -92,7 +102,7 @@
   font-family: var(--heading);
   font-size: 1.05rem;
   margin: 0 0 0.35rem;
-  color: var(--navy);
+  color: var(--brand-blue);
 }
 
 .journey-step p {
@@ -132,7 +142,7 @@
   font-family: var(--heading);
   font-size: 1.05rem;
   margin: 0 0 0.35rem;
-  color: var(--navy);
+  color: var(--brand-blue);
 }
 
 .feature-card p {
@@ -153,8 +163,8 @@
   border-top-color: var(--coral);
 }
 
-.feature-navy {
-  border-top-color: var(--navy);
+.feature-brand-blue {
+  border-top-color: var(--brand-blue);
 }
 
 .dog-list {
@@ -243,14 +253,20 @@
 
 /* --- footer --- */
 .site-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   text-align: center;
   color: var(--grey-text);
   font-size: 0.85rem;
   padding: 2rem 1rem 2.5rem;
+  /* I want the footer to be closer to the bottom of the page and to stay at the bottom */
 }
 
 .site-footer p {
   margin: 0.2rem 0;
+  line-height: .8;
+  /* I want the footer text to align horizontally */
 }
 
 .footer-credit a {
@@ -267,7 +283,7 @@
   background: var(--white);
   border-bottom: none;
   box-shadow: 0 1px 3px rgba(22, 33, 62, 0.06);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   box-sizing: border-box;
   /* Only the bottom corners round, since the top edge sits flush against
      the top of the viewport */
@@ -275,12 +291,12 @@
 }
 
 .navbar-inner {
-  max-width: 1100px;
+  max-width: 1500px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1rem;
   /* anchors the absolutely-positioned mobile dropdown below (.nav-links) */
   position: relative;
 }
@@ -293,39 +309,25 @@
   text-decoration: none;
 }
 
-.brand-word {
-  font-family: var(--heading);
-  font-size: 1.6rem;
-  font-weight: 600;
-  letter-spacing: -0.4px;
-  line-height: 1;
+/* Logo */
+.brand-logo {
+  width: 10em;
+  height: auto;
 }
 
-.brand-dog {
-  color: var(--navy);
+/* Shrink the logo at the same breakpoints the rest of the nav already
+   uses, so it doesn't crowd the hamburger button or wrap the navbar
+   onto two lines on small screens */
+@media (max-width: 640px) {
+  .brand-logo {
+    width: 10em;
+  }
 }
 
-.brand-dex {
-  color: var(--plum);
-  font-style: italic;
-}
-
-.brand-flourish {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.brand-rule {
-  width: 22px;
-  height: 1px;
-  background: var(--navy);
-  opacity: 0.35;
-}
-
-.brand-paw {
-  color: var(--navy);
-  opacity: 0.8;
+@media (max-width: 400px) {
+  .brand-logo {
+    width: 8em;
+  }
 }
 
 /* Desktop default: links laid out in a row */
@@ -337,8 +339,9 @@
 .nav-links a {
   margin-left: 1.25rem;
   text-decoration: none;
-  color: var(--teal);
+  color: var(--brand-blue);
   font-weight: 700;
+  font-size: 1.15rem;
   display: inline-block;
   transition: color 0.15s ease, transform 0.15s ease, text-shadow 0.15s ease;
 }
@@ -354,7 +357,7 @@
 /* Current page's link is colored the same as the page background, so it                                                                          
  visually "sinks into" the page instead of looking clickable */
 .nav-links a.active {
-  color: var(--page-bg);;
+  color: var(--teal);;
 }
 
 /* Hamburger button is hidden by default and only shown once the

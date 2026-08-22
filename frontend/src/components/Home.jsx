@@ -26,14 +26,20 @@ function Home() {
     <div>
       {/* Hero: what the app is, in one breath */}
       <section className="hero">
-        <p className="eyebrow">Part field guide, part journal, part collection game</p>
-        <h1>Discover, track, and learn about dog breeds &mdash; one spot at a time.</h1>
+        <h1>
+          Discover, track, and learn about dog breeds &mdash; one spot at a
+          time.
+        </h1>
+        <p className="eyebrow">
+          Part field guide, part journal, part collection game
+        </p>
         <p className="hero-text">
           DogDex turns every dog you notice on a walk into a moment of
-          discovery. Browse a full encyclopedia of breeds, look up the ones
-          you run into, and mark them as spotted to build a personal
-          collection of real-world sightings.
+          discovery. Browse a full encyclopedia of breeds, look up the ones you
+          run into, and mark them as spotted to build a personal collection of
+          real-world sightings.
         </p>
+        <p className="tagline">Spot & Collect them all!</p>
       </section>
 
       <div className="page">
@@ -68,7 +74,10 @@ function Home() {
             <article className="journey-step">
               <span>2</span>
               <h3>Look it up</h3>
-              <p>Browse the breed list and open its profile to confirm what you saw.</p>
+              <p>
+                Browse the breed list and open its profile to confirm what you
+                saw.
+              </p>
             </article>
             <article className="journey-step">
               <span>3</span>
@@ -89,19 +98,31 @@ function Home() {
           <div className="feature-grid">
             <article className="feature-card feature-plum">
               <h3>Breed encyclopedia</h3>
-              <p>Browse a full list of dog breeds with photos and details, pulled from TheDogAPI.</p>
+              <p>
+                Browse a full list of dog breeds with photos and details, pulled
+                from TheDogAPI.
+              </p>
             </article>
             <article className="feature-card feature-teal">
               <h3>Breed profiles</h3>
-              <p>Open any breed to see what makes it stand out before you decide it's "the one" you spotted.</p>
+              <p>
+                Open any breed to see what makes it stand out before you decide
+                it's "the one" you spotted.
+              </p>
             </article>
             <article className="feature-card feature-coral">
               <h3>Spot &amp; collect</h3>
-              <p>Mark breeds as spotted and watch My Collection grow every time you're out and about.</p>
+              <p>
+                Mark breeds as spotted and watch My Collection grow every time
+                you're out and about.
+              </p>
             </article>
             <article className="feature-card feature-navy">
               <h3>Dog of the Day</h3>
-              <p>A new featured breed every day &mdash; a small reason to open the app and learn something.</p>
+              <p>
+                A new featured breed every day &mdash; a small reason to open
+                the app and learn something.
+              </p>
             </article>
           </div>
         </section>
