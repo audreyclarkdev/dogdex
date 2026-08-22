@@ -1,23 +1,31 @@
 :root {
-  --text: #444;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
+  --text: #241b2e;
+  --text-h: #16213e;
+  --bg: #e2e5ee;
+  --border: #e7e1ec;
 
-  /* App theme: purple/blue are the two main brand colors, reused for
-     buttons, active states, and link hovers across App.css */
-  --purple: #6b3fa0;
-  --purple-dark: #55317f;
-  --blue: #2f5fa8;
-  --blue-dark: #244a85;
-  --grey-text: #444;
+  /* App theme: navy grounds the brand, plum drives primary actions,
+     teal is the secondary/supporting color, coral is a single warm
+     accent reserved for favorites/highlights. See frontend/DESIGN.md */
+  --navy: #16213e;
+  --navy-tint: #e2e5ee;
+  --plum: #7a3b65;
+  --plum-dark: #5c2c4c;
+  --plum-tint: #f3e3ee;
+  --teal: #1c8481;
+  --teal-dark: #146664;
+  --teal-tint: #def3f1;
+  --coral: #ff7a5c;
+  --coral-dark: #e85f41;
+  --coral-tint: #ffe6dd;
+  --grey-text: #6e6579;
   --white: #fff;
-  /* Soft blue wash for the page background, kept light enough that
+  /* Warm cream wash for the page background, kept light enough that
      white cards/navbar and dark text still stand out on top of it */
-  --page-bg: #bbd5fa;
+  --page-bg: #e2e5ee;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Nunito Sans', system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: 'Fraunces', system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -50,23 +58,25 @@ body {
 h1,
 h2 {
   font-family: var(--heading);
-  font-weight: 500;
+  font-weight: 700;
   color: var(--text-h);
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
+  font-size: 48px;
+  letter-spacing: -0.5px;
   margin: 32px 0;
+  line-height: 1.1;
   @media (max-width: 1024px) {
-    font-size: 36px;
+    font-size: 34px;
     margin: 20px 0;
   }
 }
 h2 {
+  font-weight: 600;
   font-size: 24px;
   line-height: 118%;
-  letter-spacing: -0.24px;
+  letter-spacing: 0;
   margin: 0 0 8px;
   @media (max-width: 1024px) {
     font-size: 20px;

@@ -3,8 +3,10 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import BreedList from "./components/BreedList";
 import BreedDetail from "./components/BreedDetail";
-import SightingsLog from "./components/SpottedLog";
+import SpottedLog from "./components/SpottedLog";
 import UserProfile from "./components/UserProfile";
+import Footer from "./components/Footer";
+
 import "./App.css";
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
         <Route path="/spotted" element={<SpottedLog />} />
         <Route path="/userprofile" element={<UserProfile />} />
       </Routes>
+
+      <Footer />
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import pawLogo from "../assets/placeholder-logo-dog-paw-64.png";
 
 // On smaller screens the links collapse behind a hamburger button;
 // menuOpen tracks whether that dropdown is currently showing.
@@ -16,16 +15,53 @@ function Navbar() {
       {/* navbar-inner centers/caps the content width while .navbar itself
           stays full-bleed, so the white background spans the whole screen */}
       <div className="navbar-inner">
-        {/* Logo doubles as the "go home" link */}
+        {/* Logo doubles as the "go home" link. Wordmark + paw flourish,
+            from the DogDex logo direction (Fraunces "Dog" + italic "Dex"). */}
         <Link to="/" className="brand" onClick={closeMenu}>
-          <img
-            src={pawLogo}
-            alt="DogDex logo"
-            className="brand-icon"
-            width="28"
-            height="28"
-          />
-          <span className="brand-text">DogDex</span>
+          <span className="brand-word">
+            <span className="brand-dog">Dog</span>
+            <span className="brand-dex">Dex</span>
+          </span>
+          <span className="brand-flourish" aria-hidden="true">
+            <span className="brand-rule" />
+            <svg
+              className="brand-paw"
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="currentColor">
+              <ellipse cx="12" cy="16.2" rx="5.4" ry="4.6" />
+              <ellipse
+                cx="5.6"
+                cy="9.8"
+                rx="2.1"
+                ry="2.7"
+                transform="rotate(-18 5.6 9.8)"
+              />
+              <ellipse
+                cx="18.4"
+                cy="9.8"
+                rx="2.1"
+                ry="2.7"
+                transform="rotate(18 18.4 9.8)"
+              />
+              <ellipse
+                cx="9.3"
+                cy="5.8"
+                rx="1.8"
+                ry="2.3"
+                transform="rotate(-10 9.3 5.8)"
+              />
+              <ellipse
+                cx="14.7"
+                cy="5.8"
+                rx="1.8"
+                ry="2.3"
+                transform="rotate(10 14.7 5.8)"
+              />
+            </svg>
+            <span className="brand-rule" />
+          </span>
         </Link>
 
         {/* Hamburger/close toggle - only visible below the mobile breakpoint (see App.css) */}
