@@ -2,17 +2,19 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // API Url - points at the Express backend running in /server (port 3000)
-const apiUrl = "http://localhost:3000/dogs";
+const apiUrl = "http://localhost:3000/api/breeds";
 
 // Home page - explains what DogDex is, how to use it, main navigation,
 // and previews the Breed of the Day
 function Home() {
+  const [allBreeds, setAllBreeds] = useState([]);
   const [breedOfDay, setBreedOfDay] = useState(null);
 
   useEffect(function () {
     fetch(apiUrl)
       .then((res) => res.json())
       .then((data) => {
+        setAllBreeds(data);
         if (data.length > 0) {
           // pick one dog based on the day of the month, so it changes daily
           const dayIndex = new Date().getDate() % data.length;
@@ -57,7 +59,8 @@ function Home() {
           </Link>
           <Link
             to={breedOfDay ? "/breeds/" + breedOfDay._id : "/breeds"}
-            className="home-btn">
+            className="home-btn"
+          >
             Dog of the Day
           </Link>
         </div>
@@ -128,23 +131,29 @@ function Home() {
         </section>
 
         {/* Breed of the Day preview */}
-        <h2>Breed of the Day</h2>
-        {breedOfDay ? (
-          <div className="breed-of-day">
-            {breedOfDay.image ? (
-              <img
-                src={breedOfDay.image}
-                alt={breedOfDay.name}
-                className="dog-img"
-              />
-            ) : null}
-            <h3>{breedOfDay.name}</h3>
-            <p className="breed">{breedOfDay.breed}</p>
-            <Link to={"/breeds/" + breedOfDay._id}>Learn more</Link>
-          </div>
-        ) : (
-          <p>No breeds yet. Add some through the API!</p>
-        )}
+        <div className="dog-card">
+          <h2>Breed of the Day</h2>
+          {breedOfDay ? (
+            <div className="breed-of-day">
+              {breedOfDay.imageUrl ? (
+                <img
+                  src={breedOfDay.imageUrl}
+                  alt={breedOfDay.name}
+                  className="dog-img"
+                />
+              ) : null}
+              <h3 className="breed">{breedOfDay.name}</h3>
+              <ul className="temperament">
+                {breedOfDay.temperament?.map((trait) => (
+                  <li key={trait}>{trait}</li>
+                ))}
+              </ul>
+              <Link to={"/breeds/" + breedOfDay._id}>Learn more</Link>
+            </div>
+          ) : (
+            <p>No breeds yet. Add some through the API!</p>
+          )}
+        </div>
       </div>
     </div>
   );

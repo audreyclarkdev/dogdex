@@ -18,7 +18,7 @@ async function callDogApi(path) {
   });
 
   if (!response.ok) {
-    throw new Error(`Dog API responded ${response.status}`);
+    throw new Error(`Dog API responded ${response.status} ${response.statusText}`);
   }
 
   return response.json();
@@ -43,7 +43,7 @@ router.get("/", async (req, res) => {
     const breeds = await callDogApi("/breeds");
     res.json(breeds.map(reshapeBreed));
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message, err });
   }
 });
 

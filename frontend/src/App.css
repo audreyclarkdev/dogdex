@@ -190,7 +190,9 @@
   text-align: left;
   background: #fff;
   box-shadow: 0 4px 16px rgba(22, 33, 62, 0.1);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
 
 .dog-list li:hover {
@@ -199,12 +201,14 @@
 }
 
 .dog-list li.favorite {
-  box-shadow: 0 0 0 2px var(--plum), 0 4px 16px rgba(22, 33, 62, 0.1);
+  box-shadow:
+    0 0 0 2px var(--plum),
+    0 4px 16px rgba(22, 33, 62, 0.1);
 }
 
 .dog-img {
   width: 100%;
-  height: 180px;
+  height: 400px;
   object-fit: cover;
   border-radius: 14px;
   margin-bottom: 0.5rem;
@@ -265,7 +269,7 @@
 
 .site-footer p {
   margin: 0.2rem 0;
-  line-height: .8;
+  line-height: 0.8;
   /* I want the footer text to align horizontally */
 }
 
@@ -343,7 +347,10 @@
   font-weight: 700;
   font-size: 1.15rem;
   display: inline-block;
-  transition: color 0.15s ease, transform 0.15s ease, text-shadow 0.15s ease;
+  transition:
+    color 0.15s ease,
+    transform 0.15s ease,
+    text-shadow 0.15s ease;
 }
 
 /* Lift the link and give it a soft shadow on hover/focus */
@@ -357,7 +364,7 @@
 /* Current page's link is colored the same as the page background, so it                                                                          
  visually "sinks into" the page instead of looking clickable */
 .nav-links a.active {
-  color: var(--teal);;
+  color: var(--teal);
 }
 
 /* Hamburger button is hidden by default and only shown once the
@@ -496,6 +503,25 @@
   padding: 1.5rem;
   max-width: 360px;
   margin: 0 auto;
+}
+
+.breed-of-day .temperament {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+.breed-of-day .temperament li {
+  background: var(--teal-tint);
+  color: var(--teal-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
 }
 
 /* --- home navigation buttons --- */
