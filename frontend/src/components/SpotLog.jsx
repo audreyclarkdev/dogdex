@@ -4,11 +4,11 @@ import DogCard from "./DogCard";
 // API Url - points at the Express backend running in /server (port 3000)
 const apiUrl = "http://localhost:3000/dogs";
 
-// Spotted Log page - shows the dogs the user has "spotted"
+// Spot Log page - shows the dogs the user has "spotted"
 // NOTE: this currently reuses the /dogs data and treats isFavorite as "spotted".
 // When you add a dedicated Spotted model/endpoint (photo, location, date, notes),
 // point the fetch below at that route instead.
-function SpottedLog() {
+function SpotLog() {
   const [dogs, setDogs] = useState([]);
 
   useEffect(function () {
@@ -26,7 +26,10 @@ function SpottedLog() {
       <p className="subtitle">Dogs you've spotted in the wild.</p>
 
       {spotted.length === 0 ? (
-        <p>You haven't spotted any dogs yet. Mark some on a breed page!</p>
+        <p>
+          You haven't spotted any dogs yet. Mark ones you've seen on a breed
+          page!
+        </p>
       ) : (
         <ul className="dog-list">
           {spotted.map((dog, index) => (
@@ -38,4 +41,4 @@ function SpottedLog() {
   );
 }
 
-export default SpottedLog;
+export default SpotLog;
