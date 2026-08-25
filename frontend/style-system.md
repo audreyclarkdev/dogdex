@@ -1,75 +1,88 @@
 # DogDex Design System
 
-Playful, trustworthy field guide for dog breeds. Navy grounds the brand,
-plum drives primary actions, teal supports as the secondary color, and
-coral is a single warm accent reserved for favorites/highlights.
+Playful, trustworthy field guide for dog breeds. Brand-blue grounds the
+brand, plum drives primary actions, teal supports as the secondary color,
+and coral is a single warm accent reserved for favorites/highlights.
 
 Full visual reference (style guide + Breed Browse + Breed Detail mockups):
 https://claude.ai/code/artifact/2d7d05b6-1fb5-4b71-9cca-3ccb1925acee
 
+This doc mirrors the CSS custom properties defined in
+`frontend/src/index.css`, which is the source of truth — update this
+table whenever those tokens change.
+
 ## Color Palette
 
-| Token       | Hex       | Use                                       |
-|-------------|-----------|--------------------------------------------|
-| Navy 900    | `#16213E` | Headings, nav/brand text                   |
-| Plum 600    | `#7A3B65` | Primary buttons, active nav/filter state   |
-| Plum 700    | `#5C2C4C` | Primary hover/pressed                      |
-| Teal 600    | `#1C8481` | Secondary buttons, links, tag text         |
-| Teal 700    | `#146664` | Secondary hover, link hover                |
-| Coral 500   | `#FF7A5C` | Favorite heart (active), alerts            |
-| Coral 600   | `#E85F41` | Coral hover                                |
-| Cream 50    | `#FBF8F3` | Page background                            |
-| Plum 100    | `#F3E3EE` | "Favorite" badge background                |
-| Teal 100    | `#DEF3F1` | Breed-group tag background                 |
-| Coral 100   | `#FFE6DD` | "New" badge background                     |
-| Ink         | `#241B2E` | Body text                                  |
-| Muted       | `#6E6579` | Secondary/caption text                     |
-| Border      | `#E7E1EC` | Card/input outlines                        |
+| Token          | CSS variable  | Hex       | Use                                        |
+| -------------- | ------------- | --------- | ------------------------------------------- |
+| Brand Blue 900 | `--brand-blue`| `#1B2F63` | Headings, nav/brand text                   |
+| Navy           | `--navy`      | `#16213E` | Reserved dark accent (not wired up yet)    |
+| Navy tint      | `--navy-tint` | `#E2E5EE` | Reserved light tint (not wired up yet)     |
+| Plum 600       | `--plum`      | `#7A3B65` | Primary buttons, active nav/filter state   |
+| Plum 700       | `--plum-dark` | `#5C2C4C` | Primary hover/pressed                      |
+| Plum tint      | `--plum-tint` | `#F3E3EE` | "Favorite" badge bg, journey step-number bg|
+| Teal 600       | `--teal`      | `#1C8481` | Secondary buttons, links, tag hover        |
+| Teal 700       | `--teal-dark` | `#146664` | Link/tag text, secondary hover             |
+| Teal tint      | `--teal-tint` | `#DEF3F1` | Breed-group tag bg, dog-card action buttons|
+| Coral          | `--coral`     | `#FA917A` | Favorite heart (active), spinner accent    |
+| Coral dark     | `--coral-dark`| `#EC5837` | Eyebrow labels, coral hover                |
+| Coral tint     | `--coral-tint`| `#FDCAB7` | Reserved coral background (not wired up)   |
+| Page wash      | `--page-bg`   | `#E2E5EE` | Body background                            |
+| Root bg        | `--bg`        | `#AEBBE2` | `:root` fallback background                |
+| Ink            | `--text`      | `#241B2E` | Body text                                  |
+| Heading ink    | `--text-h`    | `#111B36` | Heading text                               |
+| Muted          | `--grey-text` | `#6B6077` | Secondary/caption text                     |
+| Border         | `--border`    | `#E7E1EC` | Card/input outlines                        |
+| White          | `--white`     | `#FFFFFF` | Card/navbar backgrounds                    |
 
-Rule of thumb: navy and plum carry most of the UI; teal is the
+Rule of thumb: brand-blue and plum carry most of the UI; teal is the
 secondary/supporting color; coral is used sparingly so it stays special.
+`--navy`, `--navy-tint`, and `--coral-tint` are defined as tokens but
+aren't used by any component yet — available for future accents.
 
 ## Typography
 
-- **Display / headings:** [Baloo 2](https://fonts.google.com/specimen/Baloo+2), weights 600–700 — rounded, playful, used for `h1`/`h2` and brand wordmark.
-- **Body / UI:** [Nunito Sans](https://fonts.google.com/specimen/Nunito+Sans), weights 400–800 — used for paragraphs, labels, buttons, nav links.
+- **Display / headings:** [Fraunces](https://fonts.google.com/specimen/Fraunces), weight 700 (h1) / 600 (h2) via `--heading` — rounded, playful.
+- **Body / UI:** [Nunito Sans](https://fonts.google.com/specimen/Nunito+Sans), weights 400–800 via `--sans` — used for paragraphs, labels, buttons, nav links.
 
 ```html
 <link rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap">
+  href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Nunito+Sans:wght@400;600;700;800&display=swap">
 ```
+
+Base body text is `18px`/145% line-height with `0.18px` letter-spacing,
+dropping to `16px` at `max-width: 1024px`.
 
 Type scale:
 
-| Style   | Font        | Weight | Size  |
-|---------|-------------|--------|-------|
-| H1      | Baloo 2     | 700    | 38–44px |
-| H2      | Baloo 2     | 600    | 22–26px |
-| Body    | Nunito Sans | 400    | 15–16px |
-| Eyebrow/label | Nunito Sans | 800 | 12–13px, uppercase, letter-spacing 1.2px |
+| Style | Font        | Weight | Size (desktop → ≤1024px) | Notes                        |
+| ----- | ----------- | ------ | ------------------------- | ----------------------------- |
+| H1    | Fraunces    | 700    | 48px → 34px                | letter-spacing -0.5px         |
+| H2    | Fraunces    | 600    | 24px → 20px                | line-height 118%              |
+| Body  | Nunito Sans | 400    | 18px → 16px                | letter-spacing 0.18px         |
+| Eyebrow/label | Nunito Sans | 800 | ~14.4px (0.9rem) | uppercase, letter-spacing 0.09em |
 
 ## Components
 
-**Buttons** — pill-shaped (`border-radius: 999px`), generous padding
-(~13px 26–30px), bold label text.
-- Primary: plum fill (`#7A3B65`), white text — main CTAs ("Add to My Collection").
-- Secondary: transparent with a 2px teal outline (`#1C8481`) — supporting actions.
-- Ghost: plum text, no fill — tertiary links ("Learn more →").
-- Icon (favorite heart): 44–48px circle, white background, soft shadow. Coral-filled heart = favorited, gray outline heart = not favorited.
+**Buttons** — pill-shaped (`border-radius: 999px`), generous padding,
+bold label text (`font-weight: 800`).
+- Primary (`.home-btn`, `.spot-toggle`): plum fill (`--plum`), white text — main CTAs. Hover darkens to `--plum-dark`.
+- Card actions (`.dog-actions button`): teal-tint fill (`--teal-tint`), teal-dark text; hover fills solid teal with white text.
+- Filters (`.filters button`): white background, 1px `--border` outline; active state is plum fill + white text.
 
-**Badges / tags** — pill (`border-radius: 999px`), bold 13px text, `padding: 7-8px 16-18px`.
-- Breed-group tags (Herding, Toy, Working, etc.): teal-100 background, teal-700 text.
-- "Favorite": plum-100 background, plum-700 text, small heart icon.
-- "New" / alerts: coral-100 background, a darker coral/red text.
+**Badges / tags** — pill (`border-radius: 999px`), bold text.
+- Breed-group tags (`.breed`, temperament chips): teal-tint background, teal-dark text.
+- Journey step numbers: plum-tint background, plum-dark text.
 
-**Cards** — white background, `border-radius: 20px`, soft shadow
-(`0 4px 16px rgba(22,33,62,0.10)`), ~14px padding. Photo/thumbnail on
-top with rounded corners, favorite-heart button overlaid top-right,
-name in Baloo 2, breed-group pill below.
+**Cards**
+- Dog list cards (`.dog-list li`): white background, `border-radius: 20px`, shadow `0 4px 16px rgba(22,33,62,0.10)`, lifts on hover; a favorited card gets a 2px plum outline ring.
+- Journey/feature cards: white background, `border-radius: 16px`, lighter shadow `0 1px 3px rgba(22,33,62,0.08)`; feature cards get a 4px top border colored by category (plum/teal/coral/brand-blue).
+- Breed-of-day card: white background, `border-radius: 20px`, same shadow as dog-list cards.
 
-**Filters** — same pill shape as badges; active filter uses plum fill
-+ white text, inactive filters use white background + 1px border
-(`#E7E1EC`).
+**Navbar** — white background, bottom corners rounded (`0 0 16px 16px`),
+soft shadow `0 1px 3px rgba(22,33,62,0.06)`. Active nav link recolors to
+teal so it "sinks into" the page; other links go brand-blue and lift
+plum on hover.
 
 ## Icons
 
@@ -77,15 +90,11 @@ Inline SVG only (stroke-based, 16–24px), never emoji. Heart icon used
 for favorites; search/chevron/hamburger icons follow the same stroke
 style as the existing Navbar icon.
 
-## Notes for implementation
+## Implementation status
 
-This doc is a reference, not yet applied to the app. The current
-`frontend/src/index.css` / `App.css` still use the older purple/blue
-palette (`--purple: #6b3fa0`, `--blue: #2f5fa8`) and system-ui fonts.
-When ready to apply this system, the swap is mostly:
-- Replace the `--purple`/`--blue` CSS variables in `index.css` with
-  the tokens above, and add `--navy`, `--teal`, `--coral`.
-- Add the Google Fonts `<link>` to `index.html` and set `--heading`
-  to Baloo 2, `--sans` to Nunito Sans.
-- Round buttons/filters/badges to pill shape and update `.dog-list li`
-  card radius/shadow to match.
+This system is applied throughout `frontend/src/index.css` and
+`frontend/src/App.css` — tokens, fonts, pill buttons/badges/filters,
+and rounded-shadow cards all match the tables above. `--navy`,
+`--navy-tint`, and `--coral-tint` remain defined-but-unused, available
+for a future accent (e.g. an alert/"new" badge) without adding new
+tokens.

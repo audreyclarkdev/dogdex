@@ -23,7 +23,7 @@ function SpottedLog() {
   return (
     <div className="page">
       <h1>Dog Log</h1>
-      <p className="subtitle">Dogs you've spotted in the wild.</p>
+      <p className="subtitle">Dogs you've spotted in the wild</p>
 
       {spotted.length === 0 ? (
         <p>You haven't spotted any dogs yet. Mark some on a breed page!</p>

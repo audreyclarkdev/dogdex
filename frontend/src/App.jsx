@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import BreedList from "./components/BreedList";
 import BreedDetail from "./components/BreedDetail";
-import SpottedLog from "./components/SpottedLog";
+import SpottedLog from "./components/SpotLog";
 import UserProfile from "./components/UserProfile";
 import Footer from "./components/Footer";
 
