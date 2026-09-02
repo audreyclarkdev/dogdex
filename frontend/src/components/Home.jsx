@@ -59,8 +59,7 @@ function Home() {
           </Link>
           <Link
             to={breedOfDay ? "/breeds/" + breedOfDay._id : "/breeds"}
-            className="home-btn"
-          >
+            className="home-btn">
             Dog of the Day
           </Link>
         </div>
