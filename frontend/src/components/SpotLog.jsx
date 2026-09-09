@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import DogCard from "./DogCard";
 
 // API Url - points at the Express backend running in /server (port 3000)
-const apiUrl = "http://localhost:3000/breeds";
+const apiUrl = "http://localhost:3000/api/breeds";
 
 // Spot Log page - shows the dogs the user has "spotted"
 // NOTE: this currently reuses the /dogs data and treats isFavorite as "spotted".
@@ -27,10 +27,7 @@ function SpotLog() {
 
       <section className="section-card section-card--plum">
         {spotted.length === 0 ? (
-          <p>
-            You haven't spotted any dogs yet. Mark ones you've seen on a breed
-            page!
-          </p>
+          <p>You haven't spotted any dogs yet. Check off ones you've seen!</p>
         ) : (
           <ul className="dog-list">
             {spotted.map((dog, index) => (

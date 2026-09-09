@@ -50,45 +50,40 @@ function Home() {
           <Link to={breedOfDayLink} className="home-btn home-btn--secondary">
             Today's Breed
           </Link>
-          <Link to="/spotlog" className="home-btn">
+          <Link to="/spots" className="home-btn">
             Add a Dog
           </Link>
         </div>
       </section>
 
       <div className="page">
-        {/* How to use DogDex: the four-step loop, explained immediately so a
-            first-time visitor knows what to do before anything else */}
+        {/* How it works: a paw trail rather than numbered boxes. The paws
+            are CSS decoration so screen readers just hear an ordered list */}
         <section className="journey-section section-card section-card--plum">
           <h2>How it works</h2>
-          <p className="section-intro">Four steps, then you're collecting</p>
-          <div className="journey-grid">
-            <article className="journey-step">
-              <span>1</span>
-              <h3>Spot a dog</h3>
+          <ol className="journey-trail">
+            <li>
+              <h3>Spot it</h3>
               <p>
                 A dog trots past on the sidewalk, the trail, or at the park.
               </p>
-            </article>
-            <article className="journey-step">
-              <span>2</span>
+            </li>
+            <li>
               <h3>Look it up</h3>
               <p>
                 Search the breed list and open the profile to confirm what you
                 saw.
               </p>
-            </article>
-            <article className="journey-step">
-              <span>3</span>
+            </li>
+            <li>
               <h3>Mark it spotted</h3>
-              <p>Tap "Mark as Spotted" to add it to your collection.</p>
-            </article>
-            <article className="journey-step">
-              <span>4</span>
+              <p>One tap. It's collected.</p>
+            </li>
+            <li>
               <h3>Come back tomorrow</h3>
-              <p>Check the breed of the day to learn something new</p>
-            </article>
-          </div>
+              <p>New breed of the day to learn about.</p>
+            </li>
+          </ol>
         </section>
 
         {/* Breed of the Day: the daily hook, given the most prominent card

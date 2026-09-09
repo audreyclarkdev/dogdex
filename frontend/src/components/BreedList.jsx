@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import DogCard from "./DogCard";
 
 // API Url - points at the Express backend running in /server (port 3000)
-const apiUrl = "http://localhost:3000/breeds";
+const apiUrl = "http://localhost:3000/api/breeds";
 
 // BreedList page - shows all dogs with a filter
 function BreedList() {

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
 // API Url - points at the Express backend running in /server (port 3000)
-const apiUrl = "http://localhost:3000/breeds";
+const apiUrl = "http://localhost:3000/api/breeds";
 
 // BreedDetail page - shows a single dog by its id (from the URL)
 function BreedDetail() {
