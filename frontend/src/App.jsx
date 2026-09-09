@@ -15,13 +15,15 @@ function App() {
       <Navbar />
 
       {/* each Route maps a URL path to a page component */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/breeds" element={<BreedList />} />
-        <Route path="/breeds/:id" element={<BreedDetail />} />
-        <Route path="/spots" element={<SpotLog />} />
-        <Route path="/userprofile" element={<UserProfile />} />
-      </Routes>
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/breeds" element={<BreedList />} />
+          <Route path="/breeds/:id" element={<BreedDetail />} />
+          <Route path="/spots" element={<SpotLog />} />
+          <Route path="/userprofile" element={<UserProfile />} />
+        </Routes>
+      </main>
 
       <Footer />
     </div>

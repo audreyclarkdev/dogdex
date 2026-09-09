@@ -25,18 +25,20 @@ function SpotLog() {
       <h1>Dog Log</h1>
       <p className="subtitle">Dogs you've spotted in the wild</p>
 
-      {spotted.length === 0 ? (
-        <p>
-          You haven't spotted any dogs yet. Mark ones you've seen on a breed
-          page!
-        </p>
-      ) : (
-        <ul className="dog-list">
-          {spotted.map((dog, index) => (
-            <DogCard key={index} dog={dog} />
-          ))}
-        </ul>
-      )}
+      <section className="section-card section-card--plum">
+        {spotted.length === 0 ? (
+          <p>
+            You haven't spotted any dogs yet. Mark ones you've seen on a breed
+            page!
+          </p>
+        ) : (
+          <ul className="dog-list">
+            {spotted.map((dog, index) => (
+              <DogCard key={index} dog={dog} />
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

@@ -32,17 +32,19 @@ function BreedList() {
     <div className="page">
       <h1>All Breeds</h1>
 
-      <div className="filters">
-        <button onClick={() => setFilter('all')} className={filter === 'all' ? 'active' : ''}>All</button>
-        <button onClick={() => setFilter('spotted')} className={filter === 'spotted' ? 'active' : ''}>Spotted</button>
-        <button onClick={() => setFilter('notSpotted')} className={filter === 'notSpotted' ? 'active' : ''}>Not Yet Spotted</button>
-      </div>
+      <section className="section-card section-card--navy">
+        <div className="filters">
+          <button onClick={() => setFilter('all')} className={filter === 'all' ? 'active' : ''}>All</button>
+          <button onClick={() => setFilter('spotted')} className={filter === 'spotted' ? 'active' : ''}>Spotted</button>
+          <button onClick={() => setFilter('notSpotted')} className={filter === 'notSpotted' ? 'active' : ''}>Not Yet Spotted</button>
+        </div>
 
-      {visibleDogs.length === 0
-        ? <p>No dogs to show.</p>
-        : <ul className="dog-list">
-            {visibleDogs.map((dog, index) => <DogCard key={index} dog={dog} />)}
-          </ul>}
+        {visibleDogs.length === 0
+          ? <p>No dogs to show.</p>
+          : <ul className="dog-list">
+              {visibleDogs.map((dog, index) => <DogCard key={index} dog={dog} />)}
+            </ul>}
+      </section>
     </div>
   )
 }

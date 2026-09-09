@@ -41,17 +41,20 @@ function BreedDetail() {
     <div className="page">
       <Link to="/breeds">&larr; Back to all breeds</Link>
       <h1>{dog.name}</h1>
-      {dog.image ? <img src={dog.image} alt={dog.name} className="dog-img detail-img" /> : null}
 
-      <div className="detail-info">
-        <p><strong>Breed:</strong> {dog.breed}</p>
-        {dog.age ? <p><strong>Age:</strong> {dog.age}</p> : null}
-        {dog.description ? <p><strong>About:</strong> {dog.description}</p> : null}
-      </div>
+      <section className="section-card section-card--brand-blue">
+        {dog.image ? <img src={dog.image} alt={dog.name} className="dog-img detail-img" /> : null}
 
-      <button className="spot-toggle" onClick={handleFavorite}>
-        {dog.isFavorite ? '★ Spotted' : '☆ Mark as Spotted'}
-      </button>
+        <div className="detail-info">
+          <p><strong>Breed:</strong> {dog.breed}</p>
+          {dog.age ? <p><strong>Age:</strong> {dog.age}</p> : null}
+          {dog.description ? <p><strong>About:</strong> {dog.description}</p> : null}
+        </div>
+
+        <button className="spot-toggle" onClick={handleFavorite}>
+          {dog.isFavorite ? '★ Spotted' : '☆ Mark as Spotted'}
+        </button>
+      </section>
     </div>
   )
 }
