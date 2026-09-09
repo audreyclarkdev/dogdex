@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import BreedList from "./components/BreedList";
 import BreedDetail from "./components/BreedDetail";
-import SpottedLog from "./components/SpotLog";
+import SpotLog from "./components/SpotLog";
 import UserProfile from "./components/UserProfile";
 import Footer from "./components/Footer";
 
@@ -15,13 +15,15 @@ function App() {
       <Navbar />
 
       {/* each Route maps a URL path to a page component */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/breeds" element={<BreedList />} />
-        <Route path="/breeds/:id" element={<BreedDetail />} />
-        <Route path="/spotted" element={<SpottedLog />} />
-        <Route path="/userprofile" element={<UserProfile />} />
-      </Routes>
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/breeds" element={<BreedList />} />
+          <Route path="/breeds/:id" element={<BreedDetail />} />
+          <Route path="/spots" element={<SpotLog />} />
+          <Route path="/userprofile" element={<UserProfile />} />
+        </Routes>
+      </main>
 
       <Footer />
     </div>

@@ -8,10 +8,11 @@
      teal is the secondary/supporting color, coral is a single warm
      accent reserved for favorites/highlights. See frontend/DESIGN.md */
   --navy: #16213e;
-  --navy-tint: #e2e5ee;
+  --navy-tint: #ccd2e0;
   /* Brighter than --brand-blue specifically for the "Dog" half of the brand
      wordmark, which read as near-black at brand-blue's low lightness */
   --brand-blue: #1B2F63;
+  --brand-blue-tint: #dbe3f7;
   --plum: #7a3b65;
   --plum-dark: #5c2c4c;
   --plum-tint: #f3e3ee;
@@ -21,7 +22,9 @@
   --coral: #fa917a;
   --coral-dark: #ec5837;
   --coral-tint: #fdcab7;
-  --grey-text: #6b6077;
+  /* Darker than a typical "muted" gray so it still clears 4.5:1 contrast
+     when sitting on a tinted section-card background, not just white */
+  --grey-text: #5a4f64;
   --white: #fff;
   /* Warm cream wash for the page background, kept light enough that
      white cards/navbar and dark text still stand out on top of it */

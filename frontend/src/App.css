@@ -6,6 +6,16 @@
   text-align: center;
   font-family: var(--sans, system-ui, sans-serif);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100%;
+}
+
+/* Grows to fill any leftover space between Navbar and Footer, so the
+   footer sits flush at the bottom even on short pages */
+.main-content {
+  flex: 1;
 }
 
 .App h1 {
@@ -36,6 +46,14 @@
   margin: 0 0 0.75rem;
 }
 
+/* Short one-line explainer under a section-card heading, so each section
+   reads as self-contained instructions rather than just a label */
+.section-intro {
+  color: var(--grey-text);
+  margin: 0.35rem 0 0;
+  font-size: 1rem;
+}
+
 .tagline {
   font-family: var(--heading);
   color: var(--teal);
@@ -58,10 +76,17 @@
   margin: 0.5rem auto 0.5rem;
 }
 
-/* --- how it works --- */
-.journey-section {
-  margin-top: 3rem;
+/* CTA sits in the hero itself so the main action is visible without
+   scrolling, instead of living further down the page */
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
 }
+
+/* --- how it works --- */
 
 .journey-grid {
   display: grid;
@@ -112,9 +137,6 @@
 }
 
 /* --- what's inside --- */
-.feature-section {
-  margin-top: 3rem;
-}
 
 .feature-grid {
   display: grid;
@@ -255,16 +277,56 @@
   color: #fff;
 }
 
+/* --- content section cards ---
+   Shared "section in its own card" treatment, based on the landing-page
+   pattern (landing-page/styles.css: .story-band/.feature-section/etc).
+   Pair with one of the color modifiers below; pages rotate through the
+   four so each page reads as visually distinct. */
+.section-card {
+  box-sizing: border-box;
+  margin-top: 2rem;
+  padding: 1.75rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(22, 33, 62, 0.08);
+}
+
+.section-card:first-child {
+  margin-top: 0;
+}
+
+.section-card--teal {
+  background: var(--teal-tint);
+}
+
+.section-card--plum {
+  background: var(--plum-tint);
+}
+
+.section-card--brand-blue {
+  background: var(--brand-blue-tint);
+}
+
+.section-card--navy {
+  background: var(--navy-tint);
+}
+
+/* Extra weight for the one card per page that should stand out from the
+   rest, e.g. Home's Breed of the Day */
+.section-card--featured {
+  padding: 2.25rem;
+  box-shadow: 0 8px 28px rgba(22, 33, 62, 0.14);
+}
+
 /* --- footer --- */
 .site-footer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   text-align: center;
   color: var(--grey-text);
   font-size: 0.85rem;
   padding: 2rem 1rem 2.5rem;
-  /* I want the footer to be closer to the bottom of the page and to stay at the bottom */
 }
 
 .site-footer p {
@@ -501,8 +563,35 @@
   box-shadow: 0 4px 16px rgba(22, 33, 62, 0.1);
   border-radius: 20px;
   padding: 1.5rem;
-  max-width: 360px;
+  max-width: 480px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+/* Two-column layout once there's room, so the featured card reads as
+   bigger/richer than the other section cards, not just a taller stack */
+@media (min-width: 640px) {
+  .breed-of-day {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    max-width: 640px;
+  }
+
+  .breed-of-day .dog-img {
+    width: 220px;
+    height: 220px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .breed-of-day-info {
+    flex: 1;
+  }
 }
 
 .breed-of-day .temperament {
@@ -543,6 +632,7 @@
 
 .home-btn {
   display: block;
+  box-sizing: border-box;
   padding: 0.9rem 1rem;
   border: none;
   border-radius: 999px;
@@ -556,4 +646,81 @@
 
 .home-btn:hover {
   background: var(--plum-dark);
+}
+
+/* Outline style so the hero's second CTA reads as lower-priority than
+   the solid primary one, matching the landing page's primary/secondary pair */
+.home-btn--secondary {
+  background: transparent;
+  border: 2px solid var(--plum);
+  color: var(--plum);
+}
+
+.home-btn--secondary:hover {
+  background: var(--plum);
+  color: #fff;
+}
+
+.final-cta {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.about-dogdex {
+  max-width: 60ch;
+  margin: 3rem auto;
+}
+
+.about-dogdex p {
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+.about-dogdex-kicker {
+  font-style: italic;
+  font-weight: 800;
+  opacity: 0.75;
+  color: var(--brand-blue)
+}
+
+.journey-trail {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.journey-trail li {
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+
+.journey-trail li:not(:last-child)::after {
+  content: "🐾";
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0;
+  font-size: 1.25rem;
+  opacity: 0.5;
+}
+
+@media (min-width: 700px) {
+  .journey-trail {
+    flex-direction: row;
+    gap: 2.5rem;
+  }
+
+  .journey-trail li {
+    flex: 1;
+    padding-bottom: 0;
+  }
+
+  .journey-trail li:not(:last-child)::after {
+    bottom: auto;
+    top: 0.25rem;
+    left: auto;
+    right: -1.75rem;
+  }
 }

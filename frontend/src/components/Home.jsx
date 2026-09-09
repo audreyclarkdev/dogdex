@@ -24,136 +24,126 @@ function Home() {
       .catch((err) => console.log(err));
   }, []);
 
+  const breedOfDayLink = breedOfDay ? "/breeds/" + breedOfDay._id : "/breeds";
+
+  // Only show a real number once the breeds have loaded, so the hero never
+  // reads "0 breeds" while the fetch is in flight
+  const breedCount =
+    allBreeds.length > 0 ? allBreeds.length + " breeds" : "every breed";
+
   return (
     <div>
-      {/* Hero: what the app is, in one breath */}
+      {/* Hero: leads with the question a person actually asks on the
+          sidewalk, which is also what they'd type into a search engine */}
       <section className="hero">
-        <h1>
-          Discover, track, and learn about dog breeds &mdash; one spot at a
-          time.
-        </h1>
-        <p className="eyebrow">
-          Part field guide, part journal, part collection game
-        </p>
+        <h1>What breed is that dog?</h1>
         <p className="hero-text">
-          DogDex turns every dog you notice on a walk into a moment of
-          discovery. Browse a full encyclopedia of breeds, look up the ones you
-          run into, and mark them as spotted to build a personal collection of
-          real-world sightings.
+          You saw it on your walk. Now find out what it was. Browse {breedCount}
+          , check off the ones you've spotted in the wild, and watch your DogDex
+          fill up.
         </p>
-        <p className="tagline">Spot & Collect them all!</p>
-      </section>
 
-      <div className="page">
-        {/* main navigation buttons */}
-        <div className="home-buttons">
+        <div className="cta-row">
           <Link to="/breeds" className="home-btn">
             Browse Breeds
           </Link>
-          {/* placeholder route until a dedicated "spot a dog" form exists */}
-          <Link to="/sightings" className="home-btn">
-            Spot Dog
+          <Link to={breedOfDayLink} className="home-btn home-btn--secondary">
+            Today's Breed
           </Link>
-          <Link to="/spotted" className="home-btn">
-            My Collection
-          </Link>
-          <Link
-            to={breedOfDay ? "/breeds/" + breedOfDay._id : "/breeds"}
-            className="home-btn"
-          >
-            Dog of the Day
+          <Link to="/spots" className="home-btn">
+            Add a Dog
           </Link>
         </div>
+      </section>
 
-        {/* How it works */}
-        <section className="journey-section">
+      <div className="page">
+        {/* How it works: a paw trail rather than numbered boxes. The paws
+            are CSS decoration so screen readers just hear an ordered list */}
+        <section className="journey-section section-card section-card--plum">
           <h2>How it works</h2>
-          <div className="journey-grid">
-            <article className="journey-step">
-              <span>1</span>
-              <h3>Spot a dog</h3>
-              <p>Notice a breed on the sidewalk, at the park, or on a trip.</p>
-            </article>
-            <article className="journey-step">
-              <span>2</span>
+          <ol className="journey-trail">
+            <li>
+              <h3>Spot it</h3>
+              <p>
+                A dog trots past on the sidewalk, the trail, or at the park.
+              </p>
+            </li>
+            <li>
               <h3>Look it up</h3>
               <p>
-                Browse the breed list and open its profile to confirm what you
+                Search the breed list and open the profile to confirm what you
                 saw.
               </p>
-            </article>
-            <article className="journey-step">
-              <span>3</span>
+            </li>
+            <li>
               <h3>Mark it spotted</h3>
-              <p>Add it to My Collection so it's saved to your growing list.</p>
-            </article>
-            <article className="journey-step">
-              <span>4</span>
+              <p>One tap. It's collected.</p>
+            </li>
+            <li>
               <h3>Come back tomorrow</h3>
-              <p>Check the Dog of the Day and keep building your collection.</p>
-            </article>
-          </div>
+              <p>New breed of the day to learn about.</p>
+            </li>
+          </ol>
         </section>
 
-        {/* What you can do */}
-        <section className="feature-section">
-          <h2>What's inside</h2>
-          <div className="feature-grid">
-            <article className="feature-card feature-plum">
-              <h3>Breed encyclopedia</h3>
-              <p>
-                Browse a full list of dog breeds with photos and details, pulled
-                from TheDogAPI.
-              </p>
-            </article>
-            <article className="feature-card feature-teal">
-              <h3>Breed profiles</h3>
-              <p>
-                Open any breed to see what makes it stand out before you decide
-                it's "the one" you spotted.
-              </p>
-            </article>
-            <article className="feature-card feature-coral">
-              <h3>Spot &amp; collect</h3>
-              <p>
-                Mark breeds as spotted and watch My Collection grow every time
-                you're out and about.
-              </p>
-            </article>
-            <article className="feature-card feature-navy">
-              <h3>Dog of the Day</h3>
-              <p>
-                A new featured breed every day &mdash; a small reason to open
-                the app and learn something.
-              </p>
-            </article>
-          </div>
-        </section>
-
-        {/* Breed of the Day preview */}
-        <div className="dog-card">
+        {/* Breed of the Day: the daily hook, given the most prominent card
+            on the page */}
+        <section className="dog-card section-card section-card--teal section-card--featured">
           <h2>Breed of the Day</h2>
           {breedOfDay ? (
             <div className="breed-of-day">
               {breedOfDay.imageUrl ? (
                 <img
                   src={breedOfDay.imageUrl}
-                  alt={breedOfDay.name}
+                  alt={
+                    breedOfDay.temperament?.length
+                      ? breedOfDay.name +
+                        " - " +
+                        breedOfDay.temperament.join(", ")
+                      : breedOfDay.name
+                  }
                   className="dog-img"
                 />
               ) : null}
-              <h3 className="breed">{breedOfDay.name}</h3>
-              <ul className="temperament">
-                {breedOfDay.temperament?.map((trait) => (
-                  <li key={trait}>{trait}</li>
-                ))}
-              </ul>
-              <Link to={"/breeds/" + breedOfDay._id}>Learn more</Link>
+              <div className="breed-of-day-info">
+                <h3 className="breed">{breedOfDay.name}</h3>
+                <ul className="temperament">
+                  {breedOfDay.temperament?.map((trait) => (
+                    <li key={trait}>{trait}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ) : (
-            <p>No breeds yet. Add some through the API!</p>
+            <p>
+              Today's breed is still at the park.{" "}
+              <Link to="/breeds">Browse breeds</Link> while you wait.
+            </p>
           )}
-        </div>
+        </section>
+
+        {/* What's inside: written as prose so the three ideas connect,
+            and so the page isn't four stacked cards in a row */}
+        <section className="about-dogdex">
+          <p>
+            Every recognized breed lives here, with temperament, lifespan,
+            weight, energy level, and country of origin. Mark the ones you meet
+            and they collect into your spot log &mdash; one running list of
+            every dog you've identified. A new featured breed each morning means
+            there's always one you're hunting.
+          </p>
+          <p className="about-dogdex-kicker">
+            Part hobby tracker, part collection game.
+          </p>
+        </section>
+
+        {/* Single closing action */}
+        <section className="final-cta">
+          <h2>Ready? Go find one.</h2>
+          <Link to="/breeds" className="home-btn">
+            Browse breeds
+          </Link>
+        </section>
       </div>
     </div>
   );
