@@ -660,3 +660,25 @@
   background: var(--plum);
   color: #fff;
 }
+
+.final-cta {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.about-dogdex {
+  max-width: 60ch;
+  margin: 3rem auto;
+}
+
+.about-dogdex p {
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+.about-dogdex-kicker {
+  font-style: italic;
+  font-weight: 800;
+  opacity: 0.75;
+  color: var(--brand-blue)
+}

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import DogCard from "./DogCard";
 
 // API Url - points at the Express backend running in /server (port 3000)
-const apiUrl = "http://localhost:3000/dogs";
+const apiUrl = "http://localhost:3000/breeds";
 
 // Spot Log page - shows the dogs the user has "spotted"
 // NOTE: this currently reuses the /dogs data and treats isFavorite as "spotted".
