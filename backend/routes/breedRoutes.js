@@ -3,7 +3,7 @@ const router = express.Router();
 
 const DOG_API = "https://api.thedogapi.com/v1";
 
-// All three "GET breeds" tickets live here:
+// API Routes:
 //   GET /api/breeds         -> all breeds
 //   GET /api/breeds/random  -> one breed, stable for the whole day (Breed of the Day)
 //   GET /api/breeds/:id     -> one specific breed
@@ -18,13 +18,15 @@ async function callDogApi(path) {
   });
 
   if (!response.ok) {
-    throw new Error(`Dog API responded ${response.status} ${response.statusText}`);
+    throw new Error(
+      `Dog API responded ${response.status} ${response.statusText}`,
+    );
   }
 
   return response.json();
 }
 
-// Helper: reshape thedogapi breed data into a shape that our frontend expects
+// Helper function to reshape thedogapi breed data into a shape that our frontend expects
 function reshapeBreed(breed) {
   return {
     id: breed.id,

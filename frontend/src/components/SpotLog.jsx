@@ -5,7 +5,7 @@ import DogCard from "./DogCard";
 const apiUrl = "http://localhost:3000/api/breeds";
 
 // Spot Log page - shows the dogs the user has "spotted"
-// NOTE: this currently reuses the /dogs data and treats isFavorite as "spotted".
+// NOTE: this currently reuses the /dogs data and treats isSpotted as "spotted".
 // When you add a dedicated Spotted model/endpoint (photo, location, date, notes),
 // point the fetch below at that route instead.
 function SpotLog() {
@@ -18,7 +18,7 @@ function SpotLog() {
       .catch((err) => console.log(err));
   }, []);
 
-  const spotted = dogs.filter((dog) => dog.isFavorite === true);
+  const spotted = dogs.filter((dog) => dog.isSpotted === true);
 
   return (
     <div className="page">

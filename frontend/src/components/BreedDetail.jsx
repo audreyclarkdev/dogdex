@@ -21,12 +21,12 @@ function BreedDetail() {
     [id],
   );
 
-  // crUd - UPDATE: toggle whether this dog is spotted/favorite
-  const handleFavorite = () => {
+  // crUd - UPDATE: toggle whether this dog is spotted
+  const handleSpotted = () => {
     fetch(apiUrl + "/" + id, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ isFavorite: !dog.isFavorite }),
+      body: JSON.stringify({ isSpotted: !dog.isSpotted }),
     })
       .then((res) => res.json())
       .then((updatedDog) => setDog(updatedDog))
@@ -67,8 +67,8 @@ function BreedDetail() {
           ) : null}
         </div>
 
-        <button className="spot-toggle" onClick={handleFavorite}>
-          {dog.isFavorite ? "★ Spotted" : "☆ Mark as Spotted"}
+        <button className="spot-toggle" onClick={handleSpotted}>
+          {dog.isSpotted ? "★ Spotted" : "☆ Not Yet Spotted"}
         </button>
       </section>
     </div>
