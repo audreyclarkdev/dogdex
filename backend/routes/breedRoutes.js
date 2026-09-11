@@ -7,10 +7,6 @@ const DOG_API = "https://api.thedogapi.com/v1";
 //   GET /api/breeds         -> all breeds
 //   GET /api/breeds/random  -> one breed, stable for the whole day (Breed of the Day)
 //   GET /api/breeds/:id     -> one specific breed
-//
-// React never calls thedogapi directly. It only ever calls these routes.
-
-// Helper: talk to thedogapi
 
 async function callDogApi(path) {
   const response = await fetch(`${DOG_API}${path}`, {
@@ -34,8 +30,16 @@ function reshapeBreed(breed) {
     temperament: breed.temperament
       ? breed.temperament.split(",").map((t) => t.trim())
       : [],
+    origin: breed.origin || null,
     lifespan: breed.life_span,
     imageUrl: breed.image?.url || null,
+    bredFor: breed.bred_for || null,
+    breedGroup: breed.breed_group || null,
+    description: breed.description || null,
+    male_height_inches: breed.height?.male?.imperial || null,
+    female_height_inches: breed.height?.female?.imperial || null,
+    male_weight_lbs: breed.weight?.male?.imperial || null,
+    female_weight_lbs: breed.weight?.female?.imperial || null,
   };
 }
 

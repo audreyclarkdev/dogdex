@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { slugify } from "../utils/slug";
 
 // API Url - points at the Express backend running in /server (port 3000)
 const apiUrl = "http://localhost:3000/api/breeds";
@@ -24,7 +25,11 @@ function Home() {
       .catch((err) => console.log(err));
   }, []);
 
-  const breedOfDayLink = breedOfDay ? "/breeds/" + breedOfDay._id : "/breeds";
+  // /:id is what BreedDetail looks the breed up by; /:slug is just for a
+  // readable URL (matches the pattern used in DogCard's links)
+  const breedOfDayLink = breedOfDay
+    ? `/breeds/${breedOfDay.id}/${slugify(breedOfDay.name)}`
+    : "/breeds";
 
   // Only show a real number once the breeds have loaded, so the hero never
   // reads "0 breeds" while the fetch is in flight
@@ -50,7 +55,7 @@ function Home() {
           <Link to={breedOfDayLink} className="home-btn home-btn--secondary">
             Today's Breed
           </Link>
-          <Link to="/spots" className="home-btn">
+          <Link to="/spot-log" className="home-btn">
             Add a Dog
           </Link>
         </div>

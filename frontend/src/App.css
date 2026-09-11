@@ -354,6 +354,14 @@
   /* Only the bottom corners round, since the top edge sits flush against
      the top of the viewport */
   border-radius: 0 0 16px 16px;
+  /* Sticks to the top of the viewport instead of scrolling away with the
+     page. Needs an opaque background (var(--white) above) so page content
+     doesn't show through underneath it once it's pinned. */
+  position: sticky;
+  top: 0;
+  /* Sits above page content so the pinned navbar isn't covered by
+     anything else (e.g. section cards) as the user scrolls. */
+  z-index: 50;
 }
 
 .navbar-inner {
@@ -476,7 +484,9 @@
 
 /* --- pages --- */
 .page {
-  max-width: 900px;
+  /* Widened from 900px so breed grids/forms have more breathing room on
+     desktop, while still capping line length on very large screens. */
+  max-width: 1100px;
   margin: 0 auto;
   padding: 2rem 1rem;
   text-align: center;
@@ -722,5 +732,120 @@
     top: 0.25rem;
     left: auto;
     right: -1.75rem;
+  }
+}
+
+/* --- spot log form --- */
+.spot-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  text-align: left;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.spot-form label {
+  font-weight: 700;
+  color: var(--text-h);
+  margin-top: 0.9rem;
+}
+
+.spot-form input,
+.spot-form select,
+.spot-form textarea {
+  font-family: var(--sans);
+  font-size: 1rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--text);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.spot-form input:focus,
+.spot-form select:focus,
+.spot-form textarea:focus {
+  outline: 2px solid var(--plum);
+  outline-offset: 1px;
+}
+
+.spot-form textarea {
+  resize: vertical;
+}
+
+.spot-form button {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 0.7rem 1.6rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--plum);
+  color: #fff;
+  cursor: pointer;
+  margin-top: 1.5rem;
+}
+
+.spot-form button:hover:not(:disabled) {
+  background: var(--plum-dark);
+}
+
+.spot-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-success {
+  color: var(--teal-dark);
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+.form-error {
+  color: var(--coral-dark);
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+/* --- back-to-top button --- */
+.scroll-top-btn {
+  /* Fixed (not sticky) so it stays in the same viewport corner
+     regardless of scroll position or which page section is showing. */
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 14px;
+  /* Semi-transparent brand-blue so it reads as an overlay control rather
+     than a solid page element sitting on top of the content. */
+  background: rgba(27, 47, 99, 0.55);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(22, 33, 62, 0.25);
+  /* Above page content, but below the sticky navbar (z-index: 50) so it
+     tucks under the nav if they ever overlap on a short page. */
+  z-index: 40;
+  transition: background 0.15s ease;
+}
+
+.scroll-top-btn:hover,
+.scroll-top-btn:focus-visible {
+  background: rgba(27, 47, 99, 0.85);
+  outline: none;
+}
+
+/* Keep it clear of the thumb zone / smaller screens */
+@media (max-width: 640px) {
+  .scroll-top-btn {
+    bottom: 1rem;
+    right: 1rem;
   }
 }

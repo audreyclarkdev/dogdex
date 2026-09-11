@@ -6,6 +6,7 @@ import BreedDetail from "./components/BreedDetail";
 import SpotLog from "./components/SpotLog";
 import UserProfile from "./components/UserProfile";
 import Footer from "./components/Footer";
+import ScrollTopButton from "./components/ScrollTopButton";
 
 import "./App.css";
 
@@ -19,13 +20,19 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/breeds" element={<BreedList />} />
-          <Route path="/breeds/:id" element={<BreedDetail />} />
-          <Route path="/spots" element={<SpotLog />} />
+          {/* :slug is only for a readable URL (e.g. /breeds/1/affenpinscher) -
+              BreedDetail still looks the breed up by :id */}
+          <Route path="/breeds/:id/:slug" element={<BreedDetail />} />
+          <Route path="/spot-log" element={<SpotLog />} />
           <Route path="/userprofile" element={<UserProfile />} />
         </Routes>
       </main>
 
       <Footer />
+
+      {/* Rendered once here (not per-page) so it floats over every route
+          without each page needing to remember to include it. */}
+      <ScrollTopButton />
     </div>
   );
 }

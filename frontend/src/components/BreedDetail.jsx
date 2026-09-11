@@ -21,18 +21,6 @@ function BreedDetail() {
     [id],
   );
 
-  // crUd - UPDATE: toggle whether this dog is spotted
-  const handleSpotted = () => {
-    fetch(apiUrl + "/" + id, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ isSpotted: !dog.isSpotted }),
-    })
-      .then((res) => res.json())
-      .then((updatedDog) => setDog(updatedDog))
-      .catch((err) => console.error(err));
-  };
-
   if (!dog) {
     return (
       <div className="page">
@@ -47,17 +35,34 @@ function BreedDetail() {
       <h1>{dog.name}</h1>
 
       <section className="section-card section-card--brand-blue">
-        {dog.image ? (
-          <img src={dog.image} alt={dog.name} className="dog-img detail-img" />
+        {dog.imageUrl ? (
+          <img src={dog.imageUrl} alt={dog.name} className="dog-img detail-img" />
         ) : null}
 
         <div className="detail-info">
-          <p>
-            <strong>Breed:</strong> {dog.breed}
-          </p>
-          {dog.age ? (
+          {dog.temperament?.length ? (
             <p>
-              <strong>Age:</strong> {dog.age}
+              <strong>Temperament:</strong> {dog.temperament.join(", ")}
+            </p>
+          ) : null}
+          {dog.lifespan ? (
+            <p>
+              <strong>Lifespan:</strong> {dog.lifespan}
+            </p>
+          ) : null}
+          {dog.origin ? (
+            <p>
+              <strong>Origin:</strong> {dog.origin}
+            </p>
+          ) : null}
+          {dog.bredFor ? (
+            <p>
+              <strong>Bred for:</strong> {dog.bredFor}
+            </p>
+          ) : null}
+          {dog.breedGroup ? (
+            <p>
+              <strong>Breed group:</strong> {dog.breedGroup}
             </p>
           ) : null}
           {dog.description ? (
@@ -66,10 +71,6 @@ function BreedDetail() {
             </p>
           ) : null}
         </div>
-
-        <button className="spot-toggle" onClick={handleSpotted}>
-          {dog.isSpotted ? "★ Spotted" : "☆ Not Yet Spotted"}
-        </button>
       </section>
     </div>
   );
