@@ -3,14 +3,10 @@ const router = express.Router();
 
 const DOG_API = "https://api.thedogapi.com/v1";
 
-// All three "GET breeds" tickets live here:
+// API Routes:
 //   GET /api/breeds         -> all breeds
 //   GET /api/breeds/random  -> one breed, stable for the whole day (Breed of the Day)
 //   GET /api/breeds/:id     -> one specific breed
-//
-// React never calls thedogapi directly. It only ever calls these routes.
-
-// Helper: talk to thedogapi
 
 async function callDogApi(path) {
   const response = await fetch(`${DOG_API}${path}`, {
@@ -18,13 +14,15 @@ async function callDogApi(path) {
   });
 
   if (!response.ok) {
-    throw new Error(`Dog API responded ${response.status} ${response.statusText}`);
+    throw new Error(
+      `Dog API responded ${response.status} ${response.statusText}`,
+    );
   }
 
   return response.json();
 }
 
-// Helper: reshape thedogapi breed data into a shape that our frontend expects
+// Helper function to reshape thedogapi breed data into a shape that our frontend expects
 function reshapeBreed(breed) {
   return {
     id: breed.id,
@@ -32,8 +30,16 @@ function reshapeBreed(breed) {
     temperament: breed.temperament
       ? breed.temperament.split(",").map((t) => t.trim())
       : [],
+    origin: breed.origin || null,
     lifespan: breed.life_span,
     imageUrl: breed.image?.url || null,
+    bredFor: breed.bred_for || null,
+    breedGroup: breed.breed_group || null,
+    description: breed.description || null,
+    male_height_inches: breed.height?.male?.imperial || null,
+    female_height_inches: breed.height?.female?.imperial || null,
+    male_weight_lbs: breed.weight?.male?.imperial || null,
+    female_weight_lbs: breed.weight?.female?.imperial || null,
   };
 }
 

@@ -65,6 +65,9 @@ function Navbar() {
           <NavLink to="/breeds" onClick={closeMenu}>
             Breeds
           </NavLink>
+          <NavLink to="/spot-log" onClick={closeMenu}>
+            Log New Spotted Dog
+          </NavLink>
           <NavLink to="/spotted" onClick={closeMenu}>
             My Collection
           </NavLink>
