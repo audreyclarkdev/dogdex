@@ -31,7 +31,9 @@ function BreedDetail() {
 
   return (
     <div className="page">
-      <Link to="/breeds">&larr; Back to all breeds</Link>
+      <Link to="/breeds" className="home-btn home-btn--compact">
+        <span className="back-arrow">&larr;</span> Back to all breeds
+      </Link>
       <h1>{dog.name}</h1>
 
       <section className="section-card section-card--brand-blue">

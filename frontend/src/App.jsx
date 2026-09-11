@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import BreedList from "./components/BreedList";
 import BreedDetail from "./components/BreedDetail";
 import SpotLog from "./components/SpotLog";
+import SpotCollection from "./components/SpotCollection";
 import UserProfile from "./components/UserProfile";
 import Footer from "./components/Footer";
 import ScrollTopButton from "./components/ScrollTopButton";
@@ -20,10 +21,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/breeds" element={<BreedList />} />
-          {/* :slug is only for a readable URL (e.g. /breeds/1/affenpinscher) -
+          {/* :slug is only for a readable URL (e.g. /breeds/1/affenpinscher) 
               BreedDetail still looks the breed up by :id */}
           <Route path="/breeds/:id/:slug" element={<BreedDetail />} />
           <Route path="/spot-log" element={<SpotLog />} />
+          <Route path="/spotted-dogs" element={<SpotCollection />} />
           <Route path="/userprofile" element={<UserProfile />} />
         </Routes>
       </main>

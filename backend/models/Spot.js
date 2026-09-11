@@ -1,4 +1,4 @@
-// Mongoose Schema Blueprints
+// Mongoose Schema Blueprints for a spotted dog
 const mongoose = require("mongoose");
 
 const spotSchema = new mongoose.Schema(
@@ -30,7 +30,7 @@ const spotSchema = new mongoose.Schema(
 
     // When the dog was SEEN. Different from createdAt, which is when the
     // user typed it in. Someone logging Saturday's walk on Monday needs both.
-    spottedAt: {
+    spottedTimestamp: {
       type: Date,
       default: Date.now,
     },
@@ -60,7 +60,7 @@ const spotSchema = new mongoose.Schema(
 );
 
 // Sort a user's log newest-first without scanning every document
-spotSchema.index({ userId: 1, spottedAt: -1 });
+spotSchema.index({ userId: 1, spottedTimestamp: -1 });
 
 // naming the model "Spot" because it represents a single spotted dog
 const Spot = mongoose.model("Spot", spotSchema);

@@ -6,10 +6,30 @@ const express = require("express");
 const router = express.Router();
 
 const Spot = require("../models/Spot");
+const cloudinary = require("../connections/cloudinaryConn");
+const { uploadSpotPhoto } = require("../middleware/upload");
 
-// GET /api/spots - all spots
+// Sends an in-memory image buffer to Cloudinary as a base64 data URI and
+// resolves with the hosted image's URL. Cloudinary's SDK accepts a data
+// URI directly, so there's no need for a separate streaming library.
+function uploadToCloudinary(file) {
+  const dataUri = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
+  return cloudinary.uploader.upload(dataUri, { folder: "dogdex-spots" });
+}
+
+// GET /api/spots - all spots, or one user's spots via ?userId=...
+// (no auth yet, so the frontend can't actually pass a real userId until
+// Clerk is wired up - this just makes that a query-param change later
+// instead of a route rewrite). Newest sighting first, using the index
+// already defined on { userId, spottedTimestamp } in the Spot model.
 router.get("/", (req, res) => {
-  Spot.find()
+  const filter = {};
+  if (req.query.userId) {
+    filter.userId = req.query.userId;
+  }
+
+  Spot.find(filter)
+    .sort({ spottedTimestamp: -1 })
     .then((spots) => {
       res.json(spots);
     })
@@ -40,18 +60,26 @@ router.get("/:id", (req, res) => {
     });
 });
 
-// POST /api/spots - log a new spot
-router.post("/", (req, res) => {
-  Spot.create(req.body)
-    .then((newSpot) => {
-      res.status(201).json(newSpot);
-    })
-    .catch((err) => {
-      console.error("POST /api/spots failed:", err);
-      res
-        .status(400)
-        .json({ message: "Failed to create spot", error: err.message });
-    });
+// POST /api/spots - log a new spot. Sent as multipart/form-data so an
+// optional "photo" field can ride along with the rest of the fields;
+// uploadSpotPhoto (multer) parses that into req.file before this handler runs.
+router.post("/", uploadSpotPhoto, async (req, res) => {
+  try {
+    // no photo attached is a valid spot (imageUrl stays null, per the schema)
+    let imageUrl = null;
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file);
+      imageUrl = result.secure_url;
+    }
+
+    const newSpot = await Spot.create({ ...req.body, imageUrl });
+    res.status(201).json(newSpot);
+  } catch (err) {
+    console.error("POST /api/spots failed:", err);
+    res
+      .status(400)
+      .json({ message: "Failed to create spot", error: err.message });
+  }
 });
 
 // PUT /api/spots/:id - edit a spot

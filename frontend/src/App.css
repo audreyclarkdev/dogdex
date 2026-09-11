@@ -30,7 +30,7 @@
 
 /* --- home hero --- */
 .hero {
-  max-width: 720px;
+  max-width: 980px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 0.5rem;
   box-sizing: border-box;
@@ -209,7 +209,7 @@
   border: none;
   border-radius: 20px;
   padding: 0.9rem;
-  text-align: left;
+  text-align: center;
   background: #fff;
   box-shadow: 0 4px 16px rgba(22, 33, 62, 0.1);
   transition:
@@ -252,6 +252,26 @@
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
   margin: 0.35rem 0 0;
+}
+
+/* --- spot collection card text --- */
+.spot-location {
+  font-size: 0.9rem;
+  color: var(--text);
+  margin: 0.4rem 0 0;
+}
+
+.spot-date {
+  font-size: 0.8rem;
+  color: var(--text);
+  opacity: 0.7;
+  margin: 0.2rem 0 0;
+}
+
+.spot-notes {
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+  font-style: italic;
 }
 
 .dog-actions {
@@ -355,22 +375,38 @@
      the top of the viewport */
   border-radius: 0 0 16px 16px;
   /* Sticks to the top of the viewport instead of scrolling away with the
-     page. Needs an opaque background (var(--white) above) so page content
-     doesn't show through underneath it once it's pinned. */
+     page. */
   position: sticky;
   top: 0;
   /* Sits above page content so the pinned navbar isn't covered by
      anything else (e.g. section cards) as the user scrolls. */
   z-index: 50;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Once scrolled (navbar-inner.jsx toggles this via a scroll listener,
+   since CSS alone can't detect "currently stuck"), swap to a
+   translucent, blurred "glass" look instead of the solid background
+   above - backdrop-filter is what actually blurs the page content
+   showing through underneath it. */
+.navbar--scrolled {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  box-shadow: 0 4px 20px rgba(22, 33, 62, 0.1);
 }
 
 .navbar-inner {
-  max-width: 1500px;
+  max-width: 1600px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1rem;
+  /* Wider (less side padding) and shorter (less vertical padding) than
+     before */
+  padding: 0.5rem 1rem;
   /* anchors the absolutely-positioned mobile dropdown below (.nav-links) */
   position: relative;
 }
@@ -385,7 +421,7 @@
 
 /* Logo */
 .brand-logo {
-  width: 10em;
+  width: 8em;
   height: auto;
 }
 
@@ -394,13 +430,13 @@
    onto two lines on small screens */
 @media (max-width: 640px) {
   .brand-logo {
-    width: 10em;
+    width: 7em;
   }
 }
 
 @media (max-width: 400px) {
   .brand-logo {
-    width: 8em;
+    width: 6em;
   }
 }
 
@@ -671,6 +707,22 @@
   color: #fff;
 }
 
+/* Shrinks a .home-btn to fit its content instead of stretching full
+   width - for buttons that sit inline with page content rather than
+   acting as a standalone CTA (e.g. BreedDetail's back link). */
+.home-btn--compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: auto;
+  padding: 0.5rem 1rem;
+}
+
+.back-arrow {
+  font-size: 1.4em;
+  line-height: 1;
+}
+
 .final-cta {
   text-align: center;
   padding: 2rem 0;
@@ -774,6 +826,17 @@
 
 .spot-form textarea {
   resize: vertical;
+}
+
+/* The file input itself uses the browser's default control (styling
+   file inputs consistently across browsers is a rabbit hole not worth
+   the time on this deadline) - just the preview image needs styling. */
+.photo-preview {
+  margin-top: 0.75rem;
+  width: 100%;
+  max-width: 240px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
 }
 
 .spot-form button {
