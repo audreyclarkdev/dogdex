@@ -1,7 +1,7 @@
 :root {
-  --text: #241b2e;
+  --text: #0f0f0f;
   --text-h: #111b36;
-  --bg: #aebbe2;
+  --bg: #abbef7;
   --border: #e7e1ec;
 
   /* App theme: brand-blue grounds the brand, plum drives primary actions,
@@ -15,7 +15,7 @@
   --brand-blue-tint: #dbe3f7;
   --plum: #7a3b65;
   --plum-dark: #5c2c4c;
-  --plum-tint: #f3e3ee;
+  --plum-tint: #f0d1e6;
   --teal: #1c8481;
   --teal-dark: #146664;
   --teal-tint: #def3f1;
@@ -51,7 +51,7 @@
 body {
   margin: 0;
   /* Navbar sets its own white background, so this shows through everywhere else */
-  background: var(--page-bg);
+  background: var(--bg);
 }
 
 #root {
@@ -90,19 +90,4 @@ h2 {
 }
 p {
   margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
 }
