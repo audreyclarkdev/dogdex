@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // API Urls - points at the Express backend running in /backend (port 3000)
 const breedsUrl = "http://localhost:3000/api/breeds";
@@ -9,7 +9,7 @@ const emptyForm = {
   breedId: "",
   dogName: "",
   location: "",
-  spottedAt: "",
+  spottedTimestamp: "",
   notes: "",
 };
 
@@ -22,6 +22,18 @@ function SpotLog() {
   // status drives the submit button label and the confirmation/error message
   const [status, setStatus] = useState("idle"); // idle | submitting | success | error
   const [errorMessage, setErrorMessage] = useState("");
+
+  // The photo lives outside formData: a <input type="file"> can't be a
+  // controlled input (its value can only be set by the user, not by
+  // React), so we track the chosen File object separately.
+  const [photoFile, setPhotoFile] = useState(null);
+  // A local, temporary URL for showing the chosen photo before it's
+  // uploaded anywhere - not the Cloudinary URL, which only exists after submit.
+  const [previewUrl, setPreviewUrl] = useState(null);
+  // Lets handleSubmit clear the actual <input type="file"> element after
+  // a successful submit - React can reset formData's text fields, but it
+  // can't reset a file input's displayed filename by changing state.
+  const fileInputRef = useRef(null);
 
   // load the breed list once, for the dropdown
   useEffect(function () {
@@ -37,6 +49,25 @@ function SpotLog() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // called when the user picks or takes a photo
+  const handlePhotoChange = (event) => {
+    const file = event.target.files[0] || null;
+    setPhotoFile(file);
+    setPreviewUrl(file ? URL.createObjectURL(file) : null);
+  };
+
+  // Object URLs aren't garbage-collected automatically, so release the
+  // current one whenever it's replaced (a new photo picked, the photo
+  // cleared after submit) or the component unmounts.
+  useEffect(
+    function () {
+      return () => {
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+      };
+    },
+    [previewUrl],
+  );
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -47,27 +78,32 @@ function SpotLog() {
       return;
     }
 
-    // build the payload to match the Spot schema. Leave out spottedAt
-    // entirely if the user didn't pick a date, so the backend's
-    // default (Date.now) kicks in instead of sending an empty string.
-    const payload = {
-      breedId: selectedBreed.id,
-      breedName: selectedBreed.name,
-      dogName: formData.dogName,
-      location: formData.location,
-      notes: formData.notes,
-    };
-    if (formData.spottedAt) {
-      payload.spottedAt = formData.spottedAt;
+    // FormData (not JSON) because the photo needs to travel as
+    // multipart/form-data. Leave spottedTimestamp out entirely if the
+    // user didn't pick a date, so the backend's default (Date.now)
+    // kicks in instead of sending an empty string.
+    const payload = new FormData();
+    payload.append("breedId", selectedBreed.id);
+    payload.append("breedName", selectedBreed.name);
+    payload.append("dogName", formData.dogName);
+    payload.append("location", formData.location);
+    payload.append("notes", formData.notes);
+    if (formData.spottedTimestamp) {
+      payload.append("spottedTimestamp", formData.spottedTimestamp);
+    }
+    if (photoFile) {
+      payload.append("photo", photoFile);
     }
 
     setStatus("submitting");
     setErrorMessage("");
 
+    // No Content-Type header here on purpose - the browser sets
+    // multipart/form-data with the correct boundary itself. Setting it
+    // manually would drop the boundary and the server couldn't parse the body.
     fetch(spotsUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: payload,
     })
       .then((res) => {
         if (!res.ok) {
@@ -80,6 +116,9 @@ function SpotLog() {
       .then(() => {
         setStatus("success");
         setFormData(emptyForm);
+        setPhotoFile(null);
+        setPreviewUrl(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
       })
       .catch((err) => {
         setStatus("error");
@@ -132,12 +171,12 @@ function SpotLog() {
             maxLength={200}
           />
 
-          <label htmlFor="spottedAt">Date spotted (optional)</label>
+          <label htmlFor="spottedTimestamp">Date spotted (optional)</label>
           <input
-            id="spottedAt"
-            name="spottedAt"
+            id="spottedTimestamp"
+            name="spottedTimestamp"
             type="date"
-            value={formData.spottedAt}
+            value={formData.spottedTimestamp}
             onChange={handleChange}
           />
 
@@ -151,13 +190,34 @@ function SpotLog() {
             rows={4}
           />
 
+          <label htmlFor="photo">Photo (optional)</label>
+          {/* capture="environment" hints mobile browsers to offer the
+              rear camera directly; on desktop (or if the user taps the
+              gallery option on mobile) this is a normal file picker. */}
+          <input
+            id="photo"
+            name="photo"
+            type="file"
+            accept="image/*"
+            capture="environment"
+            onChange={handlePhotoChange}
+            ref={fileInputRef}
+          />
+          {previewUrl ? (
+            <img
+              src={previewUrl}
+              alt="Preview of the photo you selected"
+              className="photo-preview"
+            />
+          ) : null}
+
           <button type="submit" disabled={status === "submitting"}>
-            {status === "submitting" ? "Saving..." : "Log this sighting"}
+            {status === "submitting" ? "Saving..." : "Add this dog"}
           </button>
 
           {status === "success" ? (
             <p className="form-success" role="status">
-              Sighting logged! Check your profile to see your full log.
+              Dog logged! Check your profile to see your full log.
             </p>
           ) : null}
           {status === "error" ? (

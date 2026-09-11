@@ -43,10 +43,70 @@ function Home() {
       <section className="hero">
         <h1>What breed is that dog?</h1>
         <p className="hero-text">
-          You saw it on your walk. Now find out what it was. Browse {breedCount}
-          , check off the ones you've spotted in the wild, and watch your DogDex
-          fill up.
+          You saw it on your walk. Now find out what it was. Browse {breedCount}{" "}
+          (yes, that's the official count), check off the breeds you've spotted,
+          and watch your DogDex fill up! Compete with your friends for who has
+          seen the most different kinds of dogs, or show up your local
+          bird-watcher with a more fun hobby.
         </p>
+      </section>
+
+      <div className="page">
+        {/* How it works: two separate paw trails instead of one, since
+            there are two real starting points (already know the breed vs.
+            need to look it up) - both end the same way, by logging the
+            sighting through the form, since that's the only place a
+            sighting actually gets saved right now. */}
+        <section className="journey-section section-card section-card--plum">
+          <h2>How it works</h2>
+          <div className="journey-paths">
+            <div className="journey-path">
+              <h3 className="journey-path-title">Already know the breed?</h3>
+              <ol className="journey-trail">
+                <li>
+                  <h3>Spot it</h3>
+                  <p>
+                    A dog trots past on the sidewalk, the trail, or at the
+                    park.
+                  </p>
+                </li>
+                <li>
+                  <h3>Log it</h3>
+                  <p>
+                    Open Add a New Dog, pick the breed, and snap or upload a
+                    photo.
+                  </p>
+                </li>
+                <li>
+                  <h3>It's collected</h3>
+                  <p>Saved straight to your Dog Collection.</p>
+                </li>
+              </ol>
+            </div>
+
+            <div className="journey-path">
+              <h3 className="journey-path-title">Not sure what breed?</h3>
+              <ol className="journey-trail">
+                <li>
+                  <h3>Spot it</h3>
+                  <p>A dog trots past and you have no idea what it is.</p>
+                </li>
+                <li>
+                  <h3>Look it up</h3>
+                  <p>
+                    Browse the full breed list and open the one that matches.
+                  </p>
+                </li>
+                <li>
+                  <h3>Log it</h3>
+                  <p>
+                    Head to Add a New Dog with the breed confirmed.
+                  </p>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </section>
 
         <div className="cta-row">
           <Link to="/breeds" className="home-btn">
@@ -56,40 +116,9 @@ function Home() {
             Today's Breed
           </Link>
           <Link to="/spot-log" className="home-btn">
-            Add a Dog
+            Add a New Dog
           </Link>
         </div>
-      </section>
-
-      <div className="page">
-        {/* How it works: a paw trail rather than numbered boxes. The paws
-            are CSS decoration so screen readers just hear an ordered list */}
-        <section className="journey-section section-card section-card--plum">
-          <h2>How it works</h2>
-          <ol className="journey-trail">
-            <li>
-              <h3>Spot it</h3>
-              <p>
-                A dog trots past on the sidewalk, the trail, or at the park.
-              </p>
-            </li>
-            <li>
-              <h3>Look it up</h3>
-              <p>
-                Search the breed list and open the profile to confirm what you
-                saw.
-              </p>
-            </li>
-            <li>
-              <h3>Mark it spotted</h3>
-              <p>One tap. It's collected.</p>
-            </li>
-            <li>
-              <h3>Come back tomorrow</h3>
-              <p>New breed of the day to learn about.</p>
-            </li>
-          </ol>
-        </section>
 
         {/* Breed of the Day: the daily hook, given the most prominent card
             on the page */}
@@ -131,11 +160,12 @@ function Home() {
             and so the page isn't four stacked cards in a row */}
         <section className="about-dogdex">
           <p>
-            Every recognized breed lives here, with temperament, lifespan,
-            weight, energy level, and country of origin. Mark the ones you meet
-            and they collect into your spot log &mdash; one running list of
-            every dog you've identified. A new featured breed each morning means
-            there's always one you're hunting.
+            Every recognized breed lives here, with details like temperament,
+            lifespan range, country of origin, dog facts, etc. Already know
+            what you saw? Log it straight from the form. Not sure? Browse the
+            breed list first to confirm it, then log it the same way. And
+            come back every day to learn about a new featured breed. Always
+            something to look at here if you're a dog lover!
           </p>
           <p className="about-dogdex-kicker">
             Part hobby tracker, part collection game.
@@ -144,7 +174,7 @@ function Home() {
 
         {/* Single closing action */}
         <section className="final-cta">
-          <h2>Ready? Go find one.</h2>
+          <h2>Ready? Go learn about a new breed:</h2>
           <Link to="/breeds" className="home-btn">
             Browse breeds
           </Link>

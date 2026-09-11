@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import dogDexLogo from "../assets/DogDexLogoMD.png";
 
@@ -6,13 +6,27 @@ import dogDexLogo from "../assets/DogDexLogoMD.png";
 // menuOpen tracks whether that dropdown is currently showing.
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  // The navbar is sticky (see .navbar in App.css), so once the page has
+  // scrolled it's pinned over page content. Swap to a translucent,
+  // blurred "glass" look at that point instead of staying solid -
+  // CSS alone can't detect "currently stuck", so this needs a listener.
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(function () {
+    function handleScroll() {
+      setScrolled(window.scrollY > 10);
+    }
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Shared by every link so tapping a link on mobile closes the dropdown
   // instead of leaving it open over the page you just navigated to.
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       {/* navbar-inner centers/caps the content width while .navbar itself
           stays full-bleed, so the white background spans the whole screen */}
       <div className="navbar-inner">
@@ -65,11 +79,11 @@ function Navbar() {
           <NavLink to="/breeds" onClick={closeMenu}>
             Breeds
           </NavLink>
-          <NavLink to="/spot-log" onClick={closeMenu}>
-            Log New Spotted Dog
+          <NavLink to="/spotted-dogs" onClick={closeMenu}>
+            Dog Collection
           </NavLink>
-          <NavLink to="/spotted" onClick={closeMenu}>
-            My Collection
+          <NavLink to="/spot-log" onClick={closeMenu}>
+            Add New Dog
           </NavLink>
           <NavLink to="/userprofile" onClick={closeMenu}>
             Profile

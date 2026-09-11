@@ -30,21 +30,12 @@
 
 /* --- home hero --- */
 .hero {
-  max-width: 720px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 0.5rem;
   box-sizing: border-box;
 }
 
-.eyebrow {
-  font-family: var(--sans);
-  font-weight: 800;
-  font-size: 0.9rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--coral-dark);
-  margin: 0 0 0.75rem;
-}
 
 /* Short one-line explainer under a section-card heading, so each section
    reads as self-contained instructions rather than just a label */
@@ -69,8 +60,9 @@
 }
 
 .hero-text {
-  color: var(--brand-blue);
+  color: var(--text-h);
   font-size: 1.05rem;
+  font-weight: 600;
   line-height: 1.6;
   max-width: 560px;
   margin: 0.5rem auto 0.5rem;
@@ -102,93 +94,6 @@
   }
 }
 
-.journey-step {
-  background: #fff;
-  border-radius: 16px;
-  padding: 1.25rem;
-  box-shadow: 0 1px 3px rgba(22, 33, 62, 0.08);
-}
-
-.journey-step span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 999px;
-  background: var(--plum-tint);
-  color: var(--plum-dark);
-  font-weight: 800;
-  font-size: 0.9rem;
-  margin-bottom: 0.6rem;
-}
-
-.journey-step h3 {
-  font-family: var(--heading);
-  font-size: 1.05rem;
-  margin: 0 0 0.35rem;
-  color: var(--brand-blue);
-}
-
-.journey-step p {
-  color: var(--grey-text);
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-/* --- what's inside --- */
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin-top: 1.5rem;
-  text-align: left;
-}
-
-@media (max-width: 720px) {
-  .feature-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.feature-card {
-  border-radius: 16px;
-  padding: 1.25rem;
-  border-top: 4px solid transparent;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(22, 33, 62, 0.08);
-}
-
-.feature-card h3 {
-  font-family: var(--heading);
-  font-size: 1.05rem;
-  margin: 0 0 0.35rem;
-  color: var(--brand-blue);
-}
-
-.feature-card p {
-  color: var(--grey-text);
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-.feature-plum {
-  border-top-color: var(--plum);
-}
-
-.feature-teal {
-  border-top-color: var(--teal);
-}
-
-.feature-coral {
-  border-top-color: var(--coral);
-}
-
-.feature-brand-blue {
-  border-top-color: var(--brand-blue);
-}
-
 .dog-list {
   list-style: none;
   padding: 0;
@@ -209,7 +114,7 @@
   border: none;
   border-radius: 20px;
   padding: 0.9rem;
-  text-align: left;
+  text-align: center;
   background: #fff;
   box-shadow: 0 4px 16px rgba(22, 33, 62, 0.1);
   transition:
@@ -252,6 +157,26 @@
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
   margin: 0.35rem 0 0;
+}
+
+/* --- spot collection card text --- */
+.spot-location {
+  font-size: 0.9rem;
+  color: var(--text);
+  margin: 0.4rem 0 0;
+}
+
+.spot-date {
+  font-size: 0.8rem;
+  color: var(--text);
+  opacity: 0.7;
+  margin: 0.2rem 0 0;
+}
+
+.spot-notes {
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+  font-style: italic;
 }
 
 .dog-actions {
@@ -355,22 +280,43 @@
      the top of the viewport */
   border-radius: 0 0 16px 16px;
   /* Sticks to the top of the viewport instead of scrolling away with the
-     page. Needs an opaque background (var(--white) above) so page content
-     doesn't show through underneath it once it's pinned. */
+     page. */
   position: sticky;
   top: 0;
   /* Sits above page content so the pinned navbar isn't covered by
      anything else (e.g. section cards) as the user scrolls. */
   z-index: 50;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Once scrolled (navbar-inner.jsx toggles this via a scroll listener,
+   since CSS alone can't detect "currently stuck"), swap to a
+   translucent, blurred "glass" look instead of the solid background
+   above - backdrop-filter is what actually blurs the page content
+   showing through underneath it. */
+.navbar--scrolled {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  box-shadow: 0 4px 20px rgba(22, 33, 62, 0.1);
 }
 
 .navbar-inner {
-  max-width: 1500px;
+  max-width: 1000px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1rem;
+  /* Wider (less side padding) and shorter (less vertical padding) than
+     before */
+  padding: 0.5rem 1rem;
+  /* Without this, the default content-box sizing adds the padding above
+     on top of max-width instead of inside it, rendering ~32px wider than
+     .hero/.page (which both already set border-box) at this same
+     max-width - that mismatch was the actual bug being fixed here. */
+  box-sizing: border-box;
   /* anchors the absolutely-positioned mobile dropdown below (.nav-links) */
   position: relative;
 }
@@ -385,7 +331,7 @@
 
 /* Logo */
 .brand-logo {
-  width: 10em;
+  width: 8em;
   height: auto;
 }
 
@@ -394,13 +340,13 @@
    onto two lines on small screens */
 @media (max-width: 640px) {
   .brand-logo {
-    width: 10em;
+    width: 7em;
   }
 }
 
 @media (max-width: 400px) {
   .brand-logo {
-    width: 8em;
+    width: 6em;
   }
 }
 
@@ -484,9 +430,9 @@
 
 /* --- pages --- */
 .page {
-  /* Widened from 900px so breed grids/forms have more breathing room on
-     desktop, while still capping line length on very large screens. */
-  max-width: 1100px;
+  /* Matches the navbar and Home's hero width so content lines up
+     consistently across every page. */
+  max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 1rem;
   text-align: center;
@@ -671,26 +617,86 @@
   color: #fff;
 }
 
+/* Shrinks a .home-btn to fit its content instead of stretching full
+   width - for buttons that sit inline with page content rather than
+   acting as a standalone CTA (e.g. BreedDetail's back link). */
+.home-btn--compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: auto;
+  padding: 0.5rem 1rem;
+}
+
+.back-arrow {
+  font-size: 1.5em;
+  line-height: 1;
+}
+
 .final-cta {
   text-align: center;
-  padding: 2rem 0;
+  padding: 1.5rem;
+  width: max-content;
+  margin: 2rem auto 0;
 }
 
 .about-dogdex {
-  max-width: 60ch;
+  max-width: 70ch;
   margin: 3rem auto;
 }
 
 .about-dogdex p {
-  font-size: 1.125rem;
-  line-height: 1.7;
+  font-size: 1.25rem;
+  line-height: 1.6;
 }
 
-.about-dogdex-kicker {
+.about-dogdex-kicker{
+  padding: .5rem;
+  font-size: 1.8em;
   font-style: italic;
   font-weight: 800;
-  opacity: 0.75;
+  opacity: 0.8;
   color: var(--brand-blue)
+}
+
+/* Two paths side by side on desktop, stacked on mobile - each path gets
+   its own short .journey-trail (see below) rather than one long list,
+   since they're two different starting points, not steps in one sequence. */
+.journey-paths {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 700px) {
+  .journey-paths {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  /* Divider between the two paths, only when they sit side by side -
+     positioned via a pseudo-element (rather than a border) so it can sit
+     centered in the grid gap instead of hugging one column's edge. */
+  .journey-path:last-child {
+    position: relative;
+  }
+
+  .journey-path:last-child::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1.5rem;
+    width: 2px;
+    background: var(--plum);
+  }
+}
+
+.journey-path-title {
+  font-family: var(--heading);
+  color: var(--plum-dark);
+  margin: 0 0 0.75rem;
 }
 
 .journey-trail {
@@ -741,7 +747,9 @@
   flex-direction: column;
   gap: 0.4rem;
   text-align: left;
-  max-width: 480px;
+  /* Wider than the ~480px a form would usually cap at, so SpotLog's
+     card visually fills the page closer to how BreedList/Home do. */
+  max-width: 720px;
   margin: 0 auto;
 }
 
@@ -774,6 +782,17 @@
 
 .spot-form textarea {
   resize: vertical;
+}
+
+/* The file input itself uses the browser's default control (styling
+   file inputs consistently across browsers is a rabbit hole not worth
+   the time on this deadline) - just the preview image needs styling. */
+.photo-preview {
+  margin-top: 0.75rem;
+  width: 100%;
+  max-width: 240px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
 }
 
 .spot-form button {
