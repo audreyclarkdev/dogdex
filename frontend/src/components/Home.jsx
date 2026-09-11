@@ -66,8 +66,7 @@ function Home() {
                 <li>
                   <h3>Spot it</h3>
                   <p>
-                    A dog trots past on the sidewalk, the trail, or at the
-                    park.
+                    A dog trots past on the sidewalk, the trail, or at the park.
                   </p>
                 </li>
                 <li>
@@ -99,9 +98,7 @@ function Home() {
                 </li>
                 <li>
                   <h3>Log it</h3>
-                  <p>
-                    Head to Add a New Dog with the breed confirmed.
-                  </p>
+                  <p>Head to Add a New Dog with the breed confirmed.</p>
                 </li>
               </ol>
             </div>
@@ -161,11 +158,11 @@ function Home() {
         <section className="about-dogdex">
           <p>
             Every recognized breed lives here, with details like temperament,
-            lifespan range, country of origin, dog facts, etc. Already know
-            what you saw? Log it straight from the form. Not sure? Browse the
-            breed list first to confirm it, then log it the same way. And
-            come back every day to learn about a new featured breed. Always
-            something to look at here if you're a dog lover!
+            lifespan range, country of origin, dog facts, etc. Already know what
+            you saw? Log it straight from the form. Not sure? Browse the breed
+            list first to confirm it, then log it the same way. And come back
+            every day to learn about a new featured breed. Always something to
+            look at here if you're a dog lover!
           </p>
           <p className="about-dogdex-kicker">
             Part hobby tracker, part collection game.

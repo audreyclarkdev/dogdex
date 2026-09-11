@@ -1,14 +1,28 @@
-import { StrictMode } from "react";
+import { ClerkProvider } from "@clerk/react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
 
+// Vite only exposes env vars prefixed with VITE_ to client code (see
+// frontend/.env.local, written by `clerk env pull`).
+const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!publishableKey) {
+  throw new Error(
+    "Missing VITE_CLERK_PUBLISHABLE_KEY - run `clerk env pull` in frontend/ to generate .env.local",
+  );
+}
+
 createRoot(document.getElementById("root")).render(
   <>
-    {/* BrowserRouter enables client-side routing for the whole app */}
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    {/* ClerkProvider wraps BrowserRouter (not the other way around) so
+        Clerk's own components (SignIn/SignUp's internal multi-step
+        flows) have router context available the way Clerk expects. */}
+    <ClerkProvider publishableKey={publishableKey} afterSignOutUrl="/">
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ClerkProvider>
   </>,
 );

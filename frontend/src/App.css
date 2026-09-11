@@ -829,6 +829,15 @@
   margin-top: 1rem;
 }
 
+/* Centers Clerk's own prebuilt <SignIn>/<SignUp> widget within our
+   section-card. The widget renders its own card styling by default, so
+   this is deliberately minimal for now - can be reskinned to match the
+   app's palette later via Clerk's appearance prop. */
+.clerk-auth-card {
+  display: flex;
+  justify-content: center;
+}
+
 /* --- back-to-top button --- */
 .scroll-top-btn {
   /* Fixed (not sticky) so it stays in the same viewport corner

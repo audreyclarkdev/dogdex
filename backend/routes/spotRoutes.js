@@ -8,6 +8,7 @@ const router = express.Router();
 const Spot = require("../models/Spot");
 const cloudinary = require("../connections/cloudinaryConn");
 const { uploadSpotPhoto } = require("../middleware/upload");
+const { getAuth } = require("@clerk/express");
 
 // Sends an in-memory image buffer to Cloudinary as a base64 data URI and
 // resolves with the hosted image's URL. Cloudinary's SDK accepts a data
@@ -17,18 +18,30 @@ function uploadToCloudinary(file) {
   return cloudinary.uploader.upload(dataUri, { folder: "dogdex-spots" });
 }
 
-// GET /api/spots - all spots, or one user's spots via ?userId=...
-// (no auth yet, so the frontend can't actually pass a real userId until
-// Clerk is wired up - this just makes that a query-param change later
-// instead of a route rewrite). Newest sighting first, using the index
-// already defined on { userId, spottedTimestamp } in the Spot model.
-router.get("/", (req, res) => {
-  const filter = {};
-  if (req.query.userId) {
-    filter.userId = req.query.userId;
+// Clerk's requireAuth() middleware is deprecated in this SDK version in
+// favor of checking getAuth() manually (clerkMiddleware() in server.js
+// still runs first and makes getAuth() available - this just rejects
+// the request if it turns up no signed-in user). Returns the userId on
+// success so callers don't have to call getAuth() a second time.
+function requireUserId(req, res) {
+  const { userId } = getAuth(req);
+  if (!userId) {
+    res.status(401).json({ message: "Sign in required." });
+    return null;
   }
+  return userId;
+}
 
-  Spot.find(filter)
+// GET /api/spots - the signed-in user's own spots, newest first (using
+// the index already defined on { userId, spottedTimestamp } in the Spot
+// model). The filter always comes from the verified token - never a
+// client-supplied value - so one user can't view another's collection
+// by editing a query param.
+router.get("/", (req, res) => {
+  const userId = requireUserId(req, res);
+  if (!userId) return;
+
+  Spot.find({ userId })
     .sort({ spottedTimestamp: -1 })
     .then((spots) => {
       res.json(spots);
@@ -65,6 +78,9 @@ router.get("/:id", (req, res) => {
 // uploadSpotPhoto (multer) parses that into req.file before this handler runs.
 router.post("/", uploadSpotPhoto, async (req, res) => {
   try {
+    const userId = requireUserId(req, res);
+    if (!userId) return;
+
     // no photo attached is a valid spot (imageUrl stays null, per the schema)
     let imageUrl = null;
     if (req.file) {
@@ -72,7 +88,9 @@ router.post("/", uploadSpotPhoto, async (req, res) => {
       imageUrl = result.secure_url;
     }
 
-    const newSpot = await Spot.create({ ...req.body, imageUrl });
+    // userId assigned after the spread, so it always wins over anything
+    // (however unlikely) sent in the form body under the same name.
+    const newSpot = await Spot.create({ ...req.body, imageUrl, userId });
     res.status(201).json(newSpot);
   } catch (err) {
     console.error("POST /api/spots failed:", err);
@@ -82,45 +100,65 @@ router.post("/", uploadSpotPhoto, async (req, res) => {
   }
 });
 
-// PUT /api/spots/:id - edit a spot
-router.put("/:id", (req, res) => {
-  Spot.findByIdAndUpdate(req.params.id, req.body, {
-    new: true, // return the updated document instead of the original
-    runValidators: true, // enforce schema validation on update
-  })
-    .then((updatedSpot) => {
-      if (!updatedSpot) {
-        return res.status(404).json({
-          message: `Spotted dog with id:${req.params.id} was not found!`,
-        });
-      }
-      res.json(updatedSpot);
-    })
-    .catch((err) => {
-      console.error("PUT /api/spots/:id failed:", err);
-      res
-        .status(400)
-        .json({ message: "Failed to update spotted dog", error: err.message });
-    });
+// PUT /api/spots/:id - edit a spot. Only the spot's own owner can edit
+// it - fetched separately (rather than one findByIdAndUpdate) so we can
+// compare userId before writing anything.
+router.put("/:id", async (req, res) => {
+  try {
+    const userId = requireUserId(req, res);
+    if (!userId) return;
+
+    const spot = await Spot.findById(req.params.id);
+    if (!spot) {
+      return res.status(404).json({
+        message: `Spotted dog with id:${req.params.id} was not found!`,
+      });
+    }
+
+    if (spot.userId !== userId) {
+      return res
+        .status(403)
+        .json({ message: "You can only edit your own spots." });
+    }
+
+    Object.assign(spot, req.body);
+    const updatedSpot = await spot.save();
+    res.json(updatedSpot);
+  } catch (err) {
+    console.error("PUT /api/spots/:id failed:", err);
+    res
+      .status(400)
+      .json({ message: "Failed to update spotted dog", error: err.message });
+  }
 });
 
-// DELETE /api/spots/:id - delete a spot
-router.delete("/:id", (req, res) => {
-  Spot.findByIdAndDelete(req.params.id)
-    .then((deletedSpot) => {
-      if (!deletedSpot) {
-        return res.status(404).json({
-          message: `Spotted dog with id:${req.params.id} was not found!`,
-        });
-      }
-      res.json({ message: "Spotted dog deleted", spot: deletedSpot });
-    })
-    .catch((err) => {
-      console.error("DELETE /api/spots/:id failed:", err);
-      res
-        .status(500)
-        .json({ message: "Failed to delete spotted dog", error: err.message });
-    });
+// DELETE /api/spots/:id - delete a spot. Same ownership check as PUT.
+router.delete("/:id", async (req, res) => {
+  try {
+    const userId = requireUserId(req, res);
+    if (!userId) return;
+
+    const spot = await Spot.findById(req.params.id);
+    if (!spot) {
+      return res.status(404).json({
+        message: `Spotted dog with id:${req.params.id} was not found!`,
+      });
+    }
+
+    if (spot.userId !== userId) {
+      return res
+        .status(403)
+        .json({ message: "You can only delete your own spots." });
+    }
+
+    await spot.deleteOne();
+    res.json({ message: "Spotted dog deleted", spot });
+  } catch (err) {
+    console.error("DELETE /api/spots/:id failed:", err);
+    res
+      .status(500)
+      .json({ message: "Failed to delete spotted dog", error: err.message });
+  }
 });
 
 module.exports = router;
