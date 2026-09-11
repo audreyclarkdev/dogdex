@@ -14,12 +14,25 @@ if (!publishableKey) {
   );
 }
 
+// Matches --plum and the app's usual input radius (see index.css/App.css).
+// Hardcoded rather than read from the CSS variable, since Clerk's
+// appearance prop needs a plain string, not a CSS custom property.
+const clerkAppearance = {
+  variables: {
+    colorPrimary: "#7a3b65",
+    borderRadius: "12px",
+  },
+};
+
 createRoot(document.getElementById("root")).render(
   <>
     {/* ClerkProvider wraps BrowserRouter (not the other way around) so
         Clerk's own components (SignIn/SignUp's internal multi-step
         flows) have router context available the way Clerk expects. */}
-    <ClerkProvider publishableKey={publishableKey} afterSignOutUrl="/">
+    <ClerkProvider
+      publishableKey={publishableKey}
+      afterSignOutUrl="/"
+      appearance={clerkAppearance}>
       <BrowserRouter>
         <App />
       </BrowserRouter>

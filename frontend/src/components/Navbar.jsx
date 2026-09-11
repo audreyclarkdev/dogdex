@@ -94,7 +94,19 @@ function Navbar() {
           {/* isLoaded guards against flashing "Sign In" for a split
               second while Clerk is still figuring out isSignedIn. */}
           {isLoaded && isSignedIn ? (
-            <UserButton afterSignOutUrl="/" />
+            <span className="navbar-user-button">
+              <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    // Clerk's UserButton avatar defaults to a small icon
+                    // meant to sit flush in a corner - sized up here to
+                    // read as a real nav item like the links beside it.
+                    userButtonAvatarBox: { width: "50px", height: "50px" },
+                  },
+                }}
+              />
+            </span>
           ) : null}
           {isLoaded && !isSignedIn ? (
             <>
