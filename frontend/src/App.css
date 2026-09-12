@@ -78,7 +78,7 @@
   background: var(--teal-tint);
   color: var(--teal-dark);
   border-radius: 999px;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .dog-fact strong {

@@ -20,7 +20,7 @@ if (!publishableKey) {
 const clerkAppearance = {
   variables: {
     colorPrimary: "#7a3b65", // --plum
-    colorBackground: "#e3f0eefb",
+    colorBackground: "#ccd8f7",
     colorText: "#0f0f0f", // --text
     colorTextSecondary: "#5a4f64", // --grey-text
     colorInputBackground: "#ffffff",
