@@ -1,8 +1,8 @@
 :root {
   --text: #0f0f0f;
   --text-h: #111b36;
-  --bg: #d4c5cf;
-  --border: #e7e1ec;
+  --bg: #a0aac9ef;
+  /* --border: #e2e5ee; */
 
   /* App theme: brand-blue grounds the brand, plum drives primary actions,
      teal is the secondary/supporting color, coral is a single warm
@@ -12,13 +12,13 @@
   /* Brighter than --brand-blue specifically for the "Dog" half of the brand
      wordmark, which read as near-black at brand-blue's low lightness */
   --brand-blue: #1B2F63;
-  --brand-blue-tint: #dbe3f7;
+  --brand-blue-tint: #ccd8f7;
   --plum: #7a3b65;
   --plum-dark: #5c2c4c;
-  --plum-tint: #f0d1e6;
+  --plum-tint: #f3cee7;
   --teal: #1c8481;
   --teal-dark: #146664;
-  --teal-tint: #def3f1;
+  --teal-tint: #1c848142;
   --coral: #fa917a;
   --coral-dark: #ec5837;
   --coral-tint: #fdcab7;

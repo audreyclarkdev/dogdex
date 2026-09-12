@@ -33,13 +33,19 @@ function reshapeBreed(breed) {
     origin: breed.origin || null,
     lifespan: breed.life_span,
     imageUrl: breed.image?.url || null,
+    imageWidth: breed.image?.width || null,
+    imageHeight: breed.image?.height || null,
     bredFor: breed.bred_for || null,
     breedGroup: breed.breed_group || null,
     description: breed.description || null,
-    male_height_inches: breed.height?.male?.imperial || null,
-    female_height_inches: breed.height?.female?.imperial || null,
-    male_weight_lbs: breed.weight?.male?.imperial || null,
-    female_weight_lbs: breed.weight?.female?.imperial || null,
+    // A longer narrative paragraph, distinct from the shorter description
+    // above - not every breed has both, but most have at least one.
+    history: breed.history || null,
+    // TheDogAPI returns these as flat "min-max" range strings (e.g.
+    // "9-11.5"), not split by sex - height.male/.female don't exist on
+    // this API and always read as null, which is why these were broken.
+    heightInches: breed.height?.imperial || null,
+    weightLbs: breed.weight?.imperial || null,
   };
 }
 

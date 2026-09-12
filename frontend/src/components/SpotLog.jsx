@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/react";
 
 // API Urls - points at the Express backend running in /backend (port 3000)
@@ -14,10 +15,20 @@ const emptyForm = {
   notes: "",
 };
 
-// SpotLog page - a form for logging a dog you spotted in the wild.
-// Submits to /api/spots, which stores it as its own Spot document
-// (separate from the Breed data, since a breed can be spotted many times).
+// Turns a stored ISO date string into the yyyy-mm-dd shape
+// <input type="date"> expects.
+function toDateInputValue(isoString) {
+  return isoString ? isoString.slice(0, 10) : "";
+}
+
+// SpotLog page - doubles as both "log a new sighting" (POST) and "edit
+// an existing one" (PUT), depending on whether a spot :id is in the
+// URL. Reusing one form for both avoids maintaining two nearly
+// identical ones - see App.jsx for the /spot-log and /spot-log/:id routes.
 function SpotLog() {
+  const { id } = useParams();
+  const isEditing = Boolean(id);
+  const navigate = useNavigate();
   // This page is only reachable signed in (see ProtectedRoute in
   // App.jsx), so getToken() should always resolve to a real token here.
   const { getToken } = useAuth();
@@ -26,14 +37,21 @@ function SpotLog() {
   // status drives the submit button label and the confirmation/error message
   const [status, setStatus] = useState("idle"); // idle | submitting | success | error
   const [errorMessage, setErrorMessage] = useState("");
+  // Only relevant in edit mode, while the existing spot is being fetched
+  const [loadStatus, setLoadStatus] = useState(
+    isEditing ? "loading" : "loaded",
+  );
 
   // The photo lives outside formData: a <input type="file"> can't be a
   // controlled input (its value can only be set by the user, not by
   // React), so we track the chosen File object separately.
   const [photoFile, setPhotoFile] = useState(null);
-  // A local, temporary URL for showing the chosen photo before it's
+  // A local, temporary URL for showing a newly chosen photo before it's
   // uploaded anywhere - not the Cloudinary URL, which only exists after submit.
   const [previewUrl, setPreviewUrl] = useState(null);
+  // The photo already saved on this spot, when editing one that has
+  // one - shown until the user picks a different photo to replace it.
+  const [existingImageUrl, setExistingImageUrl] = useState(null);
   // Lets handleSubmit clear the actual <input type="file"> element after
   // a successful submit - React can reset formData's text fields, but it
   // can't reset a file input's displayed filename by changing state.
@@ -46,6 +64,40 @@ function SpotLog() {
       .then((data) => setBreeds(data))
       .catch((err) => console.log(err));
   }, []);
+
+  // In edit mode, fetch the existing spot and pre-fill the form with it
+  useEffect(
+    function () {
+      if (!isEditing) return;
+
+      getToken()
+        .then((token) =>
+          fetch(`${spotsUrl}/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        )
+        .then((res) => {
+          if (!res.ok) throw new Error("Couldn't load that sighting.");
+          return res.json();
+        })
+        .then((spot) => {
+          setFormData({
+            breedId: spot.breedId,
+            dogName: spot.dogName || "",
+            location: spot.location || "",
+            spottedTimestamp: toDateInputValue(spot.spottedTimestamp),
+            notes: spot.notes || "",
+          });
+          setExistingImageUrl(spot.imageUrl || null);
+          setLoadStatus("loaded");
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoadStatus("error");
+        });
+    },
+    [id, isEditing, getToken],
+  );
 
   // one handler for every text/select/textarea input, keyed by its name attribute
   const handleChange = (event) => {
@@ -109,8 +161,8 @@ function SpotLog() {
     // manually would drop the boundary and the server couldn't parse the body.
     // Authorization carries the Clerk session token so the backend can
     // verify who's making the request and stamp userId itself.
-    fetch(spotsUrl, {
-      method: "POST",
+    fetch(isEditing ? `${spotsUrl}/${id}` : spotsUrl, {
+      method: isEditing ? "PUT" : "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: payload,
     })
@@ -123,6 +175,12 @@ function SpotLog() {
         return res.json();
       })
       .then(() => {
+        if (isEditing) {
+          // Editing is a "go do this, then go back" action - the
+          // updated card is more useful to see than a bare form.
+          navigate("/spotted-dogs");
+          return;
+        }
         setStatus("success");
         setFormData(emptyForm);
         setPhotoFile(null);
@@ -135,11 +193,32 @@ function SpotLog() {
       });
   };
 
+  if (loadStatus === "loading") {
+    return (
+      <div className="page">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (loadStatus === "error") {
+    return (
+      <div className="page">
+        <p className="form-error" role="alert">
+          Couldn't load that sighting. It may not exist, or it may belong to
+          someone else.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="page">
-      <h1>Add a new spotted dog!</h1>
+      <h1>{isEditing ? "Edit Sighting" : "Add a new spotted dog!"}</h1>
       <p className="subtitle">
-        Have a dog sighting you want to add to your collection?
+        {isEditing
+          ? "Update the details of this dog."
+          : "Have a dog sighting you want to add to your collection?"}
       </p>
 
       <section className="section-card section-card--plum">
@@ -199,7 +278,9 @@ function SpotLog() {
             rows={4}
           />
 
-          <label htmlFor="photo">Photo (optional)</label>
+          <label htmlFor="photo">
+            {isEditing ? "Replace photo (optional)" : "Photo (optional)"}
+          </label>
           {/* capture="environment" hints mobile browsers to offer the
               rear camera directly; on desktop (or if the user taps the
               gallery option on mobile) this is a normal file picker. */}
@@ -212,16 +293,26 @@ function SpotLog() {
             onChange={handlePhotoChange}
             ref={fileInputRef}
           />
-          {previewUrl ? (
+          {/* A newly chosen photo takes priority over whatever's already
+              saved - only fall back to the existing one otherwise. */}
+          {previewUrl || existingImageUrl ? (
             <img
-              src={previewUrl}
-              alt="Preview of the photo you selected"
+              src={previewUrl || existingImageUrl}
+              alt={
+                previewUrl
+                  ? "Preview of the photo you selected"
+                  : "Current photo for this sighting"
+              }
               className="photo-preview"
             />
           ) : null}
 
           <button type="submit" disabled={status === "submitting"}>
-            {status === "submitting" ? "Saving..." : "Add this dog"}
+            {status === "submitting"
+              ? "Saving..."
+              : isEditing
+                ? "Save changes"
+                : "Add this dog"}
           </button>
 
           {status === "success" ? (

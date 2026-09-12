@@ -30,7 +30,7 @@
 
 /* --- home hero --- */
 .hero {
-  max-width: 1000px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 0.5rem;
   box-sizing: border-box;
@@ -68,6 +68,23 @@
   margin: 0.5rem auto 0.5rem;
 }
 
+/* "Did you know?" trivia blurb - a little pill so it reads as a fun
+   aside rather than blending into the surrounding page copy. */
+.dog-fact {
+  display: inline-block;
+  max-width: 560px;
+  margin: 0.75rem auto;
+  padding: 0.6rem 1.1rem;
+  background: var(--teal-tint);
+  color: var(--teal-dark);
+  border-radius: 999px;
+  font-size: 1rem;
+}
+
+.dog-fact strong {
+  font-weight: 800;
+}
+
 /* CTA sits in the hero itself so the main action is visible without
    scrolling, instead of living further down the page */
 .cta-row {
@@ -94,11 +111,77 @@
   }
 }
 
+/* --- breed list search/sort/filter/alphabet controls --- */
+.breed-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.breed-search {
+  flex: 1;
+  min-width: 200px;
+}
+
+.breed-controls input,
+.breed-controls select {
+  font-family: var(--sans);
+  font-size: 1rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--text);
+  box-sizing: border-box;
+}
+
+.breed-controls input:focus,
+.breed-controls select:focus {
+  outline: 2px solid var(--plum);
+  outline-offset: 1px;
+}
+
+.alphabet-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+}
+
+.alphabet-picker button {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 0.85rem;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--plum);
+  cursor: pointer;
+}
+
+.alphabet-picker button:hover:not(:disabled) {
+  background: var(--plum);
+  color: #fff;
+}
+
+/* No breed starts with this letter under the current search/filter -
+   greyed out and non-interactive rather than hidden, so the alphabet
+   stays a stable, predictable row instead of shifting around. */
+.alphabet-picker button:disabled {
+  color: var(--border);
+  cursor: not-allowed;
+}
+
 .dog-list {
   list-style: none;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  /* Wider than the original 260px, giving the standardized image box
+     below (see .dog-img) more room. */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1rem;
 }
 
@@ -106,7 +189,7 @@
    without horizontal overflow on narrow viewports */
 @media (max-width: 640px) {
   .dog-list {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
 }
 
@@ -127,7 +210,10 @@
   transform: translateY(-2px);
 }
 
-.dog-list li.favorite {
+/* Was .favorite (dead - nothing ever set that class). Now marks a
+   breed the signed-in user has already logged at least one sighting
+   of, via useSpottedBreeds. */
+.dog-list li.spotted {
   box-shadow:
     0 0 0 2px var(--plum),
     0 4px 16px rgba(22, 33, 62, 0.1);
@@ -135,7 +221,15 @@
 
 .dog-img {
   width: 100%;
-  height: 400px;
+  /* Standardized box - same height everywhere .dog-img is used (breed
+     cards, Breed of the Day, Breed Detail, Dog Collection cards), so
+     the grid reads as uniform instead of every card being a different
+     height. 260px keeps enough detail visible without cards feeling
+     too tall at the 320px+ card width above. */
+  height: 260px;
+  /* cover fills the box completely - no letterboxing/greyspace - by
+     cropping whatever doesn't fit. That's the deliberate tradeoff here:
+     uniform, gap-free cards over showing every image uncropped. */
   object-fit: cover;
   border-radius: 14px;
   margin-bottom: 0.5rem;
@@ -159,6 +253,52 @@
   margin: 0.35rem 0 0;
 }
 
+/* A sibling of DogCard's <Link>, not nested inside it - <button> isn't
+   valid inside <a>, and this needs its own click behavior anyway
+   (instant-log instead of navigating). */
+.mark-spotted-btn {
+  display: block;
+  width: fit-content;
+  margin: auto;
+  margin-top: 0.6rem;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--plum);
+  color: #fff;
+  cursor: pointer;
+}
+
+.mark-spotted-btn:hover {
+  background: var(--plum-dark);
+}
+
+/* Toggled on, not disabled - clicking it again un-marks the breed (see
+   useSpottedBreeds' unmarkAsSpotted), so it needs to stay clickable and
+   just look distinct from the "not yet spotted" state. */
+.mark-spotted-btn.spotted {
+  background: var(--teal-tint);
+  color: var(--teal-dark);
+}
+
+.mark-spotted-btn.spotted:hover {
+  background: var(--teal);
+  color: #fff;
+}
+
+/* Used only on BreedDetail, where the button now sits at the top of
+   the card instead of the bottom - bigger text since it's the one
+   prominent action on this page, not a compact card button. */
+.mark-spotted-btn--detail {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-size: 1rem;
+  padding: 0.7rem 1rem;
+}
+
 /* --- spot collection card text --- */
 .spot-location {
   font-size: 0.9rem;
@@ -179,26 +319,42 @@
   font-style: italic;
 }
 
+/* Edit/Delete row on Dog Collection cards (SpotCollection.jsx) */
 .dog-actions {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.75rem;
 }
 
-.dog-actions button {
+.dog-actions button,
+.dog-actions a {
   flex: 1;
   font-family: var(--sans);
   font-weight: 800;
+  font-size: 0.85rem;
   padding: 0.55rem 0.6rem;
   border: none;
   border-radius: 999px;
   background: var(--teal-tint);
   color: var(--teal-dark);
   cursor: pointer;
+  text-decoration: none;
+  text-align: center;
 }
 
-.dog-actions button:hover {
+.dog-actions button:hover,
+.dog-actions a:hover {
   background: var(--teal);
+  color: #fff;
+}
+
+.dog-actions .delete-btn {
+  background: var(--coral-tint);
+  color: var(--coral-dark);
+}
+
+.dog-actions .delete-btn:hover {
+  background: var(--coral);
   color: #fff;
 }
 
@@ -251,6 +407,7 @@
   text-align: center;
   color: var(--grey-text);
   font-size: 0.85rem;
+  font-weight: 600;
   padding: 2rem 1rem 2.5rem;
 }
 
@@ -260,9 +417,17 @@
   /* I want the footer text to align horizontally */
 }
 
-.footer-credit a {
-  color: var(--teal-dark);
+/* line-height: 0.8 above only looks fine because this text fits on one
+   line at desktop widths. Once it wraps to 2-3 lines on narrow screens,
+   that same tight spacing crowds/overlaps the wrapped lines - loosen it
+   back up and give the paragraph a little breathing room in that case. */
+@media (max-width: 640px) {
+  .site-footer p {
+    line-height: 1.6;
+    padding: 0 0.5rem;
+  }
 }
+
 
 /* --- navbar --- */
 /* .navbar stays full-bleed (100% width, no max-width) so its white
@@ -304,7 +469,7 @@
 }
 
 .navbar-inner {
-  max-width: 1000px;
+  max-width: 1300px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -380,7 +545,7 @@
 /* Current page's link is colored the same as the page background, so it
  visually "sinks into" the page instead of looking clickable */
 .nav-links a.active {
-  color: var(--coral-dark);
+  color: var(--teal);
 }
 
 /* Wraps UserButton (not an <a>, so it doesn't pick up .nav-links a's
@@ -446,10 +611,11 @@
 /* --- pages --- */
 .page {
   /* Matches the navbar and Home's hero width so content lines up
-     consistently across every page. */
-  max-width: 1000px;
+     consistently across every page. Widened alongside .dog-list's
+     wider cards (see App.css's dog-list/dog-img comments). */
+  max-width: 1300px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
   text-align: center;
   box-sizing: border-box;
 }
@@ -496,7 +662,13 @@
 }
 
 .detail-img {
-  max-width: 320px;
+  /* Uncropped photo, scaled to 70% of the card's width - height: auto
+     keeps its real proportions using the width/height HTML attributes
+     (set from TheDogAPI's data in breedRoutes.js) as the aspect ratio. */
+  width: 50%;
+  height: auto;
+  display: block;
+  margin: 0 auto 1rem;
   border-radius: 20px;
 }
 
@@ -541,6 +713,12 @@
   align-items: center;
   gap: 1rem;
   text-align: center;
+  /* .breed-of-day is now a <Link> (see Home.jsx), not a plain <div> -
+     reset the default anchor look and make the whole card read as
+     clickable, since there's no separate button doing the navigating. */
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 /* Two-column layout once there's room, so the featured card reads as
@@ -565,7 +743,16 @@
   }
 }
 
-.breed-of-day .temperament {
+/* Matches .detail-info p's spacing (BreedDetail) so the same fields
+   look consistent whether shown here or on the full detail page. */
+.breed-of-day-info p {
+  margin: 0.35rem 0;
+  line-height: 1.6;
+}
+
+/* Un-scoped (was .breed-of-day .temperament) so every breed card - not
+   just Breed of the Day - can use the same temperament tag styling. */
+.temperament {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -575,7 +762,7 @@
   margin: 0.5rem 0;
 }
 
-.breed-of-day .temperament li {
+.temperament li {
   background: var(--teal-tint);
   color: var(--teal-dark);
   font-size: 0.75rem;
@@ -623,13 +810,25 @@
    the solid primary one, matching the landing page's primary/secondary pair */
 .home-btn--secondary {
   background: transparent;
-  border: 2px solid var(--plum);
-  color: var(--plum);
+  border: 2px solid var(--brand-blue);
+  color: var(--brand-blue);
 }
 
 .home-btn--secondary:hover {
   background: var(--plum);
   color: #fff;
+}
+
+/* Used inside Breed of the Day - a distinct color from the plum CTAs
+   elsewhere on Home, since it's a visual cue on an already-clickable
+   card rather than its own separate action. */
+.home-btn--brand-blue {
+  background: var(--brand-blue);
+  margin-top: 0.25rem;
+}
+
+.home-btn--brand-blue:hover {
+  filter: brightness(0.85);
 }
 
 /* Shrinks a .home-btn to fit its content instead of stretching full
@@ -650,9 +849,18 @@
 
 .final-cta {
   text-align: center;
-  padding: 1.5rem;
+  /* padding: .5rem; */
   width: max-content;
-  margin: 2rem auto 0;
+  margin: 1rem auto;
+}
+
+.final-cta h2 {
+  margin-top: -1.5rem;
+  margin-bottom: 1rem;
+  text-decoration: none;
+  color: var(--plum);
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
 .about-dogdex {
@@ -665,15 +873,14 @@
   line-height: 1.6;
 }
 
-.about-dogdex-kicker{
-  padding: .5rem;
-  font-size: 1.8em;
+.about-dogdex-kicker span{
+  font-size: 1.5rem;
   font-style: italic;
   font-weight: 800;
-  opacity: 0.8;
-  color: var(--brand-blue)
+  opacity: 0.9;
+  color: var(--teal-dark);
+  
 }
-
 /* Two paths side by side on desktop, stacked on mobile - each path gets
    its own short .journey-trail (see below) rather than one long list,
    since they're two different starting points, not steps in one sequence. */
@@ -804,6 +1011,7 @@
    the time on this deadline) - just the preview image needs styling. */
 .photo-preview {
   margin-top: 0.75rem;
+  margin: auto;
   width: 100%;
   max-width: 240px;
   border-radius: 12px;
@@ -836,6 +1044,9 @@
   color: var(--teal-dark);
   font-weight: 700;
   margin-top: 1rem;
+  /* .spot-form is text-align: left for the fields, but this message
+     reads better centered rather than pinned to the left edge. */
+  text-align: center;
 }
 
 .form-error {
@@ -845,9 +1056,8 @@
 }
 
 /* Centers Clerk's own prebuilt <SignIn>/<SignUp> widget within our
-   section-card. The widget renders its own card styling by default, so
-   this is deliberately minimal for now - can be reskinned to match the
-   app's palette later via Clerk's appearance prop. */
+   section-card. The widget's own colors/fonts are themed via the
+   appearance prop on ClerkProvider (see main.jsx), not CSS here. */
 .clerk-auth-card {
   display: flex;
   justify-content: center;

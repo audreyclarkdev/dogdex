@@ -38,6 +38,9 @@ function App() {
               redirecting itself. */}
           <Route element={<ProtectedRoute />}>
             <Route path="/spot-log" element={<SpotLog />} />
+            {/* Same component as above - SpotLog checks for :id itself
+                to switch into edit mode. */}
+            <Route path="/spot-log/:id" element={<SpotLog />} />
             <Route path="/spotted-dogs" element={<SpotCollection />} />
             <Route path="/userprofile" element={<UserProfile />} />
           </Route>

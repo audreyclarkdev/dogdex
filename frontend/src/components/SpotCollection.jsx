@@ -13,22 +13,55 @@ function SpotCollection() {
   const { getToken } = useAuth();
   const [spots, setSpots] = useState([]);
   const [status, setStatus] = useState("loading"); // loading | loaded | error
+  // Tracks which spot is mid-delete, so only that card's button shows
+  // "Deleting..." instead of freezing the whole page.
+  const [deletingId, setDeletingId] = useState(null);
 
-  useEffect(function () {
+  useEffect(
+    function () {
+      getToken()
+        .then((token) =>
+          fetch(spotsUrl, { headers: { Authorization: `Bearer ${token}` } }),
+        )
+        .then((res) => res.json())
+        .then((data) => {
+          setSpots(data);
+          setStatus("loaded");
+        })
+        .catch((err) => {
+          console.log(err);
+          setStatus("error");
+        });
+    },
+    [getToken],
+  );
+
+  const handleDelete = (spot) => {
+    const label = spot.dogName || spot.breedName;
+    if (
+      !window.confirm(`Delete this record of ${label}? This can't be undone.`)
+    ) {
+      return;
+    }
+
+    setDeletingId(spot._id);
     getToken()
       .then((token) =>
-        fetch(spotsUrl, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${spotsUrl}/${spot._id}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }),
       )
-      .then((res) => res.json())
-      .then((data) => {
-        setSpots(data);
-        setStatus("loaded");
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to delete this sighting.");
+        setSpots((prev) => prev.filter((s) => s._id !== spot._id));
       })
       .catch((err) => {
         console.log(err);
-        setStatus("error");
-      });
-  }, [getToken]);
+        window.alert("Couldn't delete this sighting. Try again.");
+      })
+      .finally(() => setDeletingId(null));
+  };
 
   // Turns an ISO date string into something readable, e.g. "Aug 4, 2026"
   const formatDate = (isoString) =>
@@ -41,7 +74,7 @@ function SpotCollection() {
   return (
     <div className="page">
       <h1>Dog Collection</h1>
-      <p className="subtitle">Every dog you've spotted in the wild</p>
+      <p className="subtitle">Every dog you've spotted and logged!</p>
 
       <section className="section-card section-card--teal">
         {status === "loading" ? <p>Loading your collection...</p> : null}
@@ -51,8 +84,7 @@ function SpotCollection() {
 
         {status === "loaded" && spots.length === 0 ? (
           <p>
-            No dogs logged yet.{" "}
-            <Link to="/spot-log">Log your first sighting</Link>.
+            No dogs logged yet. <Link to="/spot-log">Log your first dog!</Link>
           </p>
         ) : null}
 
@@ -77,8 +109,23 @@ function SpotCollection() {
                   {spot.location ? (
                     <p className="spot-location">{spot.location}</p>
                   ) : null}
-                  <p className="spot-date">{formatDate(spot.spottedTimestamp)}</p>
-                  {spot.notes ? <p className="spot-notes">{spot.notes}</p> : null}
+                  <p className="spot-date">
+                    {formatDate(spot.spottedTimestamp)}
+                  </p>
+                  {spot.notes ? (
+                    <p className="spot-notes">{spot.notes}</p>
+                  ) : null}
+
+                  <div className="dog-actions">
+                    <Link to={`/spot-log/${spot._id}`}>Edit</Link>
+                    <button
+                      type="button"
+                      className="delete-btn"
+                      disabled={deletingId === spot._id}
+                      onClick={() => handleDelete(spot)}>
+                      {deletingId === spot._id ? "Deleting..." : "Delete"}
+                    </button>
+                  </div>
                 </div>
               </li>
             ))}

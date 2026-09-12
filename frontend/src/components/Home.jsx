@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@clerk/react";
 import { slugify } from "../utils/slug";
+import DogFact from "./DogFact";
 
 // API Url - points at the Express backend running in /server (port 3000)
 const apiUrl = "http://localhost:3000/api/breeds";
@@ -30,12 +31,6 @@ function Home() {
       .catch((err) => console.log(err));
   }, []);
 
-  // /:id is what BreedDetail looks the breed up by; /:slug is just for a
-  // readable URL (matches the pattern used in DogCard's links)
-  const breedOfDayLink = breedOfDay
-    ? `/breeds/${breedOfDay.id}/${slugify(breedOfDay.name)}`
-    : "/breeds";
-
   // Only show a real number once the breeds have loaded, so the hero never
   // reads "0 breeds" while the fetch is in flight
   const breedCount =
@@ -47,6 +42,10 @@ function Home() {
           sidewalk, which is also what they'd type into a search engine */}
       <section className="hero">
         <h1>What breed is that dog?</h1>
+        {/* Shown to everyone regardless of sign-in state, unlike the
+            onboarding copy below - trivia is fun on every visit, not
+            just the first few. */}
+        <DogFact />
         {/* Only useful the first few visits, before you know how DogDex
             works - hidden once signed in so returning users aren't
             re-reading the pitch every time. */}
@@ -78,15 +77,14 @@ function Home() {
                   <li>
                     <h3>Spot it</h3>
                     <p>
-                      A dog trots past on the sidewalk, the trail, or at the
-                      park.
+                      You see a dog in the distance, or walking past you on the
+                      sidewalk, the trail, or at the park.
                     </p>
                   </li>
                   <li>
                     <h3>Log it</h3>
                     <p>
-                      Open Add a New Dog, pick the breed, and snap or upload a
-                      photo.
+                      Click "Add a New Dog," pick the breed, and upload a photo.
                     </p>
                   </li>
                   <li>
@@ -101,17 +99,24 @@ function Home() {
                 <ol className="journey-trail">
                   <li>
                     <h3>Spot it</h3>
-                    <p>A dog trots past and you have no idea what it is.</p>
+                    <p>
+                      A dog trots past and you have never seen that breed
+                      before.
+                    </p>
                   </li>
                   <li>
                     <h3>Look it up</h3>
                     <p>
-                      Browse the full breed list and open the one that matches.
+                      Browse the full breed list and open the one that matches
+                      the closest.
                     </p>
                   </li>
                   <li>
                     <h3>Log it</h3>
-                    <p>Head to Add a New Dog with the breed confirmed.</p>
+                    <p>
+                      Head to "Add a New Dog" with the breed confirmed. Or click
+                      on the "Mark as Spotted" button!
+                    </p>
                   </li>
                 </ol>
               </div>
@@ -121,13 +126,10 @@ function Home() {
 
         <div className="cta-row">
           <Link to="/breeds" className="home-btn">
-            Browse Breeds
-          </Link>
-          <Link to={breedOfDayLink} className="home-btn home-btn--secondary">
-            Today's Breed
+            Browse Dog Breeds
           </Link>
           <Link to="/spot-log" className="home-btn">
-            Add a New Dog
+            Add a New Spotted Dog
           </Link>
         </div>
 
@@ -136,7 +138,13 @@ function Home() {
         <section className="dog-card section-card section-card--brand-blue section-card--featured">
           <h2>Breed of the Day</h2>
           {breedOfDay ? (
-            <div className="breed-of-day">
+            // The whole card is the link (not just a button inside it) -
+            // gives the cursor:pointer + click-anywhere behavior asked
+            // for, and avoids nesting a real <button> inside an <a>,
+            // which HTML doesn't actually allow.
+            <Link
+              to={`/breeds/${breedOfDay.id}/${slugify(breedOfDay.name)}`}
+              className="breed-of-day">
               {breedOfDay.imageUrl ? (
                 <img
                   src={breedOfDay.imageUrl}
@@ -157,8 +165,26 @@ function Home() {
                     <li key={trait}>{trait}</li>
                   ))}
                 </ul>
+
+                {breedOfDay.origin ? (
+                  <p>
+                    <strong>Origin:</strong> {breedOfDay.origin}
+                  </p>
+                ) : null}
+                {breedOfDay.breedGroup ? (
+                  <p>
+                    <strong>Breed group:</strong> {breedOfDay.breedGroup}
+                  </p>
+                ) : null}
+
+                {/* A span (not a real button) since this whole card is
+                    already the clickable link - it's a visual cue, not
+                    a second interactive control. */}
+                <span className="home-btn home-btn--brand-blue">
+                  Click to Learn More
+                </span>
               </div>
-            </div>
+            </Link>
           ) : (
             <p>
               Today's breed is still at the park.{" "}
@@ -172,14 +198,14 @@ function Home() {
         <section className="about-dogdex">
           <p>
             Every recognized breed lives here, with details like temperament,
-            lifespan range, country of origin, dog facts, etc. Already know what
-            you saw? Log it straight from the form. Not sure? Browse the breed
-            list first to confirm it, then log it the same way. And come back
-            every day to learn about a new featured breed. Always something to
-            look at here if you're a dog lover!
+            lifespan range, country of origin, height/weight ranges, etc.
+            Already know what breed you saw? Log it straight from the form. Not
+            sure? Browse the breed list first to confirm it, then log it the
+            same way. And come back every day to learn about a new featured
+            breed. Always something to look at here if you're a dog lover!
           </p>
           <p className="about-dogdex-kicker">
-            Part hobby tracker, part collection game.
+            <span>Part hobby tracker, part collection game.</span>
           </p>
         </section>
 
@@ -187,7 +213,7 @@ function Home() {
         <section className="final-cta">
           <h2>Ready? Go learn about a new breed:</h2>
           <Link to="/breeds" className="home-btn">
-            Browse breeds
+            Browse Dog Breeds
           </Link>
         </section>
       </div>
