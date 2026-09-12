@@ -1,16 +1,18 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useAuth } from "@clerk/react";
 
 // API Url - points at the Express backend running in /backend (port 3000)
 const spotsUrl = "http://localhost:3000/api/spots";
 
 // Tracks which breeds the signed-in user has already logged at least
-// one sighting of, and exposes a one-click "instant log" action for
-// marking a new one. Shared between BreedList and BreedDetail so
-// neither duplicates the fetch/POST logic.
+// one sighting of, and exposes one-click "mark spotted" / "un-mark"
+// actions. Shared between BreedList and BreedDetail so neither
+// duplicates the fetch/POST/DELETE logic.
 export function useSpottedBreeds() {
   const { isSignedIn, getToken } = useAuth();
-  const [spottedIds, setSpottedIds] = useState(new Set());
+  // The full spot documents, not just breed ids - unmarking a breed
+  // needs to know which spot(s) to delete, not just that it's spotted.
+  const [spots, setSpots] = useState([]);
 
   useEffect(
     function () {
@@ -25,13 +27,14 @@ export function useSpottedBreeds() {
           )
         : Promise.resolve([]);
 
-      loadSpots
-        .then((spots) => {
-          setSpottedIds(new Set(spots.map((spot) => spot.breedId)));
-        })
-        .catch((err) => console.log(err));
+      loadSpots.then(setSpots).catch((err) => console.log(err));
     },
     [isSignedIn, getToken],
+  );
+
+  const spottedIds = useMemo(
+    () => new Set(spots.map((spot) => spot.breedId)),
+    [spots],
   );
 
   // Instantly logs a bare-minimum sighting (just the breed + right now)
@@ -60,10 +63,40 @@ export function useSpottedBreeds() {
         throw new Error("Failed to mark this breed as spotted");
       }
 
-      setSpottedIds((prev) => new Set(prev).add(dog.id));
+      const newSpot = await res.json();
+      setSpots((prev) => [newSpot, ...prev]);
     },
     [getToken],
   );
 
-  return { isSignedIn, spottedIds, markAsSpotted };
+  // Un-marking deletes every sighting logged for this breed - a single
+  // toggle can't represent "one of possibly several" sightings, so
+  // turning it off clears the breed entirely. Callers should confirm
+  // with the user first, since this can delete a sighting that had a
+  // real photo/notes on it, not just an instant-marked one.
+  const unmarkAsSpotted = useCallback(
+    async (dog) => {
+      const token = await getToken();
+      const matchingSpots = spots.filter((spot) => spot.breedId === dog.id);
+
+      const results = await Promise.all(
+        matchingSpots.map((spot) =>
+          fetch(`${spotsUrl}/${spot._id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ),
+      );
+
+      if (results.some((res) => !res.ok)) {
+        throw new Error("Failed to remove this breed from your spotted list");
+      }
+
+      const matchingIds = new Set(matchingSpots.map((spot) => spot._id));
+      setSpots((prev) => prev.filter((spot) => !matchingIds.has(spot._id)));
+    },
+    [getToken, spots],
+  );
+
+  return { isSignedIn, spottedIds, markAsSpotted, unmarkAsSpotted };
 }

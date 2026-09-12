@@ -14,13 +14,21 @@ if (!publishableKey) {
   );
 }
 
-// Matches --plum and the app's usual input radius (see index.css/App.css).
-// Hardcoded rather than read from the CSS variable, since Clerk's
-// appearance prop needs a plain string, not a CSS custom property.
+// Matches the app's palette (see index.css) and usual input radius
+// (App.css). Hardcoded rather than read from the CSS variables, since
+// Clerk's appearance prop needs plain strings, not custom properties.
 const clerkAppearance = {
   variables: {
-    colorPrimary: "#7a3b65",
+    colorPrimary: "#7a3b65", // --plum
+    colorBackground: "#e3f0eefb",
+    colorText: "#0f0f0f", // --text
+    colorTextSecondary: "#5a4f64", // --grey-text
+    colorInputBackground: "#ffffff",
+    colorInputText: "#0f0f0f", // --text
+    colorDanger: "#fdcab7", // --coral-dark
+    colorSuccess: "#146664", // --teal-dark
     borderRadius: "12px",
+    fontFamily: "'Nunito Sans', system-ui, 'Segoe UI', Roboto, sans-serif", // --sans
   },
 };
 

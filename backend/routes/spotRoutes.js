@@ -54,23 +54,34 @@ router.get("/", (req, res) => {
     });
 });
 
-// GET /api/spots/:id - one spot by id
-router.get("/:id", (req, res) => {
-  Spot.findById(req.params.id)
-    .then((spot) => {
-      if (!spot) {
-        return res.status(404).json({
-          message: `Spotted dog with id:${req.params.id} was not found!`,
-        });
-      }
-      res.json(spot);
-    })
-    .catch((err) => {
-      console.error("GET /api/spots/:id failed:", err);
-      res
-        .status(500)
-        .json({ message: "Failed to fetch spotted dog", error: err.message });
-    });
+// GET /api/spots/:id - one spot by id. Used by the SpotLog edit flow,
+// so it needs the same auth + ownership check as PUT/DELETE - without
+// it, anyone with a spot's id could read another user's sighting.
+router.get("/:id", async (req, res) => {
+  try {
+    const userId = requireUserId(req, res);
+    if (!userId) return;
+
+    const spot = await Spot.findById(req.params.id);
+    if (!spot) {
+      return res.status(404).json({
+        message: `Spotted dog with id:${req.params.id} was not found!`,
+      });
+    }
+
+    if (spot.userId !== userId) {
+      return res
+        .status(403)
+        .json({ message: "You can only view your own spots." });
+    }
+
+    res.json(spot);
+  } catch (err) {
+    console.error("GET /api/spots/:id failed:", err);
+    res
+      .status(500)
+      .json({ message: "Failed to fetch spotted dog", error: err.message });
+  }
 });
 
 // POST /api/spots - log a new spot. Sent as multipart/form-data so an
@@ -108,8 +119,10 @@ router.post("/", uploadSpotPhoto, async (req, res) => {
 
 // PUT /api/spots/:id - edit a spot. Only the spot's own owner can edit
 // it - fetched separately (rather than one findByIdAndUpdate) so we can
-// compare userId before writing anything.
-router.put("/:id", async (req, res) => {
+// compare userId before writing anything. Same multipart shape as POST,
+// so editing can also swap the photo (uploadSpotPhoto parses "photo"
+// into req.file the same way it does there).
+router.put("/:id", uploadSpotPhoto, async (req, res) => {
   try {
     const userId = requireUserId(req, res);
     if (!userId) return;
@@ -125,6 +138,15 @@ router.put("/:id", async (req, res) => {
       return res
         .status(403)
         .json({ message: "You can only edit your own spots." });
+    }
+
+    if (req.file) {
+      // A new photo was chosen - replace the old imageUrl. If no file
+      // came through, req.body has no imageUrl key at all (the edit
+      // form never sends one directly), so Object.assign below leaves
+      // the existing photo untouched rather than blanking it out.
+      const result = await uploadToCloudinary(req.file);
+      req.body.imageUrl = result.secure_url;
     }
 
     Object.assign(spot, req.body);

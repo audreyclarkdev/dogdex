@@ -272,14 +272,21 @@
   cursor: pointer;
 }
 
-.mark-spotted-btn:hover:not(:disabled) {
+.mark-spotted-btn:hover {
   background: var(--plum-dark);
 }
 
-.mark-spotted-btn:disabled {
+/* Toggled on, not disabled - clicking it again un-marks the breed (see
+   useSpottedBreeds' unmarkAsSpotted), so it needs to stay clickable and
+   just look distinct from the "not yet spotted" state. */
+.mark-spotted-btn.spotted {
   background: var(--teal-tint);
   color: var(--teal-dark);
-  cursor: default;
+}
+
+.mark-spotted-btn.spotted:hover {
+  background: var(--teal);
+  color: #fff;
 }
 
 /* Used only on BreedDetail, where the button now sits at the top of
@@ -312,26 +319,42 @@
   font-style: italic;
 }
 
+/* Edit/Delete row on Dog Collection cards (SpotCollection.jsx) */
 .dog-actions {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.75rem;
 }
 
-.dog-actions button {
+.dog-actions button,
+.dog-actions a {
   flex: 1;
   font-family: var(--sans);
   font-weight: 800;
+  font-size: 0.85rem;
   padding: 0.55rem 0.6rem;
   border: none;
   border-radius: 999px;
   background: var(--teal-tint);
   color: var(--teal-dark);
   cursor: pointer;
+  text-decoration: none;
+  text-align: center;
 }
 
-.dog-actions button:hover {
+.dog-actions button:hover,
+.dog-actions a:hover {
   background: var(--teal);
+  color: #fff;
+}
+
+.dog-actions .delete-btn {
+  background: var(--coral-tint);
+  color: var(--coral-dark);
+}
+
+.dog-actions .delete-btn:hover {
+  background: var(--coral);
   color: #fff;
 }
 
@@ -384,6 +407,7 @@
   text-align: center;
   color: var(--grey-text);
   font-size: 0.85rem;
+  font-weight: 600;
   padding: 2rem 1rem 2.5rem;
 }
 
@@ -393,9 +417,17 @@
   /* I want the footer text to align horizontally */
 }
 
-.footer-credit a {
-  color: var(--teal-dark);
+/* line-height: 0.8 above only looks fine because this text fits on one
+   line at desktop widths. Once it wraps to 2-3 lines on narrow screens,
+   that same tight spacing crowds/overlaps the wrapped lines - loosen it
+   back up and give the paragraph a little breathing room in that case. */
+@media (max-width: 640px) {
+  .site-footer p {
+    line-height: 1.6;
+    padding: 0 0.5rem;
+  }
 }
+
 
 /* --- navbar --- */
 /* .navbar stays full-bleed (100% width, no max-width) so its white
@@ -513,7 +545,7 @@
 /* Current page's link is colored the same as the page background, so it
  visually "sinks into" the page instead of looking clickable */
 .nav-links a.active {
-  color: var(--coral-dark);
+  color: var(--teal);
 }
 
 /* Wraps UserButton (not an <a>, so it doesn't pick up .nav-links a's
@@ -583,7 +615,7 @@
      wider cards (see App.css's dog-list/dog-img comments). */
   max-width: 1300px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
   text-align: center;
   box-sizing: border-box;
 }
@@ -823,6 +855,8 @@
 }
 
 .final-cta h2 {
+  margin-top: -1.5rem;
+  margin-bottom: 1rem;
   text-decoration: none;
   color: var(--plum);
   font-weight: 700;
@@ -840,14 +874,13 @@
 }
 
 .about-dogdex-kicker span{
- 
   font-size: 1.5rem;
   font-style: italic;
   font-weight: 800;
-  opacity: 0.8;
-  color: var(--coral-dark)
+  opacity: 0.9;
+  color: var(--teal-dark);
+  
 }
-
 /* Two paths side by side on desktop, stacked on mobile - each path gets
    its own short .journey-trail (see below) rather than one long list,
    since they're two different starting points, not steps in one sequence. */
@@ -978,6 +1011,7 @@
    the time on this deadline) - just the preview image needs styling. */
 .photo-preview {
   margin-top: 0.75rem;
+  margin: auto;
   width: 100%;
   max-width: 240px;
   border-radius: 12px;
@@ -1010,6 +1044,9 @@
   color: var(--teal-dark);
   font-weight: 700;
   margin-top: 1rem;
+  /* .spot-form is text-align: left for the fields, but this message
+     reads better centered rather than pinned to the left edge. */
+  text-align: center;
 }
 
 .form-error {
@@ -1019,9 +1056,8 @@
 }
 
 /* Centers Clerk's own prebuilt <SignIn>/<SignUp> widget within our
-   section-card. The widget renders its own card styling by default, so
-   this is deliberately minimal for now - can be reskinned to match the
-   app's palette later via Clerk's appearance prop. */
+   section-card. The widget's own colors/fonts are themed via the
+   appearance prop on ClerkProvider (see main.jsx), not CSS here. */
 .clerk-auth-card {
   display: flex;
   justify-content: center;

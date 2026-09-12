@@ -14,7 +14,8 @@ const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 // jumps down to where each letter starts.
 function BreedList() {
   const navigate = useNavigate();
-  const { isSignedIn, spottedIds, markAsSpotted } = useSpottedBreeds();
+  const { isSignedIn, spottedIds, markAsSpotted, unmarkAsSpotted } =
+    useSpottedBreeds();
   const [dogs, setDogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("name-asc"); // name-asc | name-desc
@@ -98,13 +99,26 @@ function BreedList() {
   // Signed-out visitors can browse, but marking a breed spotted is a
   // signed-in-only action (matches the rest of the app - see
   // ProtectedRoute) - send them to sign in instead of letting the
-  // request 401 silently.
-  const handleMarkAsSpotted = (dog) => {
+  // request 401 silently. Un-marking deletes the sighting(s) behind it,
+  // so it gets a confirm - same as Delete on Dog Collection.
+  const handleToggleSpotted = (dog) => {
     if (!isSignedIn) {
       navigate("/sign-in");
       return;
     }
-    markAsSpotted(dog).catch((err) => console.log(err));
+
+    if (spottedIds.has(dog.id)) {
+      if (
+        !window.confirm(
+          `Remove ${dog.name} from your spotted list? This deletes any sightings you've logged for this breed.`,
+        )
+      ) {
+        return;
+      }
+      unmarkAsSpotted(dog).catch((err) => console.log(err));
+    } else {
+      markAsSpotted(dog).catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -177,7 +191,7 @@ function BreedList() {
                   dog={dog}
                   id={isFirstOfLetter ? `letter-${letter}` : undefined}
                   isSpotted={spottedIds.has(dog.id)}
-                  onMarkAsSpotted={handleMarkAsSpotted}
+                  onToggleSpotted={handleToggleSpotted}
                 />
               );
             })}

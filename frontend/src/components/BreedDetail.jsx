@@ -10,7 +10,8 @@ function BreedDetail() {
   // grab the :id from the route (/breeds/:id)
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isSignedIn, spottedIds, markAsSpotted } = useSpottedBreeds();
+  const { isSignedIn, spottedIds, markAsSpotted, unmarkAsSpotted } =
+    useSpottedBreeds();
   const [dog, setDog] = useState(null);
 
   useEffect(
@@ -34,12 +35,26 @@ function BreedDetail() {
 
   const isSpotted = spottedIds.has(dog.id);
 
-  const handleMarkAsSpotted = () => {
+  // Un-marking deletes the sighting(s) behind it, so it gets a confirm
+  // - same as Delete on Dog Collection.
+  const handleToggleSpotted = () => {
     if (!isSignedIn) {
       navigate("/sign-in");
       return;
     }
-    markAsSpotted(dog).catch((err) => console.log(err));
+
+    if (isSpotted) {
+      if (
+        !window.confirm(
+          `Remove ${dog.name} from your spotted list? This deletes any sightings you've logged for this breed.`,
+        )
+      ) {
+        return;
+      }
+      unmarkAsSpotted(dog).catch((err) => console.log(err));
+    } else {
+      markAsSpotted(dog).catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -52,9 +67,12 @@ function BreedDetail() {
       <section className="section-card section-card--brand-blue">
         <button
           type="button"
-          className="mark-spotted-btn mark-spotted-btn--detail"
-          disabled={isSpotted}
-          onClick={handleMarkAsSpotted}>
+          className={
+            isSpotted
+              ? "mark-spotted-btn mark-spotted-btn--detail spotted"
+              : "mark-spotted-btn mark-spotted-btn--detail"
+          }
+          onClick={handleToggleSpotted}>
           {isSpotted ? "✓ Spotted" : "Mark as Spotted"}
         </button>
 

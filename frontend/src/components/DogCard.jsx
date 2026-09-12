@@ -3,7 +3,7 @@ import { slugify } from '../utils/slug'
 
 // reusable card that displays a single breed
 // used by the BreedList and Home pages
-function DogCard({ dog, id, isSpotted, onMarkAsSpotted }) {
+function DogCard({ dog, id, isSpotted, onToggleSpotted }) {
   return (
     // id is set by BreedList on the first card of each letter, giving
     // the alphabet picker a real element to scroll to (see BreedList.jsx)
@@ -26,13 +26,12 @@ function DogCard({ dog, id, isSpotted, onMarkAsSpotted }) {
 
       {/* Sibling of the Link above, not nested inside it - a <button>
           isn't valid HTML inside an <a>, and this needs its own click
-          behavior (instant-log) instead of navigating anywhere. */}
-      {onMarkAsSpotted ? (
+          behavior (instant-log/un-log) instead of navigating anywhere. */}
+      {onToggleSpotted ? (
         <button
           type="button"
-          className="mark-spotted-btn"
-          disabled={isSpotted}
-          onClick={() => onMarkAsSpotted(dog)}>
+          className={isSpotted ? "mark-spotted-btn spotted" : "mark-spotted-btn"}
+          onClick={() => onToggleSpotted(dog)}>
           {isSpotted ? "✓ Spotted" : "Mark as Spotted"}
         </button>
       ) : null}
