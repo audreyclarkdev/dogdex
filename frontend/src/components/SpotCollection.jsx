@@ -1,20 +1,24 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@clerk/react";
 
 // API Url - points at the Express backend running in /backend (port 3000)
 const spotsUrl = "http://localhost:3000/api/spots";
 
-// Dog Collection page - shows every dog sighting logged via SpotLog.
-// For now this fetches ALL spots, since there's no login yet to scope it
-// to one person. Once Clerk auth exists, this fetch just needs to add
-// ?userId=<the logged-in user's id> - spotRoutes.js already supports
-// that filter on the backend, so nothing else here has to change.
+// Dog Collection page - shows every dog sighting the signed-in user has
+// logged via SpotLog. Only reachable signed in (see ProtectedRoute in
+// App.jsx); the backend derives which user's spots to return from the
+// Authorization token itself, not anything the frontend passes.
 function SpotCollection() {
+  const { getToken } = useAuth();
   const [spots, setSpots] = useState([]);
   const [status, setStatus] = useState("loading"); // loading | loaded | error
 
   useEffect(function () {
-    fetch(spotsUrl)
+    getToken()
+      .then((token) =>
+        fetch(spotsUrl, { headers: { Authorization: `Bearer ${token}` } }),
+      )
       .then((res) => res.json())
       .then((data) => {
         setSpots(data);
@@ -24,7 +28,7 @@ function SpotCollection() {
         console.log(err);
         setStatus("error");
       });
-  }, []);
+  }, [getToken]);
 
   // Turns an ISO date string into something readable, e.g. "Aug 4, 2026"
   const formatDate = (isoString) =>

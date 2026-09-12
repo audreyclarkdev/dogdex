@@ -3,6 +3,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const { clerkMiddleware } = require("@clerk/express");
 
 // Establish our db connection
 require("./connections/mongoConn.js");
@@ -14,6 +15,10 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json()); // parse incoming json request bodies
 app.use(express.urlencoded({ extended: false })); // parse URL-encoded form data
 app.use(cors()); // Enable Cross-Origin Resource Sharing for frontend requests
+// Reads CLERK_SECRET_KEY/CLERK_PUBLISHABLE_KEY from .env and attaches auth
+// info to every request. Doesn't block unauthenticated requests itself -
+// routes opt into requiring auth with requireAuth() (see spotRoutes.js).
+app.use(clerkMiddleware());
 
 // Routes
 const spotRoutes = require("./routes/spotRoutes");

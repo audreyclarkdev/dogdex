@@ -49,10 +49,11 @@ const spotSchema = new mongoose.Schema(
     },
 
     // --- Ownership --------------------------------------------------------
-    // Clerk's user id. Not required yet so you can build and test before
-    // auth exists -- flip it to required when the Clerk ticket is done.
+    // Clerk's user id, set server-side from the verified token in
+    // spotRoutes.js - never trust a client-supplied value for this.
     userId: {
       type: String,
+      required: true,
       index: true,
     },
   },

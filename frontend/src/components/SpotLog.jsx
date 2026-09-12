@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useAuth } from "@clerk/react";
 
 // API Urls - points at the Express backend running in /backend (port 3000)
 const breedsUrl = "http://localhost:3000/api/breeds";
@@ -17,6 +18,9 @@ const emptyForm = {
 // Submits to /api/spots, which stores it as its own Spot document
 // (separate from the Breed data, since a breed can be spotted many times).
 function SpotLog() {
+  // This page is only reachable signed in (see ProtectedRoute in
+  // App.jsx), so getToken() should always resolve to a real token here.
+  const { getToken } = useAuth();
   const [breeds, setBreeds] = useState([]);
   const [formData, setFormData] = useState(emptyForm);
   // status drives the submit button label and the confirmation/error message
@@ -68,7 +72,7 @@ function SpotLog() {
     [previewUrl],
   );
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const selectedBreed = breeds.find((breed) => breed.id === formData.breedId);
@@ -98,11 +102,16 @@ function SpotLog() {
     setStatus("submitting");
     setErrorMessage("");
 
+    const token = await getToken();
+
     // No Content-Type header here on purpose - the browser sets
     // multipart/form-data with the correct boundary itself. Setting it
     // manually would drop the boundary and the server couldn't parse the body.
+    // Authorization carries the Clerk session token so the backend can
+    // verify who's making the request and stamp userId itself.
     fetch(spotsUrl, {
       method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
       body: payload,
     })
       .then((res) => {
@@ -217,7 +226,7 @@ function SpotLog() {
 
           {status === "success" ? (
             <p className="form-success" role="status">
-              Dog logged! Check your profile to see your full log.
+              Dog logged! Check your collection to see your spotted dogs.
             </p>
           ) : null}
           {status === "error" ? (

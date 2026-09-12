@@ -6,6 +6,9 @@ import BreedDetail from "./components/BreedDetail";
 import SpotLog from "./components/SpotLog";
 import SpotCollection from "./components/SpotCollection";
 import UserProfile from "./components/UserProfile";
+import SignInPage from "./components/SignInPage";
+import SignUpPage from "./components/SignUpPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Footer from "./components/Footer";
 import ScrollTopButton from "./components/ScrollTopButton";
 
@@ -24,9 +27,20 @@ function App() {
           {/* :slug is only for a readable URL (e.g. /breeds/1/affenpinscher) 
               BreedDetail still looks the breed up by :id */}
           <Route path="/breeds/:id/:slug" element={<BreedDetail />} />
-          <Route path="/spot-log" element={<SpotLog />} />
-          <Route path="/spotted-dogs" element={<SpotCollection />} />
-          <Route path="/userprofile" element={<UserProfile />} />
+          {/* /* wildcard required for Clerk's multi-step flows (email
+              verification, etc.) to work with React Router */}
+          <Route path="/sign-in/*" element={<SignInPage />} />
+          <Route path="/sign-up/*" element={<SignUpPage />} />
+
+          {/* Logging a sighting, viewing your collection, and your
+              profile all require knowing who's signed in, so they're
+              grouped under one ProtectedRoute rather than each page
+              redirecting itself. */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/spot-log" element={<SpotLog />} />
+            <Route path="/spotted-dogs" element={<SpotCollection />} />
+            <Route path="/userprofile" element={<UserProfile />} />
+          </Route>
         </Routes>
       </main>
 

@@ -377,10 +377,20 @@
   text-shadow: 0 4px 8px rgba(122, 59, 101, 0.3);
 }
 
-/* Current page's link is colored the same as the page background, so it                                                                          
+/* Current page's link is colored the same as the page background, so it
  visually "sinks into" the page instead of looking clickable */
 .nav-links a.active {
-  color: var(--teal);
+  color: var(--coral-dark);
+}
+
+/* Wraps UserButton (not an <a>, so it doesn't pick up .nav-links a's
+   margin-left above) - matches that same spacing plus a little extra
+   room around the now-bigger avatar (see Navbar.jsx). */
+.navbar-user-button {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 1.5rem;
+  padding: 0.25rem;
 }
 
 /* Hamburger button is hidden by default and only shown once the
@@ -425,6 +435,11 @@
     margin-left: 0;
     padding: 0.6rem 0;
     width: 100%;
+  }
+
+  .navbar-user-button {
+    margin-left: 0;
+    padding: 0.6rem 0;
   }
 }
 
@@ -827,6 +842,65 @@
   color: var(--coral-dark);
   font-weight: 700;
   margin-top: 1rem;
+}
+
+/* Centers Clerk's own prebuilt <SignIn>/<SignUp> widget within our
+   section-card. The widget renders its own card styling by default, so
+   this is deliberately minimal for now - can be reskinned to match the
+   app's palette later via Clerk's appearance prop. */
+.clerk-auth-card {
+  display: flex;
+  justify-content: center;
+}
+
+/* --- user profile --- */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Bigger than the small avatar in Navbar's UserButton - this page is
+   the one place it's meant to stand out rather than sit in a corner. */
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 16px rgba(22, 33, 62, 0.15);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.stat-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1.25rem 1rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(22, 33, 62, 0.08);
+}
+
+.stat-number {
+  font-family: var(--heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--teal-dark);
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text);
+  opacity: 0.75;
 }
 
 /* --- back-to-top button --- */

@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useAuth, UserButton } from "@clerk/react";
 import dogDexLogo from "../assets/DogDexLogoMD.png";
 
 // On smaller screens the links collapse behind a hamburger button;
 // menuOpen tracks whether that dropdown is currently showing.
 function Navbar() {
+  const { isLoaded, isSignedIn } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   // The navbar is sticky (see .navbar in App.css), so once the page has
   // scrolled it's pinned over page content. Swap to a translucent,
@@ -88,6 +90,34 @@ function Navbar() {
           <NavLink to="/userprofile" onClick={closeMenu}>
             Profile
           </NavLink>
+
+          {/* isLoaded guards against flashing "Sign In" for a split
+              second while Clerk is still figuring out isSignedIn. */}
+          {isLoaded && isSignedIn ? (
+            <span className="navbar-user-button">
+              <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    // Clerk's UserButton avatar defaults to a small icon
+                    // meant to sit flush in a corner - sized up here to
+                    // read as a real nav item like the links beside it.
+                    userButtonAvatarBox: { width: "50px", height: "50px" },
+                  },
+                }}
+              />
+            </span>
+          ) : null}
+          {isLoaded && !isSignedIn ? (
+            <>
+              <NavLink to="/sign-in" onClick={closeMenu}>
+                Sign In
+              </NavLink>
+              <NavLink to="/sign-up" onClick={closeMenu}>
+                Sign Up
+              </NavLink>
+            </>
+          ) : null}
         </div>
       </div>
     </nav>
