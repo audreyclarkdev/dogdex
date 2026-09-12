@@ -67,9 +67,24 @@ function BreedDetail() {
               <strong>Breed group:</strong> {dog.breedGroup}
             </p>
           ) : null}
+          {dog.heightInches ? (
+            <p>
+              <strong>Height:</strong> {dog.heightInches} in
+            </p>
+          ) : null}
+          {dog.weightLbs ? (
+            <p>
+              <strong>Weight:</strong> {dog.weightLbs} lbs
+            </p>
+          ) : null}
           {dog.description ? (
             <p>
               <strong>About:</strong> {dog.description}
+            </p>
+          ) : null}
+          {dog.history ? (
+            <p>
+              <strong>History:</strong> {dog.history}
             </p>
           ) : null}
         </div>

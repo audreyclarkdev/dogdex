@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import DogCard from "./DogCard";
+import DogFact from "./DogFact";
 
 // API Url - points at the Express backend running in /server (port 3000)
 const apiUrl = "http://localhost:3000/api/breeds";
@@ -21,6 +22,7 @@ function BreedList() {
   return (
     <div className="page">
       <h1>All Breeds</h1>
+      <DogFact />
 
       <section className="section-card section-card--navy">
         {dogs.length === 0 ? (

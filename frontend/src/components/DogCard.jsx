@@ -12,6 +12,13 @@ function DogCard({ dog }) {
         {dog.imageUrl ? <img src={dog.imageUrl} alt={dog.name} className="dog-img" /> : null}
         <div className="dog-info">
           <h2>{dog.name}</h2>
+          {/* Same temperament tag treatment as Breed of the Day - see
+              the un-scoped .temperament rules in App.css. */}
+          <ul className="temperament">
+            {dog.temperament?.map((trait) => (
+              <li key={trait}>{trait}</li>
+            ))}
+          </ul>
         </div>
       </Link>
     </li>

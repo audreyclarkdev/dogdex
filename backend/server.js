@@ -23,10 +23,12 @@ app.use(clerkMiddleware());
 // Routes
 const spotRoutes = require("./routes/spotRoutes");
 const breedRoutes = require("./routes/breedRoutes");
+const factsRoutes = require("./routes/factsRoutes");
 
 // Mount the spotRoutes at /api/spots
 app.use("/api/spots", spotRoutes);
 app.use("/api/breeds", breedRoutes);
+app.use("/api/facts", factsRoutes);
 
 // root route
 app.get("/", (req, res) => {

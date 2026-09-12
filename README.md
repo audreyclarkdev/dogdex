@@ -11,7 +11,7 @@ Some features will include:
 
 - A complete, searchable list of recognized dog breeds with names, photos, origin country, and key traits
 - A checkmark system allowing users to mark breeds as "spotted"
-- A breed detail page showing an "about" section with info like: lifespan, weight range, energy level, temperament, and origin information
-- A personal sighting log where users can attach a photo, location, date, and notes to each spotted dog
+- A breed detail page showing an "about" section with info like: lifespan, weight and height range in imperial, temperament, and origin information
+- A personal dog collection log where users can attach a photo, location, date, and notes to each spotted dog
 - A "Breed of the Day" displayed on the home screen
 - Filter options on the breed list to toggle between All, Spotted, and Not Yet Spotted

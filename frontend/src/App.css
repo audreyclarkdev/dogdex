@@ -30,7 +30,7 @@
 
 /* --- home hero --- */
 .hero {
-  max-width: 1000px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 0.5rem;
   box-sizing: border-box;
@@ -68,6 +68,23 @@
   margin: 0.5rem auto 0.5rem;
 }
 
+/* "Did you know?" trivia blurb - a little pill so it reads as a fun
+   aside rather than blending into the surrounding page copy. */
+.dog-fact {
+  display: inline-block;
+  max-width: 560px;
+  margin: 0.75rem auto;
+  padding: 0.6rem 1.1rem;
+  background: var(--teal-tint);
+  color: var(--teal-dark);
+  border-radius: 999px;
+  font-size: 0.95rem;
+}
+
+.dog-fact strong {
+  font-weight: 800;
+}
+
 /* CTA sits in the hero itself so the main action is visible without
    scrolling, instead of living further down the page */
 .cta-row {
@@ -98,7 +115,9 @@
   list-style: none;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  /* Wider than the original 260px, giving the standardized image box
+     below (see .dog-img) more room. */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1rem;
 }
 
@@ -106,7 +125,7 @@
    without horizontal overflow on narrow viewports */
 @media (max-width: 640px) {
   .dog-list {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   }
 }
 
@@ -135,7 +154,15 @@
 
 .dog-img {
   width: 100%;
-  height: 400px;
+  /* Standardized box - same height everywhere .dog-img is used (breed
+     cards, Breed of the Day, Breed Detail, Dog Collection cards), so
+     the grid reads as uniform instead of every card being a different
+     height. 260px keeps enough detail visible without cards feeling
+     too tall at the 320px+ card width above. */
+  height: 260px;
+  /* cover fills the box completely - no letterboxing/greyspace - by
+     cropping whatever doesn't fit. That's the deliberate tradeoff here:
+     uniform, gap-free cards over showing every image uncropped. */
   object-fit: cover;
   border-radius: 14px;
   margin-bottom: 0.5rem;
@@ -304,7 +331,7 @@
 }
 
 .navbar-inner {
-  max-width: 1000px;
+  max-width: 1300px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -446,8 +473,9 @@
 /* --- pages --- */
 .page {
   /* Matches the navbar and Home's hero width so content lines up
-     consistently across every page. */
-  max-width: 1000px;
+     consistently across every page. Widened alongside .dog-list's
+     wider cards (see App.css's dog-list/dog-img comments). */
+  max-width: 1300px;
   margin: 0 auto;
   padding: 2rem 1rem;
   text-align: center;
@@ -541,6 +569,12 @@
   align-items: center;
   gap: 1rem;
   text-align: center;
+  /* .breed-of-day is now a <Link> (see Home.jsx), not a plain <div> -
+     reset the default anchor look and make the whole card read as
+     clickable, since there's no separate button doing the navigating. */
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 
 /* Two-column layout once there's room, so the featured card reads as
@@ -565,7 +599,16 @@
   }
 }
 
-.breed-of-day .temperament {
+/* Matches .detail-info p's spacing (BreedDetail) so the same fields
+   look consistent whether shown here or on the full detail page. */
+.breed-of-day-info p {
+  margin: 0.35rem 0;
+  line-height: 1.6;
+}
+
+/* Un-scoped (was .breed-of-day .temperament) so every breed card - not
+   just Breed of the Day - can use the same temperament tag styling. */
+.temperament {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -575,7 +618,7 @@
   margin: 0.5rem 0;
 }
 
-.breed-of-day .temperament li {
+.temperament li {
   background: var(--teal-tint);
   color: var(--teal-dark);
   font-size: 0.75rem;
@@ -623,13 +666,25 @@
    the solid primary one, matching the landing page's primary/secondary pair */
 .home-btn--secondary {
   background: transparent;
-  border: 2px solid var(--plum);
-  color: var(--plum);
+  border: 2px solid var(--brand-blue);
+  color: var(--brand-blue);
 }
 
 .home-btn--secondary:hover {
   background: var(--plum);
   color: #fff;
+}
+
+/* Used inside Breed of the Day - a distinct color from the plum CTAs
+   elsewhere on Home, since it's a visual cue on an already-clickable
+   card rather than its own separate action. */
+.home-btn--brand-blue {
+  background: var(--brand-blue);
+  margin-top: 0.25rem;
+}
+
+.home-btn--brand-blue:hover {
+  filter: brightness(0.85);
 }
 
 /* Shrinks a .home-btn to fit its content instead of stretching full
@@ -650,9 +705,16 @@
 
 .final-cta {
   text-align: center;
-  padding: 1.5rem;
+  /* padding: .5rem; */
   width: max-content;
-  margin: 2rem auto 0;
+  margin: 1rem auto;
+}
+
+.final-cta h2 {
+  text-decoration: none;
+  color: var(--plum);
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
 .about-dogdex {
@@ -665,13 +727,13 @@
   line-height: 1.6;
 }
 
-.about-dogdex-kicker{
-  padding: .5rem;
-  font-size: 1.8em;
+.about-dogdex-kicker span{
+ 
+  font-size: 1.5rem;
   font-style: italic;
   font-weight: 800;
   opacity: 0.8;
-  color: var(--brand-blue)
+  color: var(--coral-dark)
 }
 
 /* Two paths side by side on desktop, stacked on mobile - each path gets
