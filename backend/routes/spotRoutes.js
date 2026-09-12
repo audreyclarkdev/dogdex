@@ -86,6 +86,12 @@ router.post("/", uploadSpotPhoto, async (req, res) => {
     if (req.file) {
       const result = await uploadToCloudinary(req.file);
       imageUrl = result.secure_url;
+    } else if (req.body.imageUrl?.startsWith("http")) {
+      // "Mark as Spotted" sends the breed's own TheDogAPI photo here
+      // when there's no user-uploaded photo, so the collection still
+      // shows a picture instead of nothing. Only used as a fallback -
+      // a real uploaded photo (above) always wins.
+      imageUrl = req.body.imageUrl;
     }
 
     // userId assigned after the spread, so it always wins over anything

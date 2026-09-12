@@ -33,6 +33,8 @@ function reshapeBreed(breed) {
     origin: breed.origin || null,
     lifespan: breed.life_span,
     imageUrl: breed.image?.url || null,
+    imageWidth: breed.image?.width || null,
+    imageHeight: breed.image?.height || null,
     bredFor: breed.bred_for || null,
     breedGroup: breed.breed_group || null,
     description: breed.description || null,

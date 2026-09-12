@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useSpottedBreeds } from "../hooks/useSpottedBreeds";
 
 // API Url - points at the Express backend running in /server (port 3000)
 const apiUrl = "http://localhost:3000/api/breeds";
@@ -8,6 +9,8 @@ const apiUrl = "http://localhost:3000/api/breeds";
 function BreedDetail() {
   // grab the :id from the route (/breeds/:id)
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { isSignedIn, spottedIds, markAsSpotted } = useSpottedBreeds();
   const [dog, setDog] = useState(null);
 
   useEffect(
@@ -29,6 +32,16 @@ function BreedDetail() {
     );
   }
 
+  const isSpotted = spottedIds.has(dog.id);
+
+  const handleMarkAsSpotted = () => {
+    if (!isSignedIn) {
+      navigate("/sign-in");
+      return;
+    }
+    markAsSpotted(dog).catch((err) => console.log(err));
+  };
+
   return (
     <div className="page">
       <Link to="/breeds" className="home-btn home-btn--compact">
@@ -37,8 +50,26 @@ function BreedDetail() {
       <h1>{dog.name}</h1>
 
       <section className="section-card section-card--brand-blue">
+        <button
+          type="button"
+          className="mark-spotted-btn mark-spotted-btn--detail"
+          disabled={isSpotted}
+          onClick={handleMarkAsSpotted}>
+          {isSpotted ? "✓ Spotted" : "Mark as Spotted"}
+        </button>
+
         {dog.imageUrl ? (
-          <img src={dog.imageUrl} alt={dog.name} className="dog-img detail-img" />
+          // No .dog-img here on purpose - that class forces every image
+          // into a fixed, cropped 260px box (see App.css), which is
+          // exactly what this page shouldn't do. Sized via .detail-img
+          // (width: 70%, height: auto) instead.
+          <img
+            src={dog.imageUrl}
+            alt={dog.name}
+            width={dog.imageWidth}
+            height={dog.imageHeight}
+            className="detail-img"
+          />
         ) : null}
 
         <div className="detail-info">

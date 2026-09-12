@@ -111,6 +111,70 @@
   }
 }
 
+/* --- breed list search/sort/filter/alphabet controls --- */
+.breed-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.breed-search {
+  flex: 1;
+  min-width: 200px;
+}
+
+.breed-controls input,
+.breed-controls select {
+  font-family: var(--sans);
+  font-size: 1rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--text);
+  box-sizing: border-box;
+}
+
+.breed-controls input:focus,
+.breed-controls select:focus {
+  outline: 2px solid var(--plum);
+  outline-offset: 1px;
+}
+
+.alphabet-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+}
+
+.alphabet-picker button {
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 0.85rem;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--plum);
+  cursor: pointer;
+}
+
+.alphabet-picker button:hover:not(:disabled) {
+  background: var(--plum);
+  color: #fff;
+}
+
+/* No breed starts with this letter under the current search/filter -
+   greyed out and non-interactive rather than hidden, so the alphabet
+   stays a stable, predictable row instead of shifting around. */
+.alphabet-picker button:disabled {
+  color: var(--border);
+  cursor: not-allowed;
+}
+
 .dog-list {
   list-style: none;
   padding: 0;
@@ -146,7 +210,10 @@
   transform: translateY(-2px);
 }
 
-.dog-list li.favorite {
+/* Was .favorite (dead - nothing ever set that class). Now marks a
+   breed the signed-in user has already logged at least one sighting
+   of, via useSpottedBreeds. */
+.dog-list li.spotted {
   box-shadow:
     0 0 0 2px var(--plum),
     0 4px 16px rgba(22, 33, 62, 0.1);
@@ -184,6 +251,45 @@
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
   margin: 0.35rem 0 0;
+}
+
+/* A sibling of DogCard's <Link>, not nested inside it - <button> isn't
+   valid inside <a>, and this needs its own click behavior anyway
+   (instant-log instead of navigating). */
+.mark-spotted-btn {
+  display: block;
+  width: fit-content;
+  margin: auto;
+  margin-top: 0.6rem;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-size: 0.8rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--plum);
+  color: #fff;
+  cursor: pointer;
+}
+
+.mark-spotted-btn:hover:not(:disabled) {
+  background: var(--plum-dark);
+}
+
+.mark-spotted-btn:disabled {
+  background: var(--teal-tint);
+  color: var(--teal-dark);
+  cursor: default;
+}
+
+/* Used only on BreedDetail, where the button now sits at the top of
+   the card instead of the bottom - bigger text since it's the one
+   prominent action on this page, not a compact card button. */
+.mark-spotted-btn--detail {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-size: 1rem;
+  padding: 0.7rem 1rem;
 }
 
 /* --- spot collection card text --- */
@@ -524,7 +630,13 @@
 }
 
 .detail-img {
-  max-width: 320px;
+  /* Uncropped photo, scaled to 70% of the card's width - height: auto
+     keeps its real proportions using the width/height HTML attributes
+     (set from TheDogAPI's data in breedRoutes.js) as the aspect ratio. */
+  width: 50%;
+  height: auto;
+  display: block;
+  margin: 0 auto 1rem;
   border-radius: 20px;
 }
 
