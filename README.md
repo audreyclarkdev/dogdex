@@ -1,6 +1,6 @@
 # DogDex
 
-A capstone project for March 2026 students.
+My capstone project for the March 2026 Austin Community College Software Development Bootcamp.
 
 **DogDex** is a mobile-first web appplication for dog lovers who want to discover, track, and learn about dog breeds they encounter in real life.
 Inspired by bird-watching and the beloved Pokédex concept, DogDex lets users browse a complete encyclopedia of recognized dog breeds, check off the ones they've spotted in the wild, and log each sighting with a photo, location, and personal notes. A Breed of the Day feature reveals a new breed on the home screen every morning, giving users a daily reason to open the app and learn something new.
