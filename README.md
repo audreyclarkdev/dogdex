@@ -7,7 +7,7 @@ Inspired by bird-watching and the beloved Pokédex concept, DogDex lets users br
 
 ### DogDex turns every walk, dog park visit, or trip to the neighborhood into an opportunity for discovery and connection with fellow dog lovers — making it equal parts hobby tracker, educational tool, and collection game.
 
-Some features will include:
+Some features include:
 
 - A complete, searchable list of recognized dog breeds with names, photos, origin country, and key traits
 - A checkmark system allowing users to mark breeds as "spotted"
