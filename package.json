@@ -1,19 +1,29 @@
 {
-  "name": "dogdex_capstone",
+  "name": "dogdex",
   "version": "1.0.0",
-  "description": "A capstone project for March 2026 students.",
-  "main": "index.js",
+  "private": true,
+  "description": "DogDex is a mobile-first MERN app for discovering, tracking, and learning about dog breeds you spot in real life. Capstone project for the ACC Software Development Bootcamp (March 2026).",
   "scripts": {
     "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ACCSoftwareBootcamp/DogDex.git"
+    "url": "git+https://github.com/audreyclarkdev/dogdex.git"
   },
-  "keywords": [],
+  "keywords": [
+    "mern",
+    "react",
+    "express",
+    "mongodb",
+    "nodejs",
+    "vite",
+    "clerk",
+    "dog-breeds"
+  ],
+  "author": "Audrey Clark",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/ACCSoftwareBootcamp/DogDex/issues"
+    "url": "https://github.com/audreyclarkdev/dogdex/issues"
   },
-  "homepage": "https://github.com/ACCSoftwareBootcamp/DogDex#readme"
+  "homepage": "https://github.com/audreyclarkdev/dogdex#readme"
 }
