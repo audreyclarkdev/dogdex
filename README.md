@@ -11,9 +11,11 @@ Inspired by bird-watching and the beloved Pokédex concept, DogDex lets users br
 
 ## Demo
 **Home Page after signing in**
+
 ![Signed in home page view](frontend/src/assets/Signed-In-Home.png)
 
 **Spotted dogs are saved in your Dog Collection**
+
 ![Spotted dogs added to the dog collection page](frontend/src/assets/DogDex_Dog_Collection.png)
  
 ## Features
