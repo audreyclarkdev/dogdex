@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUser, useAuth } from "@clerk/react";
+import { API_URL } from "../config";
 
-// API Url - points at the Express backend running in /backend (port 3000)
-const spotsUrl = "http://localhost:3000/api/spots";
+// Spots endpointon the Express backend (base URL set in config.js)
+const spotsUrl = `${API_URL}/api/spots`;
 
 // UserProfile page - the account-info editing (name, email, password,
 // avatar) already lives in Clerk's own UserButton menu, so this page
@@ -15,21 +16,24 @@ function UserProfile() {
   const [spots, setSpots] = useState([]);
   const [status, setStatus] = useState("loading"); // loading | loaded | error
 
-  useEffect(function () {
-    getToken()
-      .then((token) =>
-        fetch(spotsUrl, { headers: { Authorization: `Bearer ${token}` } }),
-      )
-      .then((res) => res.json())
-      .then((data) => {
-        setSpots(data);
-        setStatus("loaded");
-      })
-      .catch((err) => {
-        console.log(err);
-        setStatus("error");
-      });
-  }, [getToken]);
+  useEffect(
+    function () {
+      getToken()
+        .then((token) =>
+          fetch(spotsUrl, { headers: { Authorization: `Bearer ${token}` } }),
+        )
+        .then((res) => res.json())
+        .then((data) => {
+          setSpots(data);
+          setStatus("loaded");
+        })
+        .catch((err) => {
+          console.log(err);
+          setStatus("error");
+        });
+    },
+    [getToken],
+  );
 
   const totalLogged = spots.length;
   const uniqueBreeds = new Set(spots.map((spot) => spot.breedName)).size;

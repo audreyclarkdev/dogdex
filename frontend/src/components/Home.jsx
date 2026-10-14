@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@clerk/react";
 import { slugify } from "../utils/slug";
 import DogFact from "./DogFact";
+import { API_URL } from "../config";
 
-// API Url - points at the Express backend running in /server (port 3000)
-const apiUrl = "http://localhost:3000/api/breeds";
+// Breeds endpoint on the Express backend (base URL set in config.js)
+const apiUrl = `${API_URL}/api/breeds`;
 
 // Home page - explains what DogDex is, how to use it, main navigation,
 // and previews the Breed of the Day

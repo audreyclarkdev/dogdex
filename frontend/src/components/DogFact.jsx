@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
+import { API_URL } from "../config";
 
-// API Url - points at the Express backend running in /backend (port 3000)
-const factsUrl = "http://localhost:3000/api/facts/random";
+// Random dog facts endpoint on the Express backend (base URL set in config.js)
+const factsUrl = `${API_URL}/api/facts/random`;
 
 // "Did you know?" blurb - one random, general (not breed-specific) dog
 // fact, shared between Home and BreedList rather than duplicating the

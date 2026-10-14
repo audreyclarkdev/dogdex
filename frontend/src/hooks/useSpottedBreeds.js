@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useAuth } from "@clerk/react";
+import { API_URL } from "../config";
 
-// API Url - points at the Express backend running in /backend (port 3000)
-const spotsUrl = "http://localhost:3000/api/spots";
+// Spots endpoint on the Express backend (base URL set in config.js)
+const spotsUrl = `${API_URL}/api/spots`;
 
 // Tracks which breeds the signed-in user has already logged at least
 // one sighting of, and exposes one-click "mark spotted" / "un-mark"

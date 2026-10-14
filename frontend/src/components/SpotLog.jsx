@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@clerk/react";
+import { API_URL } from "../config";
 
-// API Urls - points at the Express backend running in /backend (port 3000)
-const breedsUrl = "http://localhost:3000/api/breeds";
-const spotsUrl = "http://localhost:3000/api/spots";
+// Breeds and Spots endpoint on the Express backend (base URL set in config.js)
+
+const breedsUrl = `${API_URL}/api/breeds`;
+const spotsUrl = `${API_URL}/api/spots`;
 
 // what a fresh, empty form looks like
 const emptyForm = {
@@ -17,8 +19,14 @@ const emptyForm = {
 
 // Turns a stored ISO date string into the yyyy-mm-dd shape
 // <input type="date"> expects.
+// bug fix: When pre-filling the edit form, build the yyyy-mm-dd string from the local date parts instead of slicing
 function toDateInputValue(isoString) {
-  return isoString ? isoString.slice(0, 10) : "";
+  if (!isoString) return "";
+  const date = new Date(isoString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // getMonth is 0-based
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 // SpotLog page - doubles as both "log a new sighting" (POST) and "edit
@@ -145,7 +153,10 @@ function SpotLog() {
     payload.append("location", formData.location);
     payload.append("notes", formData.notes);
     if (formData.spottedTimestamp) {
-      payload.append("spottedTimestamp", formData.spottedTimestamp);
+      // "YYYY-MM-DD" alone parses as UTC midnight, which displays as the
+      // previous day west of UTC. Adding a time makes JS read it as local.
+      const localDate = new Date(`${formData.spottedTimestamp}T00:00`);
+      payload.append("spottedTimestamp", localDate.toISOString());
     }
     if (photoFile) {
       payload.append("photo", photoFile);

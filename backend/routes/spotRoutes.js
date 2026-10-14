@@ -32,6 +32,31 @@ function requireUserId(req, res) {
   return userId;
 }
 
+// Fields a user is allowed to set from the request body. Anything not
+// listed here (userId, imageUrl, _id, createdAt...) is ignored, so a
+// hand-crafted request can't reassign ownership or skip the photo upload.
+// New schema fields stay locked until they're deliberately added here.
+const EDITABLE_FIELDS = [
+  "breedId",
+  "breedName",
+  "dogName",
+  "location",
+  "spottedTimestamp",
+  "notes",
+];
+
+// Copies only allowlisted fields from the request body. Fields the client
+// didn't send are skipped, so a PUT leaves those values unchanged.
+function pickEditableFields(body) {
+  const updates = {};
+  for (const field of EDITABLE_FIELDS) {
+    if (body[field] !== undefined) {
+      updates[field] = body[field];
+    }
+  }
+  return updates;
+}
+
 // GET /api/spots - the signed-in user's own spots, newest first (using
 // the index already defined on { userId, spottedTimestamp } in the Spot
 // model). The filter always comes from the verified token - never a
@@ -105,9 +130,13 @@ router.post("/", uploadSpotPhoto, async (req, res) => {
       imageUrl = req.body.imageUrl;
     }
 
-    // userId assigned after the spread, so it always wins over anything
-    // (however unlikely) sent in the form body under the same name.
-    const newSpot = await Spot.create({ ...req.body, imageUrl, userId });
+    // Only allowlisted fields come from the body. imageUrl and userId are
+    // set by the server above, never copied straight from the request.
+    const newSpot = await Spot.create({
+      ...pickEditableFields(req.body),
+      imageUrl,
+      userId,
+    });
     res.status(201).json(newSpot);
   } catch (err) {
     console.error("POST /api/spots failed:", err);
@@ -140,16 +169,17 @@ router.put("/:id", uploadSpotPhoto, async (req, res) => {
         .json({ message: "You can only edit your own spots." });
     }
 
+    const updates = pickEditableFields(req.body);
+
     if (req.file) {
-      // A new photo was chosen - replace the old imageUrl. If no file
-      // came through, req.body has no imageUrl key at all (the edit
-      // form never sends one directly), so Object.assign below leaves
-      // the existing photo untouched rather than blanking it out.
+      // A new photo was chosen, so replace the old imageUrl. imageUrl is
+      // never taken from the request body, only from our own upload
+      // result. No file means no imageUrl key, so the existing photo stays.
       const result = await uploadToCloudinary(req.file);
-      req.body.imageUrl = result.secure_url;
+      updates.imageUrl = result.secure_url;
     }
 
-    Object.assign(spot, req.body);
+    Object.assign(spot, updates);
     const updatedSpot = await spot.save();
     res.json(updatedSpot);
   } catch (err) {

@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import DogCard from "./DogCard";
 import DogFact from "./DogFact";
 import { useSpottedBreeds } from "../hooks/useSpottedBreeds";
+import { API_URL } from "../config";
 
-// API Url - points at the Express backend running in /server (port 3000)
-const apiUrl = "http://localhost:3000/api/breeds";
+// Breeds endpoint on the Express backend (base URL set in config.js)
+const apiUrl = `${API_URL}/api/breeds`;
 
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
