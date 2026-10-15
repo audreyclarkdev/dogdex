@@ -4,7 +4,7 @@ My capstone project for the March 2026 Austin Community College Software Develop
 
 🔗 **Live site:** [dogdex.live](https://dogdex.live)
 
-**DogDex** is a mobile-first web appplication for dog lovers who want to discover, track, and learn about dog breeds they encounter in real life.
+**DogDex** is a mobile-first web application for dog lovers who want to discover, track, and learn about dog breeds they encounter in real life.
 Inspired by bird-watching and the beloved Pokédex concept, DogDex lets users browse a complete encyclopedia of recognized dog breeds, check off the ones they've spotted in the wild, and log each sighting with a photo, location, and personal notes. A Breed of the Day feature reveals a new breed on the home screen every morning, giving users a daily reason to open the app and learn something new.
 
 ### DogDex turns every walk, dog park visit, or trip to the neighborhood into an opportunity for discovery and connection with fellow dog lovers — making it equal parts hobby tracker, educational tool, and collection game.
